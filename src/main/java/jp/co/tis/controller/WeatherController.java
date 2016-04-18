@@ -73,10 +73,21 @@ public class WeatherController {
      */
     @RequestMapping("/warmUp")
     public ModelAndView warmUp() {
+
+        return null;
+    }
+
+    /**
+     * ウォーミングアップ画面へ遷移する。
+     *
+     * @return ModelAndView
+     */
+    @RequestMapping("/warmUp")
+    public ModelAndView warmUpa() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("name", "TIS太郎");
         modelAndView.addObject("age", "25");
-        modelAndView.addObject("like", "読書・映画・ショッピング");
+        modelAndView.addObject("hobby", "読書・映画・ショッピング");
         modelAndView.addObject("skill", "空手5段");
         modelAndView.setViewName("warmUp");
 

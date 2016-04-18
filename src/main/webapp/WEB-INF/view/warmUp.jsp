@@ -41,7 +41,7 @@
           </tr>
           <tr>
             <td>趣味</td>
-            <td><c:out value="${like}" /></td>
+            <td><c:out value="${hobby}" /></td>
           </tr>
           <tr>
             <td>特技</td>
