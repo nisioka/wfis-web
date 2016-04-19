@@ -6,6 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import jp.co.tis.exception.FileFormatException;
+import jp.co.tis.exception.SystemException;
+import jp.co.tis.form.WeatherSearchForm;
+import jp.co.tis.logic.WeatherLogic;
+import jp.co.tis.model.Weather;
+import jp.co.tis.model.WeatherDao;
+import jp.co.tis.model.WeatherDto;
+import jp.co.tis.util.CsvReaderImpl;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,15 +25,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import jp.co.tis.exception.FileFormatException;
-import jp.co.tis.exception.SystemException;
-import jp.co.tis.form.WeatherSearchForm;
-import jp.co.tis.logic.WeatherLogic;
-import jp.co.tis.model.Weather;
-import jp.co.tis.model.WeatherDao;
-import jp.co.tis.model.WeatherDto;
-import jp.co.tis.util.CsvReaderImpl;
 
 /**
  * 天気予報コントローラ。
@@ -178,6 +178,14 @@ public class WeatherController {
 
         // 項目精査を行う
         List<String> errorList = weatherLogic.validateForm(form);
+        if (!errorList.isEmpty()) {
+            modelAndView.addObject("errorList", errorList);
+            modelAndView.addObject("form", form);
+            modelAndView.setViewName("weatherSearch");
+            return modelAndView;
+        }
+
+        errorList = weatherLogic.validateBetweenItem(form);
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
