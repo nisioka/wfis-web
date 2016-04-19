@@ -24,7 +24,13 @@ public class WeatherDao {
     private NamedParameterJdbcTemplate jdbcTemplate;
 
     /**
-     * SQLをもとに検索を行う。
+     * SQLをもとに検索を行う。<br/>
+     * 引数のSQLには、文字列としてSQLを渡す。<br/>
+     * SQLの最後に「;」は不要。<br/>
+     * 例：
+     * <code><pre>
+     * String sql = "SELECT A, B, C FROM TEST_TABLE";
+     * </pre></code>
      *
      * @param selectSql 実行したいSQL
      * @return 検索結果
@@ -37,7 +43,15 @@ public class WeatherDao {
     }
 
     /**
-     * SQLとパラメータをもとに検索を行う。
+     * SQLとパラメータをもとに検索を行う。{@link WeatherDao#findBySql}<br/>
+     * 第一引数のSQLに、値を埋め込みたい場合「:変数名」として記述する。<br/>
+     * 第二引数のMapの「key」に第一引数のSQLで設定した変数名を設定し
+     * 「value」にSQLに埋め込みたい値を設定する。<br/>
+     * 例：
+     * <code><pre>
+     * String sql = "SELECT A, B, C FROM TEST_TABLE WHERE A = :変数名";
+     * contion.put(変数名, SQLに埋め込みたい値);
+     * </pre></code>
      *
      * @param selectSql 実行したいSQL
      * @param condition SQLに埋め込むパラメータ
@@ -51,7 +65,7 @@ public class WeatherDao {
     }
 
     /**
-     * SQLをもとに登録を行う。
+     * SQLをもとに登録を行う。{@link WeatherDao#findBySql}<br/>
      *
      * @param insertSql 実行したいSQL
      * @return 登録件数
@@ -61,7 +75,10 @@ public class WeatherDao {
     }
 
     /**
-     * SQLとパラメータをもとに登録を行う。
+     * SQLとパラメータをもとに登録を行う。{@link WeatherDao#findBySql}<br/>
+     * 第一引数のSQLに、動的に値を埋め込みたい場合「:変数名」として記述する。<br/>
+     * 第二引数のMapの「key」に第一引数のSQLで設定した変数名を設定し
+     * 「value」にSQLに埋め込みたい値を設定する。<br/>
      *
      * @param insertSql 実行したいSQL
      * @param condition SQLに埋め込むパラメータ
@@ -74,7 +91,7 @@ public class WeatherDao {
     }
 
     /**
-     * SQLをもとに更新を行う。
+     * SQLをもとに更新を行う。{@link WeatherDao#findBySql}<br/>
      *
      * @param updateSql 実行したいSQL
      * @return 更新件数
@@ -84,7 +101,10 @@ public class WeatherDao {
     }
 
     /**
-     * SQLとパラメータをもとに更新を行う。
+     * SQLとパラメータをもとに更新を行う。{@link WeatherDao#findBySql}<br/>
+     * 第一引数のSQLに、動的に値を埋め込みたい場合「:変数名」として記述する。<br/>
+     * 第二引数のMapの「key」に第一引数のSQLで設定した変数名を設定し
+     * 「value」にSQLに埋め込みたい値を設定する。<br/>
      *
      * @param updateSql 実行したいSQL
      * @param condition SQLに埋め込むパラメータ
@@ -97,7 +117,7 @@ public class WeatherDao {
     }
 
     /**
-     * SQLをもとに削除を行う。
+     * SQLをもとに削除を行う。{@link WeatherDao#findBySql}<br/>
      *
      * @param deleteSql 実行したいSQL
      * @return 削除件数
@@ -107,7 +127,10 @@ public class WeatherDao {
     }
 
     /**
-     * SQLとパラメータをもとに削除を行う。
+     * SQLとパラメータをもとに削除を行う。{@link WeatherDao#findBySql}<br/>
+     * 第一引数のSQLに、動的に値を埋め込みたい場合「:変数名」として記述する。<br/>
+     * 第二引数のMapの「key」に第一引数のSQLで設定した変数名を設定し
+     * 「value」にSQLに埋め込みたい値を設定する。<br/>
      *
      * @param deleteSql 実行したいSQL
      * @param condition SQLに埋め込むパラメータ
