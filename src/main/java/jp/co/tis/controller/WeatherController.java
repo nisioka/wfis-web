@@ -74,7 +74,7 @@ public class WeatherController {
     @RequestMapping("/warmUp")
     public ModelAndView warmUp() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("name", "TIS太郎");
+        modelAndView.addObject("myName", "TIS太郎");
         modelAndView.addObject("age", "25");
         modelAndView.addObject("hobby", "読書・映画・ショッピング");
         modelAndView.addObject("skill", "空手5段");

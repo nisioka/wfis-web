@@ -33,7 +33,7 @@
         <tbody>
           <tr>
             <td>名前</td>
-            <td><c:out value="${name}" /></td>
+            <td><c:out value="${myName}" /></td>
           </tr>
           <tr>
             <td>年齢</td>
