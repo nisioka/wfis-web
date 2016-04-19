@@ -111,7 +111,7 @@ public class CsvReaderImpl implements CsvReader {
         }
         String[] dataArray = dataSection.split(",", -1);
         if (itemArray.length != dataArray.length) {
-            throw new FileFormatException("不正な値が含まれています。");
+            throw new FileFormatException("ヘッダー部と項目数が異なっています。");
         }
 
         Map<String, String> keyValue = new LinkedHashMap<String, String>();
