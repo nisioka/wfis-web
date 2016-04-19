@@ -97,7 +97,7 @@ public class WeatherController {
     }
 
     /**
-     * 天気検索(オプション課題)TOP画面へ遷移する。
+     * 天気検索発展TOP画面へ遷移する。
      *
      * @return ModelAndView
      */
@@ -166,7 +166,7 @@ public class WeatherController {
     }
 
     /**
-     * 天気の検索を行う（オプション課題）。
+     * 天気の検索を行う（天気検索発展）。
      *
      * @param form フォーム
      * @param bindingResult バリデーション結果
