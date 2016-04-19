@@ -8,14 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.model.Weather;
 import jp.co.tis.model.WeatherDao;
 import jp.co.tis.model.WeatherDto;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * 天気予報Logicクラス。
@@ -85,6 +85,10 @@ public class WeatherLogic {
             if (!StringUtils.isEmpty(form.getWeatherDateTo())) {
                 format.parse(form.getWeatherDateTo());
             }
+            if (!StringUtils.isEmpty(form.getWeatherDateFrom()) && !StringUtils.isEmpty(form.getWeatherDateTo())
+                    && form.getWeatherDateFrom().compareTo(form.getWeatherDateTo()) > 0) {
+                errorList.add("日付の範囲指定が不正です。");
+            }
         } catch (ParseException e) {
             errorList.add("日付は日付形式で入力してください。");
         }
@@ -114,6 +118,14 @@ public class WeatherLogic {
             errorList.add("最低気温は3桁以内で入力してください。");
         } else if (!StringUtils.isEmpty(form.getMinTemperatureTo()) && form.getMinTemperatureTo().length() > 3) {
             errorList.add("最低気温は3桁以内で入力してください。");
+        }
+        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom()) && !StringUtils.isEmpty(form.getMaxTemperatureTo())
+                && Integer.parseInt(form.getMaxTemperatureFrom()) > Integer.parseInt(form.getMaxTemperatureTo())) {
+            errorList.add("最高気温の範囲指定が不正です。");
+        }
+        if (!StringUtils.isEmpty(form.getMinTemperatureTo()) && !StringUtils.isEmpty(form.getMinTemperatureTo())
+                && Integer.parseInt(form.getMinTemperatureFrom()) > Integer.parseInt(form.getMinTemperatureTo())) {
+            errorList.add("最低気温の範囲指定が不正です。");
         }
 
         return errorList;
