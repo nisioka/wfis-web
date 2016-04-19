@@ -159,7 +159,7 @@ public class WeatherLogic {
     }
 
     /**
-     * 入力項目をバリデーションする（天気予測）。
+     * 入力項目をバリデーションする（CSVデータ登録）。
      *
      * @param form フォーム
      * @return エラーリスト
