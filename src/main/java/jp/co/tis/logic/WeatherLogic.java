@@ -31,7 +31,7 @@ public class WeatherLogic {
     private WeatherDao weatherDao;
 
     /**
-     * 入力項目をバリデーションする（初級・標準用）。
+     * 入力項目をバリデーションする（天気検索初級・標準用）。
      *
      * @param form フォーム
      * @return エラーリスト
@@ -68,7 +68,7 @@ public class WeatherLogic {
     }
 
     /**
-     * 入力項目をバリデーションする（オプション課題）。
+     * 入力項目をバリデーションする（天気検索発展）。
      *
      * @param form フォーム
      * @return エラーリスト
@@ -178,7 +178,7 @@ public class WeatherLogic {
     }
 
     /**
-     * 検索に使用するSQLを作成する（初級・標準用）。
+     * 検索に使用するSQLを作成する（天気検索初級・標準用）。
      *
      * @param form フォーム
      * @return SQL
@@ -226,7 +226,7 @@ public class WeatherLogic {
     }
 
     /**
-     * 検索に使用する条件を作成する（初級・標準用）。
+     * 検索に使用する条件を作成する（天気検索初級・標準用）。
      *
      * @param form フォーム
      * @return SQL
@@ -253,7 +253,7 @@ public class WeatherLogic {
     }
 
     /**
-     * 検索に使用するSQLを作成する（オプション課題）。
+     * 検索に使用するSQLを作成する（天気検索発展）。
      *
      * @param form フォーム
      * @return SQL
@@ -335,7 +335,7 @@ public class WeatherLogic {
     }
 
     /**
-     * 検索に使用する条件を作成する（オプション課題）。
+     * 検索に使用する条件を作成する（天気検索発展）。
      *
      * @param form フォーム
      * @return SQL
