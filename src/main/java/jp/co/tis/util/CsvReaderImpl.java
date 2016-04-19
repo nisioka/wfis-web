@@ -42,7 +42,7 @@ public class CsvReaderImpl implements CsvReader {
     @Override
     public void open() throws FileNotFoundException, FileFormatException {
         if (bufferedReader != null) {
-            throw new IllegalStateException("File already open.");
+            throw new IllegalStateException("すでにファイルが開かれています。");
         }
         bufferedReader = new BufferedReader(new FileReader(csvPath));
         // ※実行環境依存を避ける実装方法
@@ -55,23 +55,23 @@ public class CsvReaderImpl implements CsvReader {
             headerSection = bufferedReader.readLine();
         } catch (IOException e) {
             // テストで到達不可能
-            throw new SystemException("A system exception occured.", e);
+            throw new SystemException("システム例外が発生しました。", e);
         }
         if (headerSection == null || headerSection.isEmpty()) {
-            throw new FileFormatException("Input file has no header.");
+            throw new FileFormatException("ヘッダー行が存在しません。");
         }
         itemArray = headerSection.split(",", -1);
         // 重複チェック開始
         Set<String> checkRepetition = new HashSet<String>();
         for (String item : itemArray) {
             if (!checkRepetition.add(item)) {
-                throw new FileFormatException("Input file has duplicate headers.");
+                throw new FileFormatException("ヘッダー行の項目が重複しています。");
             }
         }
         //空項目チェック開始
         for (String item : itemArray) {
             if ("".equals(item)) {
-                throw new FileFormatException("Input file has blank header.");
+                throw new FileFormatException("ヘッダー行に空項目が含まれています。");
             }
         }
 
@@ -86,7 +86,7 @@ public class CsvReaderImpl implements CsvReader {
             bufferedReader.close();
         } catch (IOException e) {
             // テストで到達不可能
-            throw new SystemException("A system exception occured.", e);
+            throw new SystemException("システム例外が発生しました。", e);
         } finally {
             bufferedReader = null;
         }
@@ -95,7 +95,7 @@ public class CsvReaderImpl implements CsvReader {
     @Override
     public Map<String, String> readLine() throws IOException, FileFormatException {
         if (bufferedReader == null) {
-            throw new IOException("File is not open.");
+            throw new IOException("ファイルが開かれていません。");
         }
 
         String dataSection = null;
@@ -103,7 +103,7 @@ public class CsvReaderImpl implements CsvReader {
             dataSection = bufferedReader.readLine();
         } catch (IOException e) {
             // テストで到達不可能
-            throw new SystemException("A system exception occured.", e);
+            throw new SystemException("システム例外が発生しました。", e);
         }
 
         if (dataSection == null) {
@@ -111,7 +111,7 @@ public class CsvReaderImpl implements CsvReader {
         }
         String[] dataArray = dataSection.split(",", -1);
         if (itemArray.length != dataArray.length) {
-            throw new FileFormatException("Invalid data.");
+            throw new FileFormatException("不正な値が含まれています。");
         }
 
         Map<String, String> keyValue = new LinkedHashMap<String, String>();
