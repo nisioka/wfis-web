@@ -47,17 +47,21 @@ public class WeatherLogic {
         } catch (ParseException e) {
             errorList.add("日付は日付形式で入力してください。");
         }
-        if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > 255) {
-            errorList.add("場所は255文字以内で入力してください。");
+        if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > 10) {
+            errorList.add("場所は10文字以内で入力してください。");
         }
-        if (!StringUtils.isEmpty(form.getWeather()) && form.getWeather().length() > 255) {
-            errorList.add("天気は255文字以内で入力してください。");
+        if (!StringUtils.isEmpty(form.getWeather()) && form.getWeather().length() > 10) {
+            errorList.add("天気は10文字以内で入力してください。");
         }
         if (!StringUtils.isEmpty(form.getMaxTemperature()) && !StringUtils.isNumeric(form.getMaxTemperature())) {
             errorList.add("最高気温は数値で入力してください。");
+        } else if (!StringUtils.isEmpty(form.getMaxTemperature()) && form.getMaxTemperature().length() > 3) {
+            errorList.add("最高気温は3桁以内で入力してください。");
         }
         if (!StringUtils.isEmpty(form.getMinTemperature()) && !StringUtils.isNumeric(form.getMinTemperature())) {
             errorList.add("最低気温は数値で入力してください。");
+        } else if (!StringUtils.isEmpty(form.getMinTemperature()) && form.getMinTemperature().length() > 3) {
+            errorList.add("最低気温は3桁以内で入力してください。");
         }
 
         return errorList;
@@ -84,17 +88,32 @@ public class WeatherLogic {
         } catch (ParseException e) {
             errorList.add("日付は日付形式で入力してください。");
         }
-        if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > 255) {
-            errorList.add("場所は255文字以内で入力してください。");
+
+        if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > 10) {
+            errorList.add("場所は10文字以内で入力してください。");
         }
-        if (!StringUtils.isEmpty(form.getWeather()) && form.getWeather().length() > 255) {
-            errorList.add("天気は255文字以内で入力してください。");
+        if (!StringUtils.isEmpty(form.getWeather()) && form.getWeather().length() > 10) {
+            errorList.add("天気は10文字以内で入力してください。");
         }
-        if (!StringUtils.isNumeric(form.getMaxTemperatureFrom()) || !StringUtils.isNumeric(form.getMaxTemperatureTo())) {
+        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom()) && !StringUtils.isNumeric(form.getMaxTemperatureFrom())) {
+            errorList.add("最高気温は数値で入力してください。");
+        } else if (!StringUtils.isEmpty(form.getMaxTemperatureTo()) && !StringUtils.isNumeric(form.getMaxTemperatureTo())) {
             errorList.add("最高気温は数値で入力してください。");
         }
-        if (!StringUtils.isNumeric(form.getMinTemperatureFrom()) || !StringUtils.isNumeric(form.getMinTemperatureTo())) {
+        if (!StringUtils.isEmpty(form.getMinTemperatureFrom()) && !StringUtils.isNumeric(form.getMinTemperatureFrom())) {
             errorList.add("最低気温は数値で入力してください。");
+        } else if (!StringUtils.isEmpty(form.getMinTemperatureTo()) && !StringUtils.isNumeric(form.getMinTemperatureTo())) {
+            errorList.add("最低気温は数値で入力してください。");
+        }
+        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom()) && form.getMaxTemperatureFrom().length() > 3) {
+            errorList.add("最高気温は3桁以内で入力してください。");
+        } else if (!StringUtils.isEmpty(form.getMaxTemperatureTo()) && form.getMaxTemperatureTo().length() > 3) {
+            errorList.add("最高気温は3桁以内で入力してください。");
+        }
+        if (!StringUtils.isEmpty(form.getMinTemperatureFrom()) && form.getMinTemperatureFrom().length() > 3) {
+            errorList.add("最低気温は3桁以内で入力してください。");
+        } else if (!StringUtils.isEmpty(form.getMinTemperatureTo()) && form.getMinTemperatureTo().length() > 3) {
+            errorList.add("最低気温は3桁以内で入力してください。");
         }
 
         return errorList;
@@ -110,22 +129,18 @@ public class WeatherLogic {
         List<String> errorList = new ArrayList<String>();
         if (StringUtils.isEmpty(form.getWeatherDate()) || StringUtils.isEmpty(form.getPlace())) {
             errorList.add("日付と場所は、必ず両方入力してください。");
-            return errorList;
         }
         // 日付精査
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         try {
-            if (!StringUtils.isEmpty(form.getWeatherDateFrom())) {
-                format.parse(form.getWeatherDateFrom());
-            }
-            if (!StringUtils.isEmpty(form.getWeatherDateTo())) {
-                format.parse(form.getWeatherDateTo());
+            if (!StringUtils.isEmpty(form.getWeatherDate())) {
+                format.parse(form.getWeatherDate());
             }
         } catch (ParseException e) {
             errorList.add("日付は日付形式で入力してください。");
         }
-        if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > 255) {
-            errorList.add("場所は255文字以内で入力してください。");
+        if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > 10) {
+            errorList.add("場所は10文字以内で入力してください。");
         }
 
         return errorList;

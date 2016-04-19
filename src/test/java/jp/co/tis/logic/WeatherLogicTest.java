@@ -60,29 +60,27 @@ public class WeatherLogicTest {
     }
 
     /**
-     * 異常系のバリデーションテスト。(場所が255文字を超えている場合)
+     * 異常系のバリデーションテスト。(場所が10文字を超えている場合)
      */
     @Test
     public void testValidationAbnormalPlace() {
         WeatherSearchForm form = new WeatherSearchForm();
-        form.setPlace(
-                "ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ");
+        form.setPlace("12345678901");
         List<String> errorList = target.validateFormEasy(form);
 
-        assertThat(errorList.get(0), is("場所は255文字以内で入力してください。"));
+        assertThat(errorList.get(0), is("場所は10文字以内で入力してください。"));
     }
 
     /**
-     * 異常系のバリデーションテスト。(天気が255文字を超えている場合)
+     * 異常系のバリデーションテスト。(天気が10文字を超えている場合)
      */
     @Test
     public void testValidationAbnormalWeather() {
         WeatherSearchForm form = new WeatherSearchForm();
-        form.setWeather(
-                "ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ");
+        form.setWeather("12345678901");
         List<String> errorList = target.validateFormEasy(form);
 
-        assertThat(errorList.get(0), is("天気は255文字以内で入力してください。"));
+        assertThat(errorList.get(0), is("天気は10文字以内で入力してください。"));
     }
 
     /**
@@ -116,17 +114,15 @@ public class WeatherLogicTest {
     public void testValidationAbnormlAll() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeatherDate("20150101");
-        form.setPlace(
-                "ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ");
-        form.setWeather(
-                "ああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああああ");
+        form.setPlace("12345678901");
+        form.setWeather("12345678901");
         form.setMaxTemperature("あ");
         form.setMinTemperature("あ");
         List<String> errorList = target.validateFormEasy(form);
 
         assertThat(errorList.get(0), is("日付は日付形式で入力してください。"));
-        assertThat(errorList.get(1), is("場所は255文字以内で入力してください。"));
-        assertThat(errorList.get(2), is("天気は255文字以内で入力してください。"));
+        assertThat(errorList.get(1), is("場所は10文字以内で入力してください。"));
+        assertThat(errorList.get(2), is("天気は10文字以内で入力してください。"));
         assertThat(errorList.get(3), is("最高気温は数値で入力してください。"));
         assertThat(errorList.get(4), is("最低気温は数値で入力してください。"));
     }
