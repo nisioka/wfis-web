@@ -8,14 +8,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.model.Weather;
 import jp.co.tis.model.WeatherDao;
 import jp.co.tis.model.WeatherDto;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * 天気予報Logicクラス。
@@ -155,7 +155,7 @@ public class WeatherLogic {
             errorList.add("日付と場所は、必ず両方入力してください。");
         }
         // 日付精査
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        DateFormat format = new SimpleDateFormat("MM/dd");
         try {
             if (!StringUtils.isEmpty(form.getWeatherDate())) {
                 format.parse(form.getWeatherDate());
