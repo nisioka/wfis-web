@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * 起動クラス。
  *
- * @author Takuma Saito
+ * @author Saito Takuma
  * @since 1.0
  *
  */

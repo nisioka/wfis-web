@@ -3,7 +3,7 @@ package jp.co.tis.model;
 /**
  * 天気Dtoクラス。
  *
- * @author Takuma Saito
+ * @author Saito Takuma
  * @since 1.0
  *
  */

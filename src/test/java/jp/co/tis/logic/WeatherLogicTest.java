@@ -20,7 +20,7 @@ import jp.co.tis.model.Weather;
 /**
  * 天気予報コントローラのテスト。
  *
- * @author Takuma Saito
+ * @author Saito Takuma
  * @since 1.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)

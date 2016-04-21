@@ -7,8 +7,9 @@ import javax.persistence.Table;
 
 /**
  * 天気エンティティクラス。
+ * 
  *
- * @author Takuma Saito
+ * @author Saito Takuma
  * @since 1.0
  *
  */

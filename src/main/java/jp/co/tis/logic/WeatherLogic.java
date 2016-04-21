@@ -20,7 +20,7 @@ import jp.co.tis.model.WeatherDto;
 /**
  * 天気予報Logicクラス。
  *
- * @author Takuma Saito
+ * @author Saito Takuma
  * @since 1.0
  */
 @Component

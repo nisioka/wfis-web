@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 天気予報用Form。
  *
- * @author Takuma Saito
+ * @author Saito Takuma
  * @since 1.0
  */
 public class WeatherSearchForm implements Serializable {

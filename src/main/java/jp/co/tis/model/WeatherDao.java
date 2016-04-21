@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 /**
  * データベースの検索結果をEntityなどのDTOにマッピングする。
  *
- * @author Takuma Saito
+ * @author Saito Takuma
  * @since 1.0
  */
 @Component

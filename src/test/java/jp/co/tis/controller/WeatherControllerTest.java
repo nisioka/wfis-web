@@ -9,7 +9,7 @@ import org.junit.runners.JUnit4;
 /**
  * 天気予報コントローラのテスト。
  *
- * @author Takuma Saito
+ * @author Saito Takuma
  * @since 1.0
  */
 @RunWith(JUnit4.class)
