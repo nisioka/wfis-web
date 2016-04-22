@@ -27,7 +27,7 @@ import jp.co.tis.model.WeatherDto;
 import jp.co.tis.util.CsvReaderImpl;
 
 /**
- * 天気予報コントローラ。
+ * 天気予報のコントローラークラス。
  *
  * @author Saito Takuma
  * @since 1.0
@@ -39,7 +39,7 @@ public class WeatherController {
     @Autowired
     private WeatherDao weatherDao;
 
-    /** 天気予報ロジック */
+    /** 天気予報ロジッククラス */
     @Autowired
     private WeatherLogic weatherLogic;
 
@@ -88,7 +88,7 @@ public class WeatherController {
      *
      * @return ModelAndView
      */
-    @RequestMapping("/searchEasy/Top")
+    @RequestMapping("/searchEasyTop")
     public ModelAndView searchEasyTop() {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -155,9 +155,9 @@ public class WeatherController {
             return modelAndView;
         }
 
-        String sql = weatherLogic.createSqlEasy(form);
+        String selectSql = weatherLogic.createSqlEasy(form);
         Map<String, String> condition = weatherLogic.createConditionEasy(form);
-        List<Weather> weatherList = weatherDao.findBySql(sql, condition);
+        List<Weather> weatherList = weatherDao.findBySql(selectSql, condition);
 
         modelAndView.addObject("form", form);
         modelAndView.addObject("weatherList", weatherList);
@@ -193,9 +193,9 @@ public class WeatherController {
             return modelAndView;
         }
 
-        String sql = weatherLogic.createSql(form);
+        String selectSql = weatherLogic.createSql(form);
         Map<String, String> condition = weatherLogic.createCondition(form);
-        List<Weather> weatherList = weatherDao.findBySql(sql, condition);
+        List<Weather> weatherList = weatherDao.findBySql(selectSql, condition);
 
         modelAndView.addObject("form", form);
         modelAndView.addObject("weatherList", weatherList);
@@ -288,11 +288,11 @@ public class WeatherController {
                 rowCount++;
             }
             if (csvReadList.isEmpty()) {
-                return createErrorModelAndView(form, "登録するデータが存在しません");
+                return createErrorModelAndView(form, "登録するデータが存在しません。");
             }
             csvData = StringUtils.removeEnd(data.toString(), ",");
         } catch (IOException e) {
-            throw new SystemException("A system exception occured.", e);
+            throw new SystemException("システム例外が発生しました。", e);
         } catch (FileFormatException e) {
             // ヘッダーの行数も考慮するため
             rowCount += 2;

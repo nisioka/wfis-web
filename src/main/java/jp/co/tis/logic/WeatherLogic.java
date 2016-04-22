@@ -19,6 +19,8 @@ import jp.co.tis.model.WeatherDto;
 
 /**
  * 天気予報Logicクラス。
+ * コントローラーに直接メソッド切り出しを行うと行数が膨れるためクラスに切り出す。
+ * JUnitテストをしやすくするための目的もある。
  *
  * @author Saito Takuma
  * @since 1.0
@@ -38,7 +40,7 @@ public class WeatherLogic {
      */
     public List<String> validateFormEasy(WeatherSearchForm form) {
         List<String> errorList = new ArrayList<String>();
-        // 日付精査
+
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         try {
             if (!StringUtils.isEmpty(form.getWeatherDate())) {
@@ -76,7 +78,6 @@ public class WeatherLogic {
     public List<String> validateForm(WeatherSearchForm form) {
         List<String> errorList = new ArrayList<String>();
 
-        // 日付精査
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         try {
             if (!StringUtils.isEmpty(form.getWeatherDateFrom())) {
@@ -128,16 +129,20 @@ public class WeatherLogic {
     public List<String> validateBetweenItem(WeatherSearchForm form) {
         List<String> errorList = new ArrayList<String>();
 
-        if (form.getWeatherDateFrom().compareTo(form.getWeatherDateTo()) > 0) {
-            errorList.add("日付の範囲指定が不正です。");
+        if (!StringUtils.isEmpty(form.getWeatherDateFrom()) && !StringUtils.isEmpty(form.getWeatherDateTo())) {
+            if (form.getWeatherDateFrom().compareTo(form.getWeatherDateTo()) > 0) {
+                errorList.add("日付の範囲指定が不正です。");
+            }
         }
-
-        if (form.getMaxTemperatureFrom().compareTo(form.getMaxTemperatureTo()) > 0) {
-            errorList.add("最高気温の範囲指定が不正です。");
+        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom()) && !StringUtils.isEmpty(form.getMaxTemperatureTo())) {
+            if (form.getMaxTemperatureFrom().compareTo(form.getMaxTemperatureTo()) > 0) {
+                errorList.add("最高気温の範囲指定が不正です。");
+            }
         }
-
-        if (form.getMinTemperatureFrom().compareTo(form.getMinTemperatureTo()) > 0) {
-            errorList.add("最低気温の範囲指定が不正です。");
+        if (!StringUtils.isEmpty(form.getMinTemperatureFrom()) && !StringUtils.isEmpty(form.getMinTemperatureTo())) {
+            if (form.getMinTemperatureFrom().compareTo(form.getMinTemperatureTo()) > 0) {
+                errorList.add("最低気温の範囲指定が不正です。");
+            }
         }
 
         return errorList;
@@ -151,10 +156,10 @@ public class WeatherLogic {
      */
     public List<String> validateFormForExpect(WeatherSearchForm form) {
         List<String> errorList = new ArrayList<String>();
+
         if (StringUtils.isEmpty(form.getWeatherDate()) || StringUtils.isEmpty(form.getPlace())) {
             errorList.add("日付と場所は、必ず両方入力してください。");
         }
-        // 日付精査
         DateFormat format = new SimpleDateFormat("MM/dd");
         try {
             if (!StringUtils.isEmpty(form.getWeatherDate())) {
@@ -241,25 +246,15 @@ public class WeatherLogic {
      * 検索に使用する条件を作成する（天気検索初級・標準用）。
      *
      * @param form フォーム
-     * @return SQL
+     * @return 検索条件
      */
     public Map<String, String> createConditionEasy(WeatherSearchForm form) {
         Map<String, String> condition = new HashMap<String, String>();
-        if (!StringUtils.isEmpty(form.getWeatherDate())) {
-            condition.put("weatherDate", form.getWeatherDate());
-        }
-        if (!StringUtils.isEmpty(form.getPlace())) {
-            condition.put("place", form.getPlace());
-        }
-        if (!StringUtils.isEmpty(form.getWeather())) {
-            condition.put("weather", form.getWeather());
-        }
-        if (!StringUtils.isEmpty(form.getMaxTemperature())) {
-            condition.put("maxTemperature", form.getMaxTemperature());
-        }
-        if (!StringUtils.isEmpty(form.getMinTemperature())) {
-            condition.put("minTemperature", form.getMinTemperature());
-        }
+        condition.put("weatherDate", form.getWeatherDate());
+        condition.put("place", form.getPlace());
+        condition.put("weather", form.getWeather());
+        condition.put("maxTemperature", form.getMaxTemperature());
+        condition.put("minTemperature", form.getMinTemperature());
 
         return condition;
     }
@@ -350,19 +345,19 @@ public class WeatherLogic {
      * 検索に使用する条件を作成する（天気検索発展）。
      *
      * @param form フォーム
-     * @return SQL
+     * @return 検索条件
      */
     public Map<String, String> createCondition(WeatherSearchForm form) {
         Map<String, String> condition = new HashMap<String, String>();
-        if (!StringUtils.isEmpty(form.getWeatherDateFrom())) {
-            condition.put("weatherDateFrom", form.getWeatherDateFrom());
-        }
-        if (!StringUtils.isEmpty(form.getWeatherDateTo())) {
-            condition.put("weatherDateTo", form.getWeatherDateTo());
-        }
-        if (!StringUtils.isEmpty(form.getPlace())) {
-            condition.put("place", form.getPlace());
-        }
+        condition.put("weatherDateFrom", form.getWeatherDateFrom());
+        condition.put("weatherDateTo", form.getWeatherDateTo());
+        condition.put("place", form.getPlace());
+        condition.put("maxTemperatureFrom", form.getMaxTemperatureFrom());
+        condition.put("maxTemperatureTo", form.getMaxTemperatureTo());
+        condition.put("minTemperatureFrom", form.getMinTemperatureFrom());
+        condition.put("minTemperatureTo", form.getMinTemperatureTo());
+
+        // 天気項目の検索条件をチェックボックスの数に応じて設定する
         if (!StringUtils.isEmpty(form.getWeather()) && StringUtils.split(form.getWeather(), ",").length != 4) {
             String[] weatherArray = StringUtils.split(form.getWeather(), ",");
             if (weatherArray.length == 1) {
@@ -375,18 +370,6 @@ public class WeatherLogic {
                 condition.put("weather2", weatherArray[1]);
                 condition.put("weather3", weatherArray[2]);
             }
-        }
-        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom())) {
-            condition.put("maxTemperatureFrom", form.getMaxTemperatureFrom());
-        }
-        if (!StringUtils.isEmpty(form.getMaxTemperatureTo())) {
-            condition.put("maxTemperatureTo", form.getMaxTemperatureTo());
-        }
-        if (!StringUtils.isEmpty(form.getMinTemperatureFrom())) {
-            condition.put("minTemperatureFrom", form.getMinTemperatureFrom());
-        }
-        if (!StringUtils.isEmpty(form.getMinTemperatureTo())) {
-            condition.put("minTemperatureTo", form.getMinTemperatureTo());
         }
 
         return condition;
@@ -401,11 +384,8 @@ public class WeatherLogic {
     public List<Weather> createPastWeatherList(WeatherSearchForm form) {
         String selectSql = "SELECT * FROM WEATHER WHERE WEATHER_DATE LIKE :monthAndDay AND PLACE = :place";
         Map<String, String> condition = new HashMap<String, String>();
-        // 月と日のみを検索に使用する
-        String monthAndDay = "%" + StringUtils.right(form.getWeatherDate(), 5);
-        String place = form.getPlace();
-        condition.put("monthAndDay", monthAndDay);
-        condition.put("place", place);
+        condition.put("monthAndDay", form.getWeatherDate());
+        condition.put("place", form.getPlace());
 
         return weatherDao.findBySql(selectSql, condition);
     }

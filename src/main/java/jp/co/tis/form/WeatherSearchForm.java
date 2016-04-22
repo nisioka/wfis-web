@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * 天気予報用Form。
+ * 画面の入力項目や画面から送られてくる項目をプロパティとして持つクラス。
  *
  * @author Saito Takuma
  * @since 1.0
