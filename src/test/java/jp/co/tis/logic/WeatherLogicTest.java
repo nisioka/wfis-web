@@ -42,7 +42,7 @@ public class WeatherLogicTest {
         form.setWeather("晴れ");
         form.setMaxTemperature("20");
         form.setMinTemperature("10");
-        List<String> errorList = target.validateFormEasy(form);
+        List<String> errorList = target.validateFormForSearch(form);
 
         assertThat(errorList.size(), is(0));
     }
@@ -54,7 +54,7 @@ public class WeatherLogicTest {
     public void testValidationAbnormalDate() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeatherDate("20150101");
-        List<String> errorList = target.validateFormEasy(form);
+        List<String> errorList = target.validateFormForSearch(form);
 
         assertThat(errorList.get(0), is("日付は日付形式で入力してください。"));
     }
@@ -66,7 +66,7 @@ public class WeatherLogicTest {
     public void testValidationAbnormalPlace() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setPlace("12345678901");
-        List<String> errorList = target.validateFormEasy(form);
+        List<String> errorList = target.validateFormForSearch(form);
 
         assertThat(errorList.get(0), is("場所は10文字以内で入力してください。"));
     }
@@ -78,7 +78,7 @@ public class WeatherLogicTest {
     public void testValidationAbnormalWeather() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeather("12345678901");
-        List<String> errorList = target.validateFormEasy(form);
+        List<String> errorList = target.validateFormForSearch(form);
 
         assertThat(errorList.get(0), is("天気は10文字以内で入力してください。"));
     }
@@ -90,7 +90,7 @@ public class WeatherLogicTest {
     public void testValidationaAbnormlMaxTemperature() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setMaxTemperature("あ");
-        List<String> errorList = target.validateFormEasy(form);
+        List<String> errorList = target.validateFormForSearch(form);
 
         assertThat(errorList.get(0), is("最高気温は数値で入力してください。"));
     }
@@ -102,7 +102,7 @@ public class WeatherLogicTest {
     public void testValidationAbnormlMinTemperature() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setMinTemperature("あ");
-        List<String> errorList = target.validateFormEasy(form);
+        List<String> errorList = target.validateFormForSearch(form);
 
         assertThat(errorList.get(0), is("最低気温は数値で入力してください。"));
     }
@@ -118,7 +118,7 @@ public class WeatherLogicTest {
         form.setWeather("12345678901");
         form.setMaxTemperature("あ");
         form.setMinTemperature("あ");
-        List<String> errorList = target.validateFormEasy(form);
+        List<String> errorList = target.validateFormForSearch(form);
 
         assertThat(errorList.get(0), is("日付は日付形式で入力してください。"));
         assertThat(errorList.get(1), is("場所は10文字以内で入力してください。"));
@@ -133,11 +133,15 @@ public class WeatherLogicTest {
     @Test
     public void testSqlAllEmpty() {
         WeatherSearchForm form = new WeatherSearchForm();
-        String resultSql = target.createSqlEasy(form);
-        Map<String, String> resultCondition = target.createConditionEasy(form);
+        String resultSql = target.createSqlForSearch(form);
+        Map<String, String> resultCondition = target.createConditionForSearch(form);
 
         assertThat(resultSql, is("SELECT * FROM WEATHER"));
-        assertThat(resultCondition.size(), is(0));
+        assertThat(resultCondition.get("weatherDate"), is(nullValue()));
+        assertThat(resultCondition.get("place"), is(nullValue()));
+        assertThat(resultCondition.get("weather"), is(nullValue()));
+        assertThat(resultCondition.get("maxTemperature"), is(nullValue()));
+        assertThat(resultCondition.get("minTemperature"), is(nullValue()));
     }
 
     /**
@@ -147,8 +151,8 @@ public class WeatherLogicTest {
     public void testSqlOnlyDate() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeatherDate("2015/01/01");
-        String resultSql = target.createSqlEasy(form);
-        Map<String, String> resultCondition = target.createConditionEasy(form);
+        String resultSql = target.createSqlForSearch(form);
+        Map<String, String> resultCondition = target.createConditionForSearch(form);
 
         assertThat(resultSql, is("SELECT * FROM WEATHER WHERE WEATHER_DATE = :weatherDate"));
         assertThat(resultCondition.get("weatherDate"), is("2015/01/01"));
@@ -161,8 +165,8 @@ public class WeatherLogicTest {
     public void testSqlOnlyPlace() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setPlace("東京");
-        String resultSql = target.createSqlEasy(form);
-        Map<String, String> resultCondition = target.createConditionEasy(form);
+        String resultSql = target.createSqlForSearch(form);
+        Map<String, String> resultCondition = target.createConditionForSearch(form);
 
         assertThat(resultSql, is("SELECT * FROM WEATHER WHERE PLACE = :place"));
         assertThat(resultCondition.get("place"), is("東京"));
@@ -175,8 +179,8 @@ public class WeatherLogicTest {
     public void testSqlOnlyWeather() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeather("晴れ");
-        String resultSql = target.createSqlEasy(form);
-        Map<String, String> resultCondition = target.createConditionEasy(form);
+        String resultSql = target.createSqlForSearch(form);
+        Map<String, String> resultCondition = target.createConditionForSearch(form);
 
         assertThat(resultSql, is("SELECT * FROM WEATHER WHERE WEATHER = :weather"));
         assertThat(resultCondition.get("weather"), is("晴れ"));
@@ -189,8 +193,8 @@ public class WeatherLogicTest {
     public void testSqlOnlyMaxTemperature() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setMaxTemperature("30");
-        String resultSql = target.createSqlEasy(form);
-        Map<String, String> resultCondition = target.createConditionEasy(form);
+        String resultSql = target.createSqlForSearch(form);
+        Map<String, String> resultCondition = target.createConditionForSearch(form);
 
         assertThat(resultSql, is("SELECT * FROM WEATHER WHERE MAX_TEMPERATURE = :maxTemperature"));
         assertThat(resultCondition.get("maxTemperature"), is("30"));
@@ -203,8 +207,8 @@ public class WeatherLogicTest {
     public void testSqlOnlyMinTemperature() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setMinTemperature("0");
-        String resultSql = target.createSqlEasy(form);
-        Map<String, String> resultCondition = target.createConditionEasy(form);
+        String resultSql = target.createSqlForSearch(form);
+        Map<String, String> resultCondition = target.createConditionForSearch(form);
 
         assertThat(resultSql, is("SELECT * FROM WEATHER WHERE MIN_TEMPERATURE = :minTemperature"));
         assertThat(resultCondition.get("minTemperature"), is("0"));
@@ -221,8 +225,8 @@ public class WeatherLogicTest {
         form.setWeather("晴れ");
         form.setMaxTemperature("30");
         form.setMinTemperature("0");
-        String resultSql = target.createSqlEasy(form);
-        Map<String, String> resultCondition = target.createConditionEasy(form);
+        String resultSql = target.createSqlForSearch(form);
+        Map<String, String> resultCondition = target.createConditionForSearch(form);
 
         assertThat(resultSql, is(
                 "SELECT * FROM WEATHER WHERE WEATHER_DATE = :weatherDate and PLACE = :place and WEATHER = :weather and MAX_TEMPERATURE = :maxTemperature and MIN_TEMPERATURE = :minTemperature"));
@@ -234,7 +238,7 @@ public class WeatherLogicTest {
     }
 
     /**
-     * 検索テスト。
+     * 検索テスト。（DBにテストでつなげるか確かめるためのもの）
      */
     @Test
     public void testSearch() {
@@ -245,11 +249,11 @@ public class WeatherLogicTest {
 
         List<Weather> expectedList = new ArrayList<Weather>();
         Weather weather = new Weather();
-        weather.setWeatherDate("2010/01/01");
+        weather.setWeatherDate("2015/01/01");
         weather.setPlace("東京");
-        weather.setWeather("晴れ");
-        weather.setMaxTemperature("10");
-        weather.setMinTemperature("0");
+        weather.setWeather("曇り");
+        weather.setMaxTemperature("8");
+        weather.setMinTemperature("2");
         expectedList.add(weather);
 
         assertThat(resultWeatherList.get(0).getWeatherDate(), is(expectedList.get(0).getWeatherDate()));
