@@ -7,14 +7,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>天気検索画面</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/font-awesome.min.css" rel="stylesheet">
-<link href="css/jquery-ui.min.css" rel="stylesheet">
-<link href="css/weather.css" rel="stylesheet">
-<script src="js/jquery-2.2.2.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/datepicker-ja.js"></script>
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/font-awesome.min.css" rel="stylesheet">
+<link href="../css/jquery-ui.min.css" rel="stylesheet">
+<link href="../css/weather.css" rel="stylesheet">
+<script src="../js/jquery-2.2.2.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script src="../js/datepicker-ja.js"></script>
 </head>
 
 <body>
@@ -34,9 +34,9 @@
 
      <h3>
       天気検索
-      <img src="img/weather2.jpg" class="width-7">
+      <img src="../img/weather2.jpg" class="width-7"">
      </h3>
-     <form action="/weatherSearch" method="POST">
+     <form action="/weatherSearch/search" method="POST">
        <table class="table table-striped table-bordered table-hover">
         <thead>
           <tr class="info">
@@ -48,49 +48,27 @@
             <tr>
               <td style="vertical-align: middle;">日付</td>
               <td class="text-align-center">
-                <input type="text" name="weatherDateFrom" class="form-control calendar pull-left width-45" value="${form.weatherDateFrom}">
-                <span>～</span>
-                <input type="text" name="weatherDateTo" class="form-control calendar pull-right width-45" value="${form.weatherDateTo}">
+                <input type="text" name="weatherDate" class="form-control calendar" value="${form.weatherDate}">
               </td>
             </tr>
             <tr>
               <td style="vertical-align: middle;">場所</td>
-              <td>
-                <select id="selectPlace" name="place" class="form-control" data-place="${form.place}">
-                  <option value=""></option>
-                  <option value="東京">東京</option>
-                  <option value="群馬">群馬</option>
-                  <option value="栃木">栃木</option>
-                  <option value="茨城">茨城</option>
-                  <option value="埼玉">埼玉</option>
-                  <option value="千葉">千葉</option>
-                  <option value="神奈川">神奈川</option>
-                </select>
-              </td>
+              <td><input type="text" name="place" class="form-control" value="${form.place}"></td>
             </tr>
             <tr>
               <td style="vertical-align: middle;">天気</td>
-              <td id="checkboxes" data-weather="${form.weather}">
-                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="晴れ" >晴れ</label>
-                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="曇り" >曇り</label>
-                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="雨" >雨</label>
-                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="雪" >雪</label>
-              </td>
+              <td><input type="text" name="weather" class="form-control" value="${form.weather}"></td>
             </tr>
             <tr>
               <td style="vertical-align: middle;">最高気温</td>
               <td class="text-align-center">
-                <input type="text" name="maxTemperatureFrom" class="form-control pull-left width-45"  value="${form.maxTemperatureFrom}">
-                ～
-                <input type="text" name="maxTemperatureTo" class="form-control pull-right width-45" value="${form.maxTemperatureTo}">
+                <input type="text" name="maxTemperature" class="form-control"  value="${form.maxTemperature}">
               </td>
             </tr>
             <tr>
               <td style="vertical-align: middle;">最低気温</td>
               <td class="text-align-center">
-                <input type="text" name="minTemperatureFrom" class="form-control pull-left width-45" value="${form.minTemperatureFrom}">
-                ～
-                <input type="text" name="minTemperatureTo" class="form-control pull-right width-45" value="${form.minTemperatureTo}">
+                <input type="text" name="minTemperature" class="form-control pull-right" value="${form.minTemperature}">
               </td>
             </tr>
         </tbody>
@@ -103,8 +81,7 @@
      <c:choose>
        <c:when test="${!empty weatherList}">
          <h3>
-          検索結果：
-          <span class="dark-blue"><c:out value="${searchCount}" /></span>件
+          検索結果
          </h3>
          <table class="table table-striped table-bordered table-hover">
           <thead>
@@ -121,61 +98,13 @@
               <tr>
                 <td style="vertical-align: middle;"><c:out value="${weather.weatherDate}" /></td>
                 <td style="vertical-align: middle;"><c:out value="${weather.place}" /></td>
-                <td>
-                  <c:choose>
-                    <c:when test="${weather.weather eq '晴れ'}">
-                      <img src="img/Sunny.png"  class="width-25">
-                    </c:when>
-                    <c:when test="${weather.weather eq '曇り'}">
-                      <img src="img/Cloudy.png"  class="width-25">
-                    </c:when>
-                    <c:when test="${weather.weather eq '雨'}">
-                      <img src="img/Rainy.png"  class="width-25">
-                    </c:when>
-                    <c:when test="${weather.weather eq '雪'}">
-                      <img src="img/Snow.png"  class="snow">
-                    </c:when>
-                    <c:otherwise>
-                      <c:out value="${weather.weather}" />
-                    </c:otherwise>
-                  </c:choose>
-                </td>
-                <c:choose>
-                  <c:when test="${weather.maxTemperature >= 20}">
-                    <td class="red" style="vertical-align: middle;">
-                      <c:out value="${weather.maxTemperature}" /> ℃
-                    </td>
-                  </c:when>
-                  <c:otherwise>
-                    <td style="vertical-align: middle;">
-                      <c:out value="${weather.maxTemperature}" /> ℃
-                    </td>
-                  </c:otherwise>
-                </c:choose>
-                <c:choose>
-                  <c:when test="${weather.minTemperature < 0}">
-                    <td class="right-blue" style="vertical-align: middle;">
-                      <c:out value="${weather.minTemperature}" /> ℃
-                    </td>
-                  </c:when>
-                  <c:otherwise>
-                    <td style="vertical-align: middle;">
-                      <c:out value="${weather.minTemperature}" /> ℃
-                    </td>
-                  </c:otherwise>
-                </c:choose>
+                <td style="vertical-align: middle;"><c:out value="${weather.weather}" /></td>
+                <td style="vertical-align: middle;"><c:out value="${weather.maxTemperature}" /> ℃</td>
+                <td style="vertical-align: middle;"><c:out value="${weather.minTemperature}" /> ℃</td>
               </tr>
             </c:forEach>
           </tbody>
          </table>
-       </c:when>
-       <c:when test="${noResult}">
-       <div class="no-result">
-         <i class="fa fa-search fa-5x"></i>
-         <div class="margin-top-20">
-           検索結果がありません。
-         </div>
-       </div>
        </c:when>
      </c:choose>
     </div>
@@ -187,16 +116,6 @@
 <script>
 $(function() {
     $('.calendar').datepicker();
-
-    // 場所のプルダウンの値を記憶しておく
-    var place = $('#selectPlace').data('place');
-    $('#selectPlace').val(place);
-
-    // 天気のチェックボックスの値を記憶しておく
-    var weatherArray = $('#checkboxes').data('weather').split(',');
-    if(weatherArray){
-      $('.checkboxWeather').val(weatherArray);
-    }
 });
 </script>
 </html>
