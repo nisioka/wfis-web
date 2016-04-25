@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
 
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.model.Weather;
@@ -383,9 +384,10 @@ public class WeatherLogic {
      * @return 過去5年分の天気のリスト
      */
     public List<Weather> createPastWeatherList(WeatherSearchForm form) {
-        String selectSql = "SELECT * FROM WEATHER WHERE WEATHER_DATE LIKE :monthAndDay AND PLACE = :place";
+        String selectSql = "SELECT * FROM WEATHER WHERE WEATHER_DATE LIKE :percentMonthAndDay AND PLACE = :place";
         Map<String, String> condition = new HashMap<String, String>();
-        condition.put("monthAndDay", form.getWeatherDate());
+        String percentMonthAndDay = "%" + form.getWeatherDate();
+        condition.put("percentMonthAndDay", percentMonthAndDay);
         condition.put("place", form.getPlace());
 
         return weatherDao.findBySql(selectSql, condition);
@@ -441,5 +443,23 @@ public class WeatherLogic {
         expectWeather.setPlace(form.getPlace());
 
         return expectWeather;
+    }
+
+    /**
+     * CSV読み込みエラーのModelAndViewを作成する。
+     *
+     * @param form フォーム
+     * @param message エラーメッセージ
+     * @return ModelAndView
+     */
+    public ModelAndView createErrorModelAndView(WeatherSearchForm form, String message) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<String> errorList = new ArrayList<String>();
+        errorList.add(message);
+        modelAndView.addObject("filePath", form.getFilePath());
+        modelAndView.addObject("errorList", errorList);
+        modelAndView.setViewName("csvRegister");
+
+        return modelAndView;
     }
 }
