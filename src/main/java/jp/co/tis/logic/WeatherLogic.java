@@ -18,8 +18,9 @@ import jp.co.tis.model.WeatherDao;
 import jp.co.tis.model.WeatherDto;
 
 /**
- * 天気予報Logicクラス。
- * コントローラーに直接メソッド切り出しを行うと行数が膨れるためクラスに切り出す。
+ * 天気予報Logicクラス。<br/>
+ * コントローラーに直接メソッド切り出しを行うと行数が膨れるため<br/>
+ * 業務ロジック部分はロジッククラスに切り出す。<br/>
  * JUnitテストをしやすくするための目的もある。
  *
  * @author Saito Takuma

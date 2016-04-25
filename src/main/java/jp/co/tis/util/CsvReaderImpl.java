@@ -12,12 +12,11 @@ import java.util.Set;
 import jp.co.tis.exception.FileFormatException;
 import jp.co.tis.exception.SystemException;
 
-
 /**
  * CsvReader実装クラス。
  *
- * @author Nomura Tomoka, Murakami Hiroyuki
- * @since 2.0
+ * @author Nomura Tomoka, Murakami Hiroyuki, Yoshiwara Masashi
+ * @since 2.1
  */
 public class CsvReaderImpl implements CsvReader {
 
@@ -48,7 +47,7 @@ public class CsvReaderImpl implements CsvReader {
         // ※実行環境依存を避ける実装方法
         // 読みこみのエンコードを指定する。
         // bufferedReader = new BufferedReader(new InputStreamReader(
-        //         new FileInputStream(csvPath), Charset.forName("UTF-8")));
+        // new FileInputStream(csvPath), Charset.forName("UTF-8")));
 
         String headerSection = null;
         try {
@@ -68,7 +67,7 @@ public class CsvReaderImpl implements CsvReader {
                 throw new FileFormatException("ヘッダー行の項目が重複しています。");
             }
         }
-        //空項目チェック開始
+        // 空項目チェック開始
         for (String item : itemArray) {
             if ("".equals(item)) {
                 throw new FileFormatException("ヘッダー行に空項目が含まれています。");
