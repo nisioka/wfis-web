@@ -35,12 +35,12 @@ public class WeatherLogic {
     private WeatherDao weatherDao;
 
     /**
-     * 入力項目をバリデーションする（天気検索初級・標準用）。
+     * 入力項目をバリデーションする。
      *
      * @param form フォーム
      * @return エラーリスト
      */
-    public List<String> validateFormEasy(WeatherSearchForm form) {
+    public List<String> validateFormForSearch(WeatherSearchForm form) {
         List<String> errorList = new ArrayList<String>();
 
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -77,7 +77,7 @@ public class WeatherLogic {
      * @param form フォーム
      * @return エラーリスト
      */
-    public List<String> validateForm(WeatherSearchForm form) {
+    public List<String> validateFormForSearchHard(WeatherSearchForm form) {
         List<String> errorList = new ArrayList<String>();
 
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -128,7 +128,7 @@ public class WeatherLogic {
      * @param form フォーム
      * @return エラーリスト
      */
-    public List<String> validateBetweenItem(WeatherSearchForm form) {
+    public List<String> validateBetweenItemForSearchHard(WeatherSearchForm form) {
         List<String> errorList = new ArrayList<String>();
 
         if (!StringUtils.isEmpty(form.getWeatherDateFrom()) && !StringUtils.isEmpty(form.getWeatherDateTo())) {
@@ -197,12 +197,12 @@ public class WeatherLogic {
     }
 
     /**
-     * 検索に使用するSQLを作成する（天気検索初級・標準用）。
+     * 検索に使用するSQLを作成する。
      *
      * @param form フォーム
      * @return SQL
      */
-    public String createSqlEasy(WeatherSearchForm form) {
+    public String createSqlForSearch(WeatherSearchForm form) {
         boolean isFirstCondition = true;
         StringBuilder selectSql = new StringBuilder("SELECT * FROM WEATHER");
         if (!StringUtils.isEmpty(form.getWeatherDate())) {
@@ -245,12 +245,12 @@ public class WeatherLogic {
     }
 
     /**
-     * 検索に使用する条件を作成する（天気検索初級・標準用）。
+     * 検索に使用する条件を作成する。
      *
      * @param form フォーム
      * @return 検索条件
      */
-    public Map<String, String> createConditionEasy(WeatherSearchForm form) {
+    public Map<String, String> createConditionForSearch(WeatherSearchForm form) {
         Map<String, String> condition = new HashMap<String, String>();
         condition.put("weatherDate", form.getWeatherDate());
         condition.put("place", form.getPlace());
@@ -267,7 +267,7 @@ public class WeatherLogic {
      * @param form フォーム
      * @return SQL
      */
-    public String createSql(WeatherSearchForm form) {
+    public String createSqlForSearchHard(WeatherSearchForm form) {
         boolean isFirstCondition = true;
         StringBuilder selectSql = new StringBuilder("SELECT * FROM WEATHER");
         if (!StringUtils.isEmpty(form.getWeatherDateFrom())) {
@@ -349,7 +349,7 @@ public class WeatherLogic {
      * @param form フォーム
      * @return 検索条件
      */
-    public Map<String, String> createCondition(WeatherSearchForm form) {
+    public Map<String, String> createConditionForSearchHard(WeatherSearchForm form) {
         Map<String, String> condition = new HashMap<String, String>();
         condition.put("weatherDateFrom", form.getWeatherDateFrom());
         condition.put("weatherDateTo", form.getWeatherDateTo());

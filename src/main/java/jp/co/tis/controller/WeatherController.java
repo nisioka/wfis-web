@@ -89,7 +89,7 @@ public class WeatherController {
      * @return ModelAndView
      */
     @RequestMapping("/weatherSearch/top")
-    public ModelAndView searchEasyTop() {
+    public ModelAndView weatherSearchTop() {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("weatherSearch");
@@ -102,7 +102,7 @@ public class WeatherController {
      * @return ModelAndView
      */
     @RequestMapping("/weatherSearchHard/top")
-    public ModelAndView searchTop() {
+    public ModelAndView weatherSearchHardTop() {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("weatherSearchHard");
@@ -115,7 +115,7 @@ public class WeatherController {
      * @return ModelAndView
      */
     @RequestMapping("/weatherExpect/top")
-    public ModelAndView expectTop() {
+    public ModelAndView weatherExpectTop() {
         ModelAndView modelAndView = new ModelAndView();
 
         modelAndView.setViewName("weatherExpect");
@@ -143,11 +143,11 @@ public class WeatherController {
      * @return ModelAndView
      */
     @RequestMapping(value = "weatherSearch/search", method = RequestMethod.POST)
-    public ModelAndView weatherSearch(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    public ModelAndView search(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
-        List<String> errorList = weatherLogic.validateFormEasy(form);
+        List<String> errorList = weatherLogic.validateFormForSearch(form);
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
@@ -155,8 +155,8 @@ public class WeatherController {
             return modelAndView;
         }
 
-        String selectSql = weatherLogic.createSqlEasy(form);
-        Map<String, String> condition = weatherLogic.createConditionEasy(form);
+        String selectSql = weatherLogic.createSqlForSearch(form);
+        Map<String, String> condition = weatherLogic.createConditionForSearch(form);
         List<Weather> weatherList = weatherDao.findBySql(selectSql, condition);
 
         modelAndView.addObject("form", form);
@@ -173,11 +173,11 @@ public class WeatherController {
      * @return ModelAndView
      */
     @RequestMapping(value = "weatherSearchHard/search", method = RequestMethod.POST)
-    public ModelAndView weatherSearchHard(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    public ModelAndView searchHard(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
-        List<String> errorList = weatherLogic.validateForm(form);
+        List<String> errorList = weatherLogic.validateFormForSearchHard(form);
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
@@ -185,7 +185,7 @@ public class WeatherController {
             return modelAndView;
         }
 
-        errorList = weatherLogic.validateBetweenItem(form);
+        errorList = weatherLogic.validateBetweenItemForSearchHard(form);
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
@@ -193,8 +193,8 @@ public class WeatherController {
             return modelAndView;
         }
 
-        String selectSql = weatherLogic.createSql(form);
-        Map<String, String> condition = weatherLogic.createCondition(form);
+        String selectSql = weatherLogic.createSqlForSearchHard(form);
+        Map<String, String> condition = weatherLogic.createConditionForSearchHard(form);
         List<Weather> weatherList = weatherDao.findBySql(selectSql, condition);
 
         modelAndView.addObject("form", form);
@@ -215,7 +215,7 @@ public class WeatherController {
      * @return ModelAndView
      */
     @RequestMapping(value = "weatherExpect/expect", method = RequestMethod.POST)
-    public ModelAndView weatherExpect(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    public ModelAndView expect(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
@@ -271,6 +271,7 @@ public class WeatherController {
         } catch (FileNotFoundException | FileFormatException e) {
             return weatherLogic.createErrorModelAndView(form, e.getMessage());
         }
+
         int rowCount = 0;
         String csvData = null;
         List<Map<String, String>> csvReadList = new ArrayList<Map<String, String>>();
@@ -319,7 +320,7 @@ public class WeatherController {
      */
     @Transactional
     @RequestMapping(value = "csvRegister/register", method = RequestMethod.POST)
-    public ModelAndView csvRegister(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    public ModelAndView register(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         // CSV一行ずつのListを作成
