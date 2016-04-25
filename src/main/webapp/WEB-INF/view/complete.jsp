@@ -7,11 +7,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>登録完了画面</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/font-awesome.min.css" rel="stylesheet">
-<link href="css/weather.css" rel="stylesheet">
-<script src="js/jquery-2.2.2.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/font-awesome.min.css" rel="stylesheet">
+<link href="../css/weather.css" rel="stylesheet">
+<script src="../js/jquery-2.2.2.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
 </head>
 
 <body>

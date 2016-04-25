@@ -7,14 +7,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>天気予測画面</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/font-awesome.min.css" rel="stylesheet">
-<link href="css/jquery-ui.min.css" rel="stylesheet">
-<link href="css/weather.css" rel="stylesheet">
-<script src="js/jquery-2.2.2.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/datepicker-ja.js"></script>
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/font-awesome.min.css" rel="stylesheet">
+<link href="../css/jquery-ui.min.css" rel="stylesheet">
+<link href="../css/weather.css" rel="stylesheet">
+<script src="../js/jquery-2.2.2.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script src="../js/datepicker-ja.js"></script>
 </head>
 
 <body>
@@ -34,9 +34,9 @@
 
      <h3>
       天気予測
-      <img src="img/weather2.jpg" class="width-7">
+      <img src="../img/weather2.jpg" class="width-7">
      </h3>
-     <form action="/weatherExpect" method="POST">
+     <form action="/weatherExpect/expect" method="POST">
        <table class="table table-striped table-bordered table-hover">
         <thead>
           <tr class="info">
@@ -94,16 +94,16 @@
               <td style="vertical-align: middle;"><c:out value="${expectWeather.place}" /></td>
               <td style="vertical-align: middle;">
                 <c:if test="${expectWeather.sunnyPercent ne 0}">
-                  <div><img src="img/Sunny.png"  class="width-25"> (<c:out value="${expectWeather.sunnyPercent}" /> %)</div>
+                  <div><img src="../img/Sunny.png"  class="width-25"> (<c:out value="${expectWeather.sunnyPercent}" /> %)</div>
                 </c:if>
                 <c:if test="${expectWeather.cloudyPercent ne 0}">
-                  <div><img src="img/Cloudy.png"  class="width-25"> (<c:out value="${expectWeather.cloudyPercent}" /> %)</div>
+                  <div><img src="../img/Cloudy.png"  class="width-25"> (<c:out value="${expectWeather.cloudyPercent}" /> %)</div>
                 </c:if>
                 <c:if test="${expectWeather.rainyPercent ne 0}">
-                  <div><img src="img/Rainy.png"  class="width-25"> (<c:out value="${expectWeather.rainyPercent}" /> %)</div>
+                  <div><img src="../img/Rainy.png"  class="width-25"> (<c:out value="${expectWeather.rainyPercent}" /> %)</div>
                 </c:if>
                 <c:if test="${expectWeather.snowPercent ne 0}">
-                  <div><img src="img/Snow.png"  class="snow"> (<c:out value="${expectWeather.snowPercent}" /> %)</div>
+                  <div><img src="../img/Snow.png"  class="snow"> (<c:out value="${expectWeather.snowPercent}" /> %)</div>
                 </c:if>
               </td>
               <td style="vertical-align: middle;"><c:out value="${expectWeather.maxTemperatureAve}" /> ℃</td>

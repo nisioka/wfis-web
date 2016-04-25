@@ -27,22 +27,22 @@
       </a>
 
       <h2>Lv.2-1</h2>
-      <a class="btn btn-default btn-block btn-warning section" href="/searchEasyTop">
+      <a class="btn btn-default btn-block btn-warning section" href="/weatherSearch/top">
       <i class="fa fa-search" ></i>　天気検索
       </a>
 
       <h2>Lv.2-2</h2>
-      <a class="btn btn-default btn-block btn-warning section" href="/searchTop">
-      <i class="fa fa-search-plus" ></i>　天気検索オプション
+      <a class="btn btn-default btn-block btn-warning section" href="/weatherSearchHard/top">
+      <i class="fa fa-search-plus" ></i>　天気検索発展
       </a>
 
       <h2>Lv.3-1</h2>
-      <a class="btn btn-default btn-block btn-danger section" href="/expectTop">
+      <a class="btn btn-default btn-block btn-danger section" href="/weatherExpect/top">
       <i class="fa fa-lightbulb-o" ></i>　天気予測
       </a>
 
       <h2>Lv.3-2</h2>
-      <a class="btn btn-default btn-block btn-danger section" href="/csvRegisterTop">
+      <a class="btn btn-default btn-block btn-danger section" href="/csvRegister/top">
       <i class="fa fa-database"></i>　CSVデータ登録
       </a>
     </div>

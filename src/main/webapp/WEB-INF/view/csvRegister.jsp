@@ -7,14 +7,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>CSV登録画面</title>
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<link href="css/font-awesome.min.css" rel="stylesheet">
-<link href="css/jquery-ui.min.css" rel="stylesheet">
-<link href="css/weather.css" rel="stylesheet">
-<script src="js/jquery-2.2.2.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jquery-ui.min.js"></script>
-<script src="js/datepicker-ja.js"></script>
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/font-awesome.min.css" rel="stylesheet">
+<link href="../css/jquery-ui.min.css" rel="stylesheet">
+<link href="../css/weather.css" rel="stylesheet">
+<script src="../js/jquery-2.2.2.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/jquery-ui.min.js"></script>
+<script src="../js/datepicker-ja.js"></script>
 </head>
 
 <body>
@@ -33,7 +33,7 @@
       </c:if>
 
       <h3>CSV読み込み</h3>
-      <form action="/csvRead" method="POST">
+      <form action="/csvRegister/csvRead" method="POST">
         <div class="input-group">
           <input type="text" name="filePath" class="form-control" value="${filePath}" placeholder="ファイルパスを入力してください">
           <span class="input-group-btn"><button type="submit" class="btn btn-info" >読み込み</button></span>
@@ -73,7 +73,7 @@
          </table>
 
         <div class="text-align-center middle">
-          <form action="/csvRegister" method="POST">
+          <form action="/csvRegister/register" method="POST">
             <button type="submit" class="btn btn-info" >登録</button>
             <input type="hidden" name="filePath" class="form-control" value="${filePath}">
             <input type="hidden" name="csvDataList" class="form-control" value="${csvData}">

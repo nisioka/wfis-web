@@ -88,11 +88,11 @@ public class WeatherController {
      *
      * @return ModelAndView
      */
-    @RequestMapping("/searchEasyTop")
+    @RequestMapping("/weatherSearch/top")
     public ModelAndView searchEasyTop() {
         ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.setViewName("weatherSearchEasy");
+        modelAndView.setViewName("weatherSearch");
         return modelAndView;
     }
 
@@ -101,11 +101,11 @@ public class WeatherController {
      *
      * @return ModelAndView
      */
-    @RequestMapping("/searchTop")
+    @RequestMapping("/weatherSearchHard/top")
     public ModelAndView searchTop() {
         ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.setViewName("weatherSearch");
+        modelAndView.setViewName("weatherSearchHard");
         return modelAndView;
     }
 
@@ -114,7 +114,7 @@ public class WeatherController {
      *
      * @return ModelAndView
      */
-    @RequestMapping("/expectTop")
+    @RequestMapping("/weatherExpect/top")
     public ModelAndView expectTop() {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -127,7 +127,7 @@ public class WeatherController {
      *
      * @return ModelAndView
      */
-    @RequestMapping("/csvRegisterTop")
+    @RequestMapping("/csvRegister/top")
     public ModelAndView csvRegisterTop() {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -136,14 +136,14 @@ public class WeatherController {
     }
 
     /**
-     * 天気の検索を行う（初級・標準用）。
+     * 天気の検索を行う。
      *
      * @param form フォーム
      * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherSearchEasy", method = RequestMethod.POST)
-    public ModelAndView weatherSearchEasy(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    @RequestMapping(value = "weatherSearch/search", method = RequestMethod.POST)
+    public ModelAndView weatherSearch(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
@@ -151,7 +151,7 @@ public class WeatherController {
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
-            modelAndView.setViewName("weatherSearchEasy");
+            modelAndView.setViewName("weatherSearch");
             return modelAndView;
         }
 
@@ -161,7 +161,7 @@ public class WeatherController {
 
         modelAndView.addObject("form", form);
         modelAndView.addObject("weatherList", weatherList);
-        modelAndView.setViewName("weatherSearchEasy");
+        modelAndView.setViewName("weatherSearch");
         return modelAndView;
     }
 
@@ -172,8 +172,8 @@ public class WeatherController {
      * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherSearch", method = RequestMethod.POST)
-    public ModelAndView weatherSearch(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    @RequestMapping(value = "weatherSearchHard/search", method = RequestMethod.POST)
+    public ModelAndView weatherSearchHard(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
@@ -181,7 +181,7 @@ public class WeatherController {
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
-            modelAndView.setViewName("weatherSearch");
+            modelAndView.setViewName("weatherSearchHard");
             return modelAndView;
         }
 
@@ -189,7 +189,7 @@ public class WeatherController {
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
-            modelAndView.setViewName("weatherSearch");
+            modelAndView.setViewName("weatherSearchHard");
             return modelAndView;
         }
 
@@ -203,7 +203,7 @@ public class WeatherController {
         if (weatherList.isEmpty()) {
             modelAndView.addObject("noResult", Boolean.TRUE);
         }
-        modelAndView.setViewName("weatherSearch");
+        modelAndView.setViewName("weatherSearchHard");
         return modelAndView;
     }
 
@@ -214,7 +214,7 @@ public class WeatherController {
      * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherExpect", method = RequestMethod.POST)
+    @RequestMapping(value = "weatherExpect/expect", method = RequestMethod.POST)
     public ModelAndView weatherExpect(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -231,6 +231,7 @@ public class WeatherController {
         List<Weather> pastWeatherList = weatherLogic.createPastWeatherList(form);
         if (pastWeatherList.isEmpty()) {
             errorList.add("データが存在しませんでした。");
+            modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
             modelAndView.setViewName("weatherExpect");
             return modelAndView;
@@ -250,7 +251,7 @@ public class WeatherController {
      * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "csvRead", method = RequestMethod.POST)
+    @RequestMapping(value = "csvRegister/csvRead", method = RequestMethod.POST)
     public ModelAndView csvRead(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -268,7 +269,7 @@ public class WeatherController {
         try {
             csvReaderImpl.open();
         } catch (FileNotFoundException | FileFormatException e) {
-            return createErrorModelAndView(form, e.getMessage());
+            return weatherLogic.createErrorModelAndView(form, e.getMessage());
         }
         int rowCount = 0;
         String csvData = null;
@@ -288,7 +289,7 @@ public class WeatherController {
                 rowCount++;
             }
             if (csvReadList.isEmpty()) {
-                return createErrorModelAndView(form, "登録するデータが存在しません。");
+                return weatherLogic.createErrorModelAndView(form, "登録するデータが存在しません。");
             }
             csvData = StringUtils.removeEnd(data.toString(), ",");
         } catch (IOException e) {
@@ -296,7 +297,7 @@ public class WeatherController {
         } catch (FileFormatException e) {
             // ヘッダーの行数も考慮するため
             rowCount += 2;
-            return createErrorModelAndView(form, rowCount + "行目 ：" + e.getMessage());
+            return weatherLogic.createErrorModelAndView(form, rowCount + "行目 ：" + e.getMessage());
         }
         csvReaderImpl.close();
 
@@ -317,7 +318,7 @@ public class WeatherController {
      * @return ModelAndView
      */
     @Transactional
-    @RequestMapping(value = "csvRegister", method = RequestMethod.POST)
+    @RequestMapping(value = "csvRegister/register", method = RequestMethod.POST)
     public ModelAndView csvRegister(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
@@ -346,24 +347,6 @@ public class WeatherController {
         }
 
         modelAndView.setViewName("complete");
-        return modelAndView;
-    }
-
-    /**
-     * CSV読み込みエラーのModelAndViewを作成する。
-     *
-     * @param form フォーム
-     * @param message エラーメッセージ
-     * @return ModelAndView
-     */
-    private ModelAndView createErrorModelAndView(WeatherSearchForm form, String message) {
-        ModelAndView modelAndView = new ModelAndView();
-        List<String> errorList = new ArrayList<String>();
-        errorList.add(message);
-        modelAndView.addObject("filePath", form.getFilePath());
-        modelAndView.addObject("errorList", errorList);
-        modelAndView.setViewName("csvRegister");
-
         return modelAndView;
     }
 }
