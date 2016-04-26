@@ -21,7 +21,6 @@
   <div class="row">
     <div class="col-lg-2"></div>
     <div class="col-lg-8">
-      <h1>画面に何か値を出してみよう！！</h1>
       <h3>自己紹介</h3>
       <table class="table table-bordered table-hover">
         <thead>

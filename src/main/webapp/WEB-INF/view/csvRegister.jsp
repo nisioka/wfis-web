@@ -74,7 +74,7 @@
 
         <div class="text-align-center middle">
           <form action="/csvRegister/register" method="POST">
-            <button type="submit" class="btn btn-info" >登録</button>
+            <button type="submit" class="btn btn-info" ><i class="fa fa-database"></i>  登録</button>
             <input type="hidden" name="filePath" class="form-control" value="${filePath}">
             <input type="hidden" name="csvDataList" class="form-control" value="${csvData}">
           </form>
