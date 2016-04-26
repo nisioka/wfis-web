@@ -38,7 +38,7 @@
 
       <h2>Lv.3-1</h2>
       <a class="btn btn-default btn-block btn-danger section" href="/weatherStatistics/top">
-      <i class="fa fa-bar-chart" aria-hidden="true"></i>　天気統計
+      <i class="fa fa-bar-chart" ></i>　天気統計
       </a>
 
       <h2>Lv.3-2</h2>

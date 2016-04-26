@@ -69,7 +69,7 @@
         </tbody>
        </table>
        <div class="text-align-center">
-         <button type="submit" class="btn btn-info" ><i class="fa fa-bar-chart" aria-hidden="true"></i>  分析</button>
+         <button type="submit" class="btn btn-info" ><i class="fa fa-bar-chart" ></i>  分析</button>
        </div>
      </form>
 
