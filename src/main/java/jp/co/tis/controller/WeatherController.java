@@ -6,6 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import jp.co.tis.exception.FileFormatException;
+import jp.co.tis.exception.SystemException;
+import jp.co.tis.form.WeatherSearchForm;
+import jp.co.tis.logic.WeatherLogic;
+import jp.co.tis.model.Weather;
+import jp.co.tis.model.WeatherDao;
+import jp.co.tis.model.WeatherDto;
+import jp.co.tis.util.CsvReaderImpl;
+
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,15 +25,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
-import jp.co.tis.exception.FileFormatException;
-import jp.co.tis.exception.SystemException;
-import jp.co.tis.form.WeatherSearchForm;
-import jp.co.tis.logic.WeatherLogic;
-import jp.co.tis.model.Weather;
-import jp.co.tis.model.WeatherDao;
-import jp.co.tis.model.WeatherDto;
-import jp.co.tis.util.CsvReaderImpl;
 
 /**
  * 天気予報のコントローラークラス。
@@ -110,15 +110,15 @@ public class WeatherController {
     }
 
     /**
-     * 天気予測TOP画面へ遷移する。
+     * 天気統計TOP画面へ遷移する。
      *
      * @return ModelAndView
      */
-    @RequestMapping("/weatherExpect/top")
-    public ModelAndView weatherExpectTop() {
+    @RequestMapping("/weatherStatistics/top")
+    public ModelAndView weatherStatisticsTop() {
         ModelAndView modelAndView = new ModelAndView();
 
-        modelAndView.setViewName("weatherExpect");
+        modelAndView.setViewName("weatherStatistics");
         return modelAndView;
     }
 
@@ -208,22 +208,22 @@ public class WeatherController {
     }
 
     /**
-     * 天気の予測を行う。
+     * 天気の統計処理を行う。
      *
      * @param form フォーム
      * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherExpect/expect", method = RequestMethod.POST)
-    public ModelAndView expect(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    @RequestMapping(value = "weatherStatistics/statistics", method = RequestMethod.POST)
+    public ModelAndView statistics(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
-        List<String> errorList = weatherLogic.validateFormForExpect(form);
+        List<String> errorList = weatherLogic.validateFormForStatistics(form);
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
-            modelAndView.setViewName("weatherExpect");
+            modelAndView.setViewName("weatherStatistics");
             return modelAndView;
         }
 
@@ -233,14 +233,14 @@ public class WeatherController {
             errorList.add("データが存在しませんでした。");
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
-            modelAndView.setViewName("weatherExpect");
+            modelAndView.setViewName("weatherStatistics");
             return modelAndView;
         }
 
-        WeatherDto expectWeather = weatherLogic.createWeatherDto(form, pastWeatherList);
+        WeatherDto statisticsWeather = weatherLogic.createWeatherDto(form, pastWeatherList);
         modelAndView.addObject("form", form);
-        modelAndView.addObject("expectWeather", expectWeather);
-        modelAndView.setViewName("weatherExpect");
+        modelAndView.addObject("statisticsWeather", statisticsWeather);
+        modelAndView.setViewName("weatherStatistics");
         return modelAndView;
     }
 

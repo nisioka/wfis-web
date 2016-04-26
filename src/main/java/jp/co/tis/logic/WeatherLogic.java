@@ -8,15 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ModelAndView;
-
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.model.Weather;
 import jp.co.tis.model.WeatherDao;
 import jp.co.tis.model.WeatherDto;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 天気予報Logicクラス。<br/>
@@ -151,12 +151,12 @@ public class WeatherLogic {
     }
 
     /**
-     * 入力項目をバリデーションする（天気予測）。
+     * 入力項目をバリデーションする（天気統計）。
      *
      * @param form フォーム
      * @return エラーリスト
      */
-    public List<String> validateFormForExpect(WeatherSearchForm form) {
+    public List<String> validateFormForStatistics(WeatherSearchForm form) {
         List<String> errorList = new ArrayList<String>();
 
         if (StringUtils.isEmpty(form.getWeatherDate()) || StringUtils.isEmpty(form.getPlace())) {
@@ -394,14 +394,14 @@ public class WeatherLogic {
     }
 
     /**
-     * 天気予測のDtoを作成する。
+     * 天気統計のDtoを作成する。
      *
      * @param form フォーム
      * @param pastWeatherList 過去の天気のリスト
-     * @return 天気予測のDto
+     * @return 天気統計のDto
      */
     public WeatherDto createWeatherDto(WeatherSearchForm form, List<Weather> pastWeatherList) {
-        WeatherDto expectWeather = new WeatherDto();
+        WeatherDto statisticsWeather = new WeatherDto();
         double sunnyCount = 0;
         double cloudyCount = 0;
         double rainyCount = 0;
@@ -423,26 +423,26 @@ public class WeatherLogic {
         }
         if (sunnyCount != 0) {
             Double percent = (sunnyCount / pastWeatherList.size()) * 100;
-            expectWeather.setSunnyPercent(percent.intValue());
+            statisticsWeather.setSunnyPercent(percent.intValue());
         }
         if (cloudyCount != 0) {
             Double percent = (cloudyCount / pastWeatherList.size()) * 100;
-            expectWeather.setCloudyPercent(percent.intValue());
+            statisticsWeather.setCloudyPercent(percent.intValue());
         }
         if (rainyCount != 0) {
             Double percent = (rainyCount / pastWeatherList.size()) * 100;
-            expectWeather.setRainyPercent(percent.intValue());
+            statisticsWeather.setRainyPercent(percent.intValue());
         }
         if (snowCount != 0) {
             Double percent = (snowCount / pastWeatherList.size()) * 100;
-            expectWeather.setSnowPercent(percent.intValue());
+            statisticsWeather.setSnowPercent(percent.intValue());
         }
-        expectWeather.setMaxTemperatureAve(maxTemperatureSum / pastWeatherList.size());
-        expectWeather.setMinTemperatureAve(minTemperatureSum / pastWeatherList.size());
-        expectWeather.setWeatherDate(form.getWeatherDate());
-        expectWeather.setPlace(form.getPlace());
+        statisticsWeather.setMaxTemperatureAve(maxTemperatureSum / pastWeatherList.size());
+        statisticsWeather.setMinTemperatureAve(minTemperatureSum / pastWeatherList.size());
+        statisticsWeather.setWeatherDate(form.getWeatherDate());
+        statisticsWeather.setPlace(form.getPlace());
 
-        return expectWeather;
+        return statisticsWeather;
     }
 
     /**
