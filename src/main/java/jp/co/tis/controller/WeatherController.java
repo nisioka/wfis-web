@@ -214,7 +214,7 @@ public class WeatherController {
      * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherStatistics/statistics", method = RequestMethod.POST)
+    @RequestMapping(value = "weatherStatistics/analysis", method = RequestMethod.POST)
     public ModelAndView statistics(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 

@@ -36,7 +36,7 @@
       天気統計
       <img src="../img/weather2.jpg" class="width-7">
      </h3>
-     <form action="/weatherStatistics/statistics" method="POST">
+     <form action="/weatherStatistics/analysis" method="POST">
        <table class="table table-striped table-bordered table-hover">
         <thead>
           <tr class="info">
@@ -69,7 +69,7 @@
         </tbody>
        </table>
        <div class="text-align-center">
-         <button type="submit" class="btn btn-info" ><i class="fa fa-bar-chart" aria-hidden="true"></i>  統計出力</button>
+         <button type="submit" class="btn btn-info" ><i class="fa fa-bar-chart" aria-hidden="true"></i>  分析</button>
        </div>
      </form>
 
