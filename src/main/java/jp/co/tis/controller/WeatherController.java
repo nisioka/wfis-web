@@ -84,6 +84,38 @@ public class WeatherController {
     }
 
     /**
+     * 天気一覧画面へ遷移する。
+     *
+     * @return ModelAndView
+     */
+    @RequestMapping("/weatherList")
+    public ModelAndView weatherList() {
+        ModelAndView modelAndView = new ModelAndView();
+        String selectSql = "SELECT * FROM WEATHER";
+        List<Weather> weatherList = weatherDao.findBySql(selectSql);
+
+        modelAndView.addObject("weatherList", weatherList);
+        modelAndView.setViewName("weatherList");
+        return modelAndView;
+    }
+
+    /**
+     * 天気簡易検索TOP画面へ遷移する。
+     *
+     * @return ModelAndView
+     */
+    @RequestMapping("/weatherSimpleSearch/top")
+    public ModelAndView weatherSimpleSearchTop() {
+        ModelAndView modelAndView = new ModelAndView();
+        String selectSql = "SELECT * FROM WEATHER";
+        List<Weather> weatherList = weatherDao.findBySql(selectSql);
+
+        modelAndView.addObject("weatherList", weatherList);
+        modelAndView.setViewName("weatherSimpleSearch");
+        return modelAndView;
+    }
+
+    /**
      * 天気検索TOP画面へ遷移する。
      *
      * @return ModelAndView
@@ -136,7 +168,24 @@ public class WeatherController {
     }
 
     /**
-     * 天気の検索を行う。
+     * 天気の検索を行う（天気簡易検索）。
+     *
+     *
+     */
+    @RequestMapping(value = "weatherSimpleSearch/search", method = RequestMethod.POST)
+    public ModelAndView simpleSearch(WeatherSearchForm form) {
+        ModelAndView modelAndView = new ModelAndView();
+        String selectSql = weatherLogic.createSqlForSimpleSeaech(form);
+        Map<String, String> condition = weatherLogic.createConditionForSimpleSearch(form);
+        List<Weather> weatherList = weatherDao.findBySql(selectSql, condition);
+
+        modelAndView.addObject("weatherList", weatherList);
+        modelAndView.setViewName("weatherSimpleSearch");
+        return modelAndView;
+    }
+
+    /**
+     * 天気の検索を行う（天気検索）。
      *
      * @param form フォーム
      * @param bindingResult バリデーション結果

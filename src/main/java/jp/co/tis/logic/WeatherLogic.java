@@ -19,10 +19,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 天気予報Logicクラス。<br/>
- * コントローラーに直接メソッド切り出しを行うと行数が膨れるため<br/>
- * 業務ロジック部分はロジッククラスに切り出す。<br/>
- * JUnitテストをしやすくするための目的もある。
+ * 天気予報Logicクラス。<br/> コントローラーに直接メソッド切り出しを行うと行数が膨れるため<br/>
+ * 業務ロジック部分はロジッククラスに切り出す。<br/> JUnitテストをしやすくするための目的もある。
  *
  * @author Saito Takuma
  * @since 1.0
@@ -197,7 +195,21 @@ public class WeatherLogic {
     }
 
     /**
-     * 検索に使用するSQLを作成する。
+     * 検索に使用するSQLを作成する（天気簡易検索）。
+     *
+     * @param form フォーム
+     * @return SQL
+     */
+    public String createSqlForSimpleSeaech(WeatherSearchForm form) {
+        StringBuilder selectSql = new StringBuilder("SELECT * FROM WEATHER");
+        if (!StringUtils.isEmpty(form.getPlace())) {
+            selectSql.append(" WHERE PLACE = :place");
+        }
+        return selectSql.toString();
+    }
+
+    /**
+     * 検索に使用するSQLを作成する（天気検索）。
      *
      * @param form フォーム
      * @return SQL
@@ -245,7 +257,20 @@ public class WeatherLogic {
     }
 
     /**
-     * 検索に使用する条件を作成する。
+     * 検索に使用する条件を作成する(天気簡易検索)。
+     *
+     * @param form フォーム
+     * @return 検索条件
+     */
+    public Map<String, String> createConditionForSimpleSearch(WeatherSearchForm form) {
+        Map<String, String> condition = new HashMap<String, String>();
+        condition.put("place", form.getPlace());
+
+        return condition;
+    }
+
+    /**
+     * 検索に使用する条件を作成する(天気検索)。
      *
      * @param form フォーム
      * @return 検索条件
