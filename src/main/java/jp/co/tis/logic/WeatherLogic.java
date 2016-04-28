@@ -360,7 +360,7 @@ public class WeatherLogic {
         condition.put("minTemperatureTo", form.getMinTemperatureTo());
 
         // 天気項目の検索条件をチェックボックスの数に応じて設定する
-        if (!StringUtils.isEmpty(form.getWeather()) && StringUtils.split(form.getWeather(), ",").length != 4) {
+        if (!StringUtils.isEmpty(form.getWeather())) {
             String[] weatherArray = StringUtils.split(form.getWeather(), ",");
             if (weatherArray.length == 1) {
                 condition.put("weather", weatherArray[0]);
@@ -371,6 +371,8 @@ public class WeatherLogic {
                 condition.put("weather", weatherArray[0]);
                 condition.put("weather2", weatherArray[1]);
                 condition.put("weather3", weatherArray[2]);
+            } else {
+                // 全てにチェックが入っている場合は条件を指定しない。
             }
         }
 
