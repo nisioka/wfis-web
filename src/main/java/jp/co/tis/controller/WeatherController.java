@@ -159,6 +159,13 @@ public class WeatherController {
         Map<String, String> condition = weatherLogic.createConditionForSearch(form);
         List<Weather> weatherList = weatherDao.findBySql(selectSql, condition);
 
+        if (weatherList.isEmpty()) {
+            errorList.add("検索結果がありません。");
+            modelAndView.addObject("errorList", errorList);
+            modelAndView.addObject("form", form);
+            modelAndView.setViewName("weatherSearch");
+        }
+
         modelAndView.addObject("form", form);
         modelAndView.addObject("weatherList", weatherList);
         modelAndView.setViewName("weatherSearch");
