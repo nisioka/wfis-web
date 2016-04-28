@@ -21,29 +21,29 @@
   <div class="row">
     <div class="col-lg-2"></div>
     <div class="col-lg-8">
-      <h2>Lv.1</h2>
+      <h2>Lv.0</h2>
       <a class="btn btn-default btn-block btn-info section" href="/warmUp">
         <i class="fa fa-magic"></i>　ウォーミングアップ
       </a>
 
-      <h2>Lv.2-1</h2>
+      <h2>Lv.1</h2>
       <a class="btn btn-default btn-block btn-warning section" href="/weatherSearch/top">
       <i class="fa fa-search" ></i>　天気検索
       </a>
 
-      <h2>Lv.2-2</h2>
-      <a class="btn btn-default btn-block btn-warning section" href="/weatherSearchHard/top">
-      <i class="fa fa-search-plus" ></i>　天気検索発展
-      </a>
-
-      <h2>Lv.3-1</h2>
-      <a class="btn btn-default btn-block btn-danger section" href="/weatherStatistics/top">
+      <h2>Lv.2</h2>
+      <a class="btn btn-default btn-block btn-warning section" href="/weatherStatistics/top">
       <i class="fa fa-bar-chart" ></i>　天気統計
       </a>
 
-      <h2>Lv.3-2</h2>
+      <h2>Lv.3</h2>
       <a class="btn btn-default btn-block btn-danger section" href="/csvRegister/top">
       <i class="fa fa-database"></i>　CSVデータ登録
+      </a>
+
+      <h2>Lv.4</h2>
+      <a class="btn btn-default btn-block btn-danger section" href="/weatherSearchHard/top">
+      <i class="fa fa-search-plus" ></i>　天気検索発展
       </a>
     </div>
     <div class="col-lg-2"></div>
