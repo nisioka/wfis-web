@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>天気検索</title>
+<title>天気簡易検索</title>
 <link href="../css/bootstrap.min.css" rel="stylesheet">
 <link href="../css/font-awesome.min.css" rel="stylesheet">
 <link href="../css/jquery-ui.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@
     <div class="col-lg-8">
 
      <h3>
-      天気検索
+      天気簡易検索
       <img src="../img/weather2.jpg"  style="width: 7%;">
      </h3>
      <form action="/weatherSimpleSearch/search" method="POST">

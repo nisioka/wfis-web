@@ -170,7 +170,8 @@ public class WeatherController {
     /**
      * 天気の検索を行う（天気簡易検索）。
      *
-     *
+     * @param form フォーム
+     * @return ModelAndView
      */
     @RequestMapping(value = "weatherSimpleSearch/search", method = RequestMethod.POST)
     public ModelAndView simpleSearch(WeatherSearchForm form) {
