@@ -42,8 +42,10 @@ public class WeatherController {
      */
     @RequestMapping("/")
     public ModelAndView top() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("top");
 
-        return null;
+        return modelAndView;
     }
 
     /**
