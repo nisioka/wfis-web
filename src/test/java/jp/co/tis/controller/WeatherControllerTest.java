@@ -1,10 +1,13 @@
 package jp.co.tis.controller;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.fail;
+import jp.co.tis.App;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * 天気予報コントローラのテスト。
@@ -12,8 +15,13 @@ import org.junit.runners.JUnit4;
  * @author Saito Takuma
  * @since 1.0
  */
-@RunWith(JUnit4.class)
+@RunWith(SpringJUnit4ClassRunner.class)
+@SpringApplicationConfiguration(classes = App.class)
 public class WeatherControllerTest {
+
+    /** テスト対象クラス */
+    @Autowired
+    private WeatherController target;
 
     /**
      * テスト。
@@ -22,4 +30,5 @@ public class WeatherControllerTest {
     public void test() {
         fail("まだ実装されていません。");
     }
+
 }
