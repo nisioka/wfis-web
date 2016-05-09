@@ -28,7 +28,7 @@
 
       <h2>Lv.1</h2>
       <a class="btn btn-default btn-block btn-success section" href="/weatherList">
-      <i class="fa fa-search" ></i>　天気一覧
+      <i class="fa fa-list" ></i>　天気一覧
       </a>
 
       <h2>Lv.2</h2>
@@ -38,7 +38,7 @@
 
       <h2>Lv.3</h2>
       <a class="btn btn-default btn-block btn-warning section" href="/weatherSearch/top">
-      <i class="fa fa-search"></i>　天気検索
+      <i class="fa fa-search-plus"></i>　天気検索
       </a>
 
     </div>
