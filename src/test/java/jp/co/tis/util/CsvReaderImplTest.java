@@ -143,8 +143,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testReadLineInCaseOfFileFormatException() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl(
-                "C:/tmp/csv/testData/testReadLineInCaseOfFileFormatException.csv");
+        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/testReadLineInCaseOfFileFormatException.csv");
         csvReader.open();
         exception.expect(FileFormatException.class);
         exception.expectMessage("ヘッダー部と項目数が異なっています。");
@@ -176,96 +175,6 @@ public class CsvReaderImplTest {
         assertThat(map.get("A"), is(nullValue()));
         assertThat(map.get("B"), is(" "));
         assertThat(map.get("C"), is("  "));
-    }
-
-    /**
-     * テストケース仕様書項目番号5-2を参照。
-     *
-     * @throws Exception 例外。
-     */
-    @Test
-    public void testCloseAfterClose() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/normal.csv");
-        csvReader.close();
-        csvReader.close();
-        exception.expect(IOException.class);
-        exception.expectMessage("ファイルが開かれていません。");
-        csvReader.readLine();
-    }
-
-    /**
-     * テストケース仕様書項目番号5-3を参照。
-     *
-     * @throws Exception 例外。
-     */
-    @Test
-    public void testReadLineInCaseOfIOException() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/normal.csv");
-        exception.expect(IOException.class);
-        exception.expectMessage("ファイルが開かれていません。");
-        csvReader.readLine();
-    }
-
-    /**
-     * テストケース仕様書項目番号5-5を参照。
-     *
-     * @throws Exception 例外。
-     */
-    @Test
-    public void testOpenInCaseOfIllegalStateException() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/normal.csv");
-        csvReader.open();
-        exception.expect(IllegalStateException.class);
-        exception.expectMessage("すでにファイルが開かれています。");
-        csvReader.open();
-    }
-
-    /**
-     * テストケース仕様書項目番号5-9を参照。
-     *
-     * @throws Exception 例外。
-     */
-    @Test
-    public void testOpenAfterReadLine() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/normal.csv");
-        csvReader.open();
-        csvReader.readLine();
-        exception.expect(IllegalStateException.class);
-        exception.expectMessage("すでにファイルが開かれています。");
-        csvReader.open();
-    }
-
-    /**
-     * テストケース仕様書項目番号5-10を参照。
-     *
-     * @throws Exception 例外。
-     */
-    @Test
-    public void testCloseAfterReadLine() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/normal.csv");
-        csvReader.open();
-        csvReader.readLine();
-        csvReader.close();
-        exception.expect(IOException.class);
-        exception.expectMessage("ファイルが開かれていません。");
-        csvReader.readLine();
-        csvReader.open();
-    }
-
-    /**
-     * テストケース仕様書項目番号5-11を参照。
-     *
-     * @throws Exception 例外。
-     */
-    @Test
-    public void testReadLineAfterReadLine() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/normal.csv");
-        csvReader.open();
-        csvReader.readLine();
-        Map<String, String> map = csvReader.readLine();
-        assertThat(map.get("id"), is("2"));
-        assertThat(map.get("name"), is("noda"));
-        assertThat(map.get("age"), is("22"));
     }
 
 }
