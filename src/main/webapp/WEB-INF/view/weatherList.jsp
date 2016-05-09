@@ -26,6 +26,7 @@
 
      <h3>
       天気一覧
+      <img src="../img/weather2.jpg" class="width-7"">
      </h3>
      <table class="table table-striped table-bordered table-hover">
       <thead>
