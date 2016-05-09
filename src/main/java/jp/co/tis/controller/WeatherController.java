@@ -180,6 +180,7 @@ public class WeatherController {
         Map<String, String> condition = weatherLogic.createConditionForSimpleSearch(form);
         List<Weather> weatherList = weatherDao.findBySql(selectSql, condition);
 
+        modelAndView.addObject("form", form);
         modelAndView.addObject("weatherList", weatherList);
         modelAndView.setViewName("weatherSimpleSearch");
         return modelAndView;
