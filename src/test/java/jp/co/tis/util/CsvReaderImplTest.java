@@ -7,11 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
-import jp.co.tis.exception.FileFormatException;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import jp.co.tis.exception.FileFormatException;
 
 /**
  * CsvReaderImplをテストするクラス。
@@ -34,7 +34,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testOpenNormally() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/normal.csv");
+        CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/normal.csv");
         csvReader.open();
     }
 
@@ -45,7 +45,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testOpenInCaseOfFileNotFoundException() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/noFile.csv");
+        CsvReader csvReader = new CsvReaderImpl("noFile.csv");
         exception.expect(FileNotFoundException.class);
         // JavaAPIからthrowされる例外なので、例外発生のみチェックしメッセージ内容のチェックはしない。
         csvReader.open();
@@ -58,7 +58,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testOpenInCaseOfFileFormatException() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/testOpenInCaseOfFileFormatException1.csv");
+        CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/testOpenInCaseOfFileFormatException1.csv");
         exception.expect(FileFormatException.class);
         exception.expectMessage("ヘッダー行が存在しません。");
         csvReader.open();
@@ -71,7 +71,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testOpenInCaseOfFileFormatException2() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/testOpenInCaseOfFileFormatException2.csv");
+        CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/testOpenInCaseOfFileFormatException2.csv");
         exception.expect(FileFormatException.class);
         exception.expectMessage("ヘッダー行の項目が重複しています。");
         csvReader.open();
@@ -84,7 +84,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testOpenInCaseOfFileFormatException3() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/testOpenInCaseOfFileFormatException3.csv");
+        CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/testOpenInCaseOfFileFormatException3.csv");
         exception.expect(FileFormatException.class);
         exception.expectMessage("ヘッダー行に空項目が含まれています。");
         csvReader.open();
@@ -97,7 +97,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testCloseAfterOpen() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/normal.csv");
+        CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/normal.csv");
         csvReader.open();
         csvReader.close();
         exception.expect(IOException.class);
@@ -112,7 +112,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testReadLineOneTime() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/normal.csv");
+        CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/normal.csv");
         csvReader.open();
         Map<String, String> map = csvReader.readLine();
         assertThat(map.get("id"), is("1"));
@@ -128,7 +128,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testReadLineAtFileEnd() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/normal.csv");
+        CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/normal.csv");
         csvReader.open();
         csvReader.readLine();
         csvReader.readLine();
@@ -143,7 +143,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testReadLineInCaseOfFileFormatException() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/testReadLineInCaseOfFileFormatException.csv");
+        CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/testReadLineInCaseOfFileFormatException.csv");
         csvReader.open();
         exception.expect(FileFormatException.class);
         exception.expectMessage("ヘッダー部と項目数が異なっています。");
@@ -157,7 +157,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testReadLineWhenMapIsNull() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/testReadLineWhenMapIsNull.csv");
+        CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/testReadLineWhenMapIsNull.csv");
         csvReader.open();
         assertThat(csvReader.readLine(), is(nullValue()));
     }
@@ -169,7 +169,7 @@ public class CsvReaderImplTest {
      */
     @Test
     public void testReadLineWhenDataHaveBlank() throws Exception {
-        CsvReader csvReader = new CsvReaderImpl("C:/tmp/csv/testData/testReadLineWhenDataHaveBlank.csv");
+        CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/testReadLineWhenDataHaveBlank.csv");
         csvReader.open();
         Map<String, String> map = csvReader.readLine();
         assertThat(map.get("A"), is(nullValue()));
