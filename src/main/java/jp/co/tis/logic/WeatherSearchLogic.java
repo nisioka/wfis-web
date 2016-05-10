@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.model.Person;
+import jp.co.tis.model.Weather;
 import jp.co.tis.model.WeatherDao;
 
 /**
@@ -39,10 +40,10 @@ public class WeatherSearchLogic {
      */
     public Person createPersonInfo() {
         Person person = new Person();
-        person.setMyName("");
-        person.setAge("");
-        person.setHobby("");
-        person.setSkill("");
+        person.setMyName("TIS 太郎");
+        person.setAge("25");
+        person.setHobby("読書・映画・ショッピング");
+        person.setSkill("空手5段");
 
         return person;
     }
@@ -164,6 +165,18 @@ public class WeatherSearchLogic {
     }
 
     /**
+     * SQLと条件から天気情報を検索する。
+     *
+     * @param form フォーム
+     * @return 検索条件
+     */
+    public List<Weather> findBySql(WeatherSearchForm form) {
+        String selectSql = createSql(form);
+        Map<String, String> condition = createCondition(form);
+        return weatherDao.findBySql(selectSql, condition);
+    }
+
+    /**
      * 検索に使用するSQLを作成する。
      *
      * @param form フォーム
@@ -226,6 +239,18 @@ public class WeatherSearchLogic {
         condition.put("minTemperature", form.getMinTemperature());
 
         return condition;
+    }
+
+    /**
+     * SQLと条件から天気情報を検索する（天気検索発展）。
+     *
+     * @param form フォーム
+     * @return 検索条件
+     */
+    public List<Weather> findBySqlHard(WeatherSearchForm form) {
+        String selectSql = createSqlHard(form);
+        Map<String, String> condition = createConditionHard(form);
+        return weatherDao.findBySql(selectSql, condition);
     }
 
     /**
