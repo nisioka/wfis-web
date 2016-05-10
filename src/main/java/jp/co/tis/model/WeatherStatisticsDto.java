@@ -9,7 +9,7 @@ package jp.co.tis.model;
  * @since 1.0
  *
  */
-public class WeatherDto {
+public class WeatherStatisticsDto {
 
     /** 日付 */
     private String weatherDate;
@@ -41,7 +41,7 @@ public class WeatherDto {
     /**
      * デフォルトコンストラクタ。
      */
-    public WeatherDto() {
+    public WeatherStatisticsDto() {
         super();
     }
 
@@ -58,7 +58,7 @@ public class WeatherDto {
      * @param rainyPercent 雨の確率
      * @param snowPercent 雪の確率
      */
-    public WeatherDto(String weatherDate, String place, String weather, int maxTemperatureAve, int minTemperatureAve, int sunnyPercent,
+    public WeatherStatisticsDto(String weatherDate, String place, String weather, int maxTemperatureAve, int minTemperatureAve, int sunnyPercent,
             int cloudyPercent, int rainyPercent, int snowPercent) {
         super();
         this.weatherDate = weatherDate;

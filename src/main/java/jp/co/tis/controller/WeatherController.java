@@ -16,10 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 import jp.co.tis.form.CsvRegisterForm;
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.form.WeatherStatisticsForm;
-import jp.co.tis.logic.WeatherLogic;
+import jp.co.tis.logic.CsvRegisterLogic;
+import jp.co.tis.logic.WeatherSearchLogic;
+import jp.co.tis.logic.WeatherStatisticsLogic;
+import jp.co.tis.model.Person;
 import jp.co.tis.model.Weather;
 import jp.co.tis.model.WeatherDao;
-import jp.co.tis.model.WeatherDto;
+import jp.co.tis.model.WeatherStatisticsDto;
 
 /**
  * 天気予報のコントローラークラス。
@@ -36,7 +39,15 @@ public class WeatherController {
 
     /** 天気予報ロジッククラス */
     @Autowired
-    private WeatherLogic weatherLogic;
+    private WeatherSearchLogic weatherSearchLogic;
+
+    /** 天気予報ロジッククラス */
+    @Autowired
+    private WeatherStatisticsLogic weatherStatisticsLogic;
+
+    /** 天気予報ロジッククラス */
+    @Autowired
+    private CsvRegisterLogic csvRegisterLogic;
 
     /**
      * TOP画面へ遷移する。
@@ -59,10 +70,12 @@ public class WeatherController {
     @RequestMapping("/warmUp")
     public ModelAndView warmUp() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("myName", "TIS太郎");
-        modelAndView.addObject("age", "25");
-        modelAndView.addObject("hobby", "読書・映画・ショッピング");
-        modelAndView.addObject("skill", "空手5段");
+        Person person = weatherSearchLogic.createPersonInfo();
+
+        modelAndView.addObject("myName", person.getMyName());
+        modelAndView.addObject("age", person.getAge());
+        modelAndView.addObject("hobby", person.getHobby());
+        modelAndView.addObject("skill", person.getSkill());
         modelAndView.setViewName("warmUp");
 
         return modelAndView;
@@ -132,7 +145,7 @@ public class WeatherController {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
-        List<String> errorList = weatherLogic.validateFormForSearch(form);
+        List<String> errorList = weatherSearchLogic.validateForm(form);
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
@@ -140,8 +153,8 @@ public class WeatherController {
             return modelAndView;
         }
 
-        String selectSql = weatherLogic.createSqlForSearch(form);
-        Map<String, String> condition = weatherLogic.createConditionForSearch(form);
+        String selectSql = weatherSearchLogic.createSql(form);
+        Map<String, String> condition = weatherSearchLogic.createCondition(form);
         List<Weather> weatherList = weatherDao.findBySql(selectSql, condition);
 
         if (weatherList.isEmpty()) {
@@ -169,7 +182,7 @@ public class WeatherController {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
-        List<String> errorList = weatherLogic.validateFormForSearchHard(form);
+        List<String> errorList = weatherSearchLogic.validateFormHard(form);
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
@@ -177,7 +190,7 @@ public class WeatherController {
             return modelAndView;
         }
 
-        errorList = weatherLogic.validateBetweenItemForSearchHard(form);
+        errorList = weatherSearchLogic.validateBetweenItem(form);
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
@@ -185,8 +198,8 @@ public class WeatherController {
             return modelAndView;
         }
 
-        String selectSql = weatherLogic.createSqlForSearchHard(form);
-        Map<String, String> condition = weatherLogic.createConditionForSearchHard(form);
+        String selectSql = weatherSearchLogic.createSqlHard(form);
+        Map<String, String> condition = weatherSearchLogic.createConditionHard(form);
         List<Weather> weatherList = weatherDao.findBySql(selectSql, condition);
 
         modelAndView.addObject("form", form);
@@ -211,7 +224,7 @@ public class WeatherController {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
-        List<String> errorList = weatherLogic.validateFormForStatistics(form);
+        List<String> errorList = weatherStatisticsLogic.validateForm(form);
         if (!errorList.isEmpty()) {
             modelAndView.addObject("errorList", errorList);
             modelAndView.addObject("form", form);
@@ -220,7 +233,7 @@ public class WeatherController {
         }
 
         // 過去の天気の統計を検索する
-        List<Weather> pastWeatherList = weatherLogic.createPastWeatherList(form);
+        List<Weather> pastWeatherList = weatherStatisticsLogic.createPastWeatherList(form);
         if (pastWeatherList.isEmpty()) {
             errorList.add("データが存在しませんでした。");
             modelAndView.addObject("errorList", errorList);
@@ -229,7 +242,7 @@ public class WeatherController {
             return modelAndView;
         }
 
-        WeatherDto statisticsWeather = weatherLogic.createWeatherDto(form, pastWeatherList);
+        WeatherStatisticsDto statisticsWeather = weatherStatisticsLogic.createWeatherStatisticsDto(form, pastWeatherList);
         modelAndView.addObject("form", form);
         modelAndView.addObject("statisticsWeather", statisticsWeather);
         modelAndView.setViewName("weatherStatistics");
@@ -249,7 +262,7 @@ public class WeatherController {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査
-        List<String> errorList = weatherLogic.validateFormForCsvRead(form);
+        List<String> errorList = csvRegisterLogic.validateForm(form);
         if (!errorList.isEmpty()) {
             modelAndView.addObject("filePath", form.getFilePath());
             modelAndView.addObject("errorList", errorList);
@@ -259,7 +272,7 @@ public class WeatherController {
 
         List<String> csvDataList = new ArrayList<String>();
         try {
-            csvDataList = weatherLogic.createCsvDataList(form);
+            csvDataList = csvRegisterLogic.createCsvDataList(form);
         } catch (Exception e) {
             errorList.add(e.getMessage());
             modelAndView.addObject("filePath", form.getFilePath());
@@ -275,7 +288,7 @@ public class WeatherController {
             modelAndView.setViewName("csvRegister");
             return modelAndView;
         }
-        weatherLogic.insert(csvDataList);
+        csvRegisterLogic.insert(csvDataList);
 
         modelAndView.setViewName("complete");
         return modelAndView;
