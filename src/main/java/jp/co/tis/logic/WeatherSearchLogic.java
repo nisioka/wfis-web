@@ -168,7 +168,7 @@ public class WeatherSearchLogic {
      * SQLと条件から天気情報を検索する。
      *
      * @param form フォーム
-     * @return 検索条件
+     * @return 検索結果
      */
     public List<Weather> findBySql(WeatherSearchForm form) {
         String selectSql = createSql(form);
@@ -245,7 +245,7 @@ public class WeatherSearchLogic {
      * SQLと条件から天気情報を検索する（天気検索発展）。
      *
      * @param form フォーム
-     * @return 検索条件
+     * @return 検索結果
      */
     public List<Weather> findBySqlHard(WeatherSearchForm form) {
         String selectSql = createSqlHard(form);
