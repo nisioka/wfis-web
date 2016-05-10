@@ -1,5 +1,7 @@
 package jp.co.tis.logic;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,15 +10,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jp.co.tis.exception.FileFormatException;
+import jp.co.tis.exception.SystemException;
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.model.Weather;
 import jp.co.tis.model.WeatherDao;
 import jp.co.tis.model.WeatherDto;
+import jp.co.tis.util.CsvReaderImpl;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * 天気予報Logicクラス。<br/> コントローラーに直接メソッド切り出しを行うと行数が膨れるため<br/>
@@ -473,20 +477,66 @@ public class WeatherLogic {
     }
 
     /**
-     * CSV読み込みエラーのModelAndViewを作成する。
+     * CSVファイルの読み込み処理を行う。
      *
      * @param form フォーム
-     * @param message エラーメッセージ
-     * @return ModelAndView
+     * @throws Exception CSV読込中に何らかの例外が発生した場合にスローされる
+     * @return 読み込んだCSVファイルのデータ部。
      */
-    public ModelAndView createErrorModelAndView(WeatherSearchForm form, String message) {
-        ModelAndView modelAndView = new ModelAndView();
-        List<String> errorList = new ArrayList<String>();
-        errorList.add(message);
-        modelAndView.addObject("filePath", form.getFilePath());
-        modelAndView.addObject("errorList", errorList);
-        modelAndView.setViewName("csvRegister");
+    public List<String> createCsvDataList(WeatherSearchForm form) throws Exception {
+        // CSVファイル読み込み処理
+        CsvReaderImpl csvReaderImpl = new CsvReaderImpl(form.getFilePath());
+        try {
+            csvReaderImpl.open();
+        } catch (FileNotFoundException | FileFormatException e) {
+            throw new Exception(e.getMessage());
+        }
 
-        return modelAndView;
+        int rowCount = 0;
+        List<String> csvDataList = new ArrayList<String>();
+        try {
+            while (true) {
+                Map<String, String> row = csvReaderImpl.readLine();
+                // 読み込む行がなくなった場合
+                if (row == null) {
+                    break;
+                }
+
+                StringBuilder csvData = new StringBuilder("");
+                for (String key : row.keySet()) {
+                    csvData.append("'").append(row.get(key)).append("',");
+                }
+                csvDataList.add(StringUtils.removeEnd(csvData.toString(), ","));
+                rowCount++;
+            }
+        } catch (IOException e) {
+            csvReaderImpl.close();
+            throw new SystemException("システム例外が発生しました。", e);
+        } catch (FileFormatException e) {
+            // ヘッダーの行数も考慮するため
+            rowCount += 2;
+            csvReaderImpl.close();
+            throw new Exception(rowCount + "行目 ：" + e.getMessage());
+        }
+        csvReaderImpl.close();
+        return csvDataList;
     }
+
+    /**
+     * CSVファイルを読み込んでデータをテーブルに登録する。
+     *
+     * @param csvDataList 登録するCSVファイルのデータ部
+     * @return 登録件数
+     */
+    public int insert(List<String> csvDataList) {
+        // 一行ずつDBに登録
+        for (String csvData : csvDataList) {
+            StringBuilder insertSql = new StringBuilder("");
+            insertSql.append("INSERT INTO WEATHER (WEATHER_DATE, PLACE, WEATHER, MAX_TEMPERATURE, MIN_TEMPERATURE) VALUES (");
+            insertSql.append(csvData).append(")");
+            weatherDao.insert(insertSql.toString());
+        }
+        return csvDataList.size();
+    }
+
 }

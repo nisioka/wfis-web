@@ -33,53 +33,12 @@
       </c:if>
 
       <h3>CSV読み込み</h3>
-      <form action="/csvRegister/csvRead" method="POST">
+      <form action="/csvRegister/insert" method="POST">
         <div class="input-group">
           <input type="text" name="filePath" class="form-control" value="${filePath}" placeholder="ファイルパスを入力してください">
-          <span class="input-group-btn"><button type="submit" class="btn btn-info" >読み込み</button></span>
+          <span class="input-group-btn"><button type="submit" class="btn btn-info" >登録</button></span>
         </div>
       </form>
-
-      <c:if test="${!empty csvReadList}">
-        <h3 class="margin-top-40">登録件数：
-          <span class="right-blue"><c:out value="${rowCount}"/></span>件
-        </h3>
-        <table class="table table-bordered">
-          <thead>
-            <tr class="info">
-              <th width="20%">日付</th>
-              <th width="20%">場所</th>
-              <th width="20%">天気</th>
-              <th width="20%">最高気温</th>
-              <th width="20%">最低気温</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td style="vertical-align: middle;"><c:out value="${csvReadList[0].WEATHER_DATE}" /></td>
-              <td style="vertical-align: middle;"><c:out value="${csvReadList[0].PLACE}" /></td>
-              <td style="vertical-align: middle;"><c:out value="${csvReadList[0].WEATHER}" /></td>
-              <td style="vertical-align: middle;"><c:out value="${csvReadList[0].MAX_TEMPERATURE}" /></td>
-              <td style="vertical-align: middle;"><c:out value="${csvReadList[0].MIN_TEMPERATURE}" /></td>
-            </tr>
-            <tr>
-              <td class="middle text-align-center">：<br>：</td>
-              <td class="middle text-align-center">：<br>：</td>
-              <td class="middle text-align-center">：<br>：</td>
-              <td class="middle text-align-center">：<br>：</td>
-              <td class="middle text-align-center">：<br>：</td>
-            </tr>
-          </tbody>
-         </table>
-
-        <div class="text-align-center middle">
-          <form action="/csvRegister/register" method="POST">
-            <button type="submit" class="btn btn-info" ><i class="fa fa-database"></i>  登録</button>
-            <input type="hidden" name="filePath" class="form-control" value="${filePath}">
-            <input type="hidden" name="csvDataList" class="form-control" value="${csvData}">
-          </form>
-        </div>
-       </c:if>
     </div>
     <div class="col-lg-2"></div>
   </div>
