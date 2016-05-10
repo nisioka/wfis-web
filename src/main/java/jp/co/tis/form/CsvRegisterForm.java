@@ -3,7 +3,7 @@ package jp.co.tis.form;
 import java.io.Serializable;
 
 /**
- * Csv登録用Form。<br/>
+ * CSV登録用Form。<br/>
  * 画面の入力項目や画面から送られてくる項目をプロパティとして持つクラス。
  *
  * @author Saito Takuma

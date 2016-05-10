@@ -41,11 +41,11 @@ public class WeatherController {
     @Autowired
     private WeatherSearchLogic weatherSearchLogic;
 
-    /** 天気予報ロジッククラス */
+    /** 天気統計ロジッククラス */
     @Autowired
     private WeatherStatisticsLogic weatherStatisticsLogic;
 
-    /** 天気予報ロジッククラス */
+    /** CSV登録ロジッククラス */
     @Autowired
     private CsvRegisterLogic csvRegisterLogic;
 
