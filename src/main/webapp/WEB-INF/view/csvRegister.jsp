@@ -32,7 +32,7 @@
          </ul>
       </c:if>
 
-      <h3>CSV読み込み</h3>
+      <h3>CSVデータ登録</h3>
       <form action="/csvRegister/insert" method="POST">
         <div class="input-group">
           <input type="text" name="filePath" class="form-control" value="${filePath}" placeholder="ファイルパスを入力してください">

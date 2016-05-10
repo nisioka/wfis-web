@@ -3,7 +3,8 @@ package jp.co.tis.form;
 import java.io.Serializable;
 
 /**
- * 天気予報用Form。<br/> 画面の入力項目や画面から送られてくる項目をプロパティとして持つクラス。
+ * 天気検索用Form。<br/>
+ *  画面の入力項目や画面から送られてくる項目をプロパティとして持つクラス。
  *
  * @author Saito Takuma
  * @since 1.0
@@ -43,9 +44,6 @@ public class WeatherSearchForm implements Serializable {
     /** 最低気温To */
     private String minTemperatureTo;
 
-    /** ファイルパス */
-    private String filePath;
-
     /**
      * デフォルトコンストラクタ。
      */
@@ -66,11 +64,9 @@ public class WeatherSearchForm implements Serializable {
      * @param minTemperature 最低気温
      * @param minTemperatureFrom 最低気温From
      * @param minTemperatureTo 最低気温To
-     * @param filePath ファイルパス
      */
     public WeatherSearchForm(String weatherDate, String weatherDateFrom, String weatherDateTo, String place, String weather, String maxTemperature,
-            String maxTemperatureFrom, String maxTemperatureTo, String minTemperature, String minTemperatureFrom, String minTemperatureTo,
-            String filePath) {
+            String maxTemperatureFrom, String maxTemperatureTo, String minTemperature, String minTemperatureFrom, String minTemperatureTo) {
         this.weatherDate = weatherDate;
         this.weatherDateFrom = weatherDateFrom;
         this.weatherDateTo = weatherDateTo;
@@ -82,7 +78,6 @@ public class WeatherSearchForm implements Serializable {
         this.minTemperature = minTemperature;
         this.minTemperatureFrom = minTemperatureFrom;
         this.minTemperatureTo = minTemperatureTo;
-        this.filePath = filePath;
     }
 
     /**
@@ -281,23 +276,5 @@ public class WeatherSearchForm implements Serializable {
      */
     public void setMinTemperatureTo(String minTemperatureTo) {
         this.minTemperatureTo = minTemperatureTo;
-    }
-
-    /**
-     * ファイルパスを取得する。
-     *
-     * @return ファイルパス
-     */
-    public String getFilePath() {
-        return filePath;
-    }
-
-    /**
-     * ファイルパスを設定する。
-     *
-     * @param filePath ファイルパス
-     */
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
     }
 }

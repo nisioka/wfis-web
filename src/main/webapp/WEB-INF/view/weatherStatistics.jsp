@@ -74,7 +74,7 @@
      </form>
 
      <c:choose>
-       <c:when test="${!empty statisticsWeather}">
+       <c:when test="${!empty weatherStatisticsDto}">
          <h3>
           過去の統計結果
          </h3>
@@ -90,24 +90,24 @@
           </thead>
           <tbody>
             <tr>
-              <td style="vertical-align: middle;"><c:out value="${statisticsWeather.weatherDate}" /></td>
-              <td style="vertical-align: middle;"><c:out value="${statisticsWeather.place}" /></td>
+              <td style="vertical-align: middle;"><c:out value="${weatherStatisticsDto.weatherDate}" /></td>
+              <td style="vertical-align: middle;"><c:out value="${weatherStatisticsDto.place}" /></td>
               <td style="vertical-align: middle;">
-                <c:if test="${statisticsWeather.sunnyPercent ne 0}">
-                  <div><img src="../img/Sunny.png"  class="width-25"> (<c:out value="${statisticsWeather.sunnyPercent}" /> %)</div>
+                <c:if test="${weatherStatisticsDto.sunnyPercent ne 0}">
+                  <div><img src="../img/Sunny.png"  class="width-25"> (<c:out value="${weatherStatisticsDto.sunnyPercent}" /> %)</div>
                 </c:if>
-                <c:if test="${statisticsWeather.cloudyPercent ne 0}">
-                  <div><img src="../img/Cloudy.png"  class="width-25"> (<c:out value="${statisticsWeather.cloudyPercent}" /> %)</div>
+                <c:if test="${weatherStatisticsDto.cloudyPercent ne 0}">
+                  <div><img src="../img/Cloudy.png"  class="width-25"> (<c:out value="${weatherStatisticsDto.cloudyPercent}" /> %)</div>
                 </c:if>
-                <c:if test="${statisticsWeather.rainyPercent ne 0}">
-                  <div><img src="../img/Rainy.png"  class="width-25"> (<c:out value="${statisticsWeather.rainyPercent}" /> %)</div>
+                <c:if test="${weatherStatisticsDto.rainyPercent ne 0}">
+                  <div><img src="../img/Rainy.png"  class="width-25"> (<c:out value="${weatherStatisticsDto.rainyPercent}" /> %)</div>
                 </c:if>
-                <c:if test="${statisticsWeather.snowPercent ne 0}">
-                  <div><img src="../img/Snow.png"  class="snow"> (<c:out value="${statisticsWeather.snowPercent}" /> %)</div>
+                <c:if test="${weatherStatisticsDto.snowPercent ne 0}">
+                  <div><img src="../img/Snow.png"  class="snow"> (<c:out value="${weatherStatisticsDto.snowPercent}" /> %)</div>
                 </c:if>
               </td>
-              <td style="vertical-align: middle;"><c:out value="${statisticsWeather.maxTemperatureAve}" /> ℃</td>
-              <td style="vertical-align: middle;"><c:out value="${statisticsWeather.minTemperatureAve}" /> ℃</td>
+              <td style="vertical-align: middle;"><c:out value="${weatherStatisticsDto.maxTemperatureAve}" /> ℃</td>
+              <td style="vertical-align: middle;"><c:out value="${weatherStatisticsDto.minTemperatureAve}" /> ℃</td>
             </tr>
           </tbody>
          </table>
