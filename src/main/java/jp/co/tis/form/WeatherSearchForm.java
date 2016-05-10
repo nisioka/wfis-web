@@ -1,11 +1,9 @@
 package jp.co.tis.form;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * 天気予報用Form。<br/>
- * 画面の入力項目や画面から送られてくる項目をプロパティとして持つクラス。
+ * 天気予報用Form。<br/> 画面の入力項目や画面から送られてくる項目をプロパティとして持つクラス。
  *
  * @author Saito Takuma
  * @since 1.0
@@ -48,9 +46,6 @@ public class WeatherSearchForm implements Serializable {
     /** ファイルパス */
     private String filePath;
 
-    /** CSVデータリスト */
-    private List<String> csvDataList;
-
     /**
      * デフォルトコンストラクタ。
      */
@@ -72,11 +67,10 @@ public class WeatherSearchForm implements Serializable {
      * @param minTemperatureFrom 最低気温From
      * @param minTemperatureTo 最低気温To
      * @param filePath ファイルパス
-     * @param csvDataList CSVデータリスト
      */
     public WeatherSearchForm(String weatherDate, String weatherDateFrom, String weatherDateTo, String place, String weather, String maxTemperature,
             String maxTemperatureFrom, String maxTemperatureTo, String minTemperature, String minTemperatureFrom, String minTemperatureTo,
-            String filePath, List<String> csvDataList) {
+            String filePath) {
         this.weatherDate = weatherDate;
         this.weatherDateFrom = weatherDateFrom;
         this.weatherDateTo = weatherDateTo;
@@ -89,7 +83,6 @@ public class WeatherSearchForm implements Serializable {
         this.minTemperatureFrom = minTemperatureFrom;
         this.minTemperatureTo = minTemperatureTo;
         this.filePath = filePath;
-        this.csvDataList = csvDataList;
     }
 
     /**
@@ -306,23 +299,5 @@ public class WeatherSearchForm implements Serializable {
      */
     public void setFilePath(String filePath) {
         this.filePath = filePath;
-    }
-
-    /**
-     * CSVデータリストを取得する。
-     *
-     * @return CSVデータリスト
-     */
-    public List<String> getCsvDataList() {
-        return csvDataList;
-    }
-
-    /**
-     * CSVデータリストを設定する。
-     *
-     * @param csvDataList CSVデータリスト
-     */
-    public void setCsvDataList(List<String> csvDataList) {
-        this.csvDataList = csvDataList;
     }
 }

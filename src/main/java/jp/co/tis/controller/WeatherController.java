@@ -1,21 +1,15 @@
 package jp.co.tis.controller;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import jp.co.tis.exception.FileFormatException;
-import jp.co.tis.exception.SystemException;
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.logic.WeatherLogic;
 import jp.co.tis.model.Weather;
 import jp.co.tis.model.WeatherDao;
 import jp.co.tis.model.WeatherDto;
-import jp.co.tis.util.CsvReaderImpl;
 
-import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -252,14 +246,15 @@ public class WeatherController {
     }
 
     /**
-     * CSVファイルを読み込んで表示する。
+     * CSVファイルを読み込んでデータをテーブルに登録する。
      *
      * @param form フォーム
      * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "csvRegister/csvRead", method = RequestMethod.POST)
-    public ModelAndView csvRead(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    @Transactional
+    @RequestMapping(value = "csvRegister/insert", method = RequestMethod.POST)
+    public ModelAndView csvRegister(@Validated WeatherSearchForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査
@@ -271,90 +266,28 @@ public class WeatherController {
             return modelAndView;
         }
 
-        // CSVファイル読み込み処理
-        CsvReaderImpl csvReaderImpl = new CsvReaderImpl(form.getFilePath());
+        List<String> csvDataList = new ArrayList<String>();
         try {
-            csvReaderImpl.open();
-        } catch (FileNotFoundException | FileFormatException e) {
-            return weatherLogic.createErrorModelAndView(form, e.getMessage());
+            csvDataList = weatherLogic.createCsvDataList(form);
+        } catch (Exception e) {
+            errorList.add(e.getMessage());
+            modelAndView.addObject("filePath", form.getFilePath());
+            modelAndView.addObject("errorList", errorList);
+            modelAndView.setViewName("csvRegister");
+            return modelAndView;
         }
 
-        int rowCount = 0;
-        String csvData = null;
-        List<Map<String, String>> csvReadList = new ArrayList<Map<String, String>>();
-        try {
-            StringBuilder data = new StringBuilder();
-            while (true) {
-                Map<String, String> row = csvReaderImpl.readLine();
-                // 読み込む行がなくなった場合
-                if (row == null) {
-                    break;
-                }
-                csvReadList.add(row);
-                for (String key : row.keySet()) {
-                    data.append(row.get(key)).append(",");
-                }
-                rowCount++;
-            }
-            if (csvReadList.isEmpty()) {
-                return weatherLogic.createErrorModelAndView(form, "登録するデータが存在しません。");
-            }
-            csvData = StringUtils.removeEnd(data.toString(), ",");
-        } catch (IOException e) {
-            throw new SystemException("システム例外が発生しました。", e);
-        } catch (FileFormatException e) {
-            // ヘッダーの行数も考慮するため
-            rowCount += 2;
-            return weatherLogic.createErrorModelAndView(form, rowCount + "行目 ：" + e.getMessage());
+        if (csvDataList.isEmpty()) {
+            errorList.add("登録するデータが存在しません。");
+            modelAndView.addObject("filePath", form.getFilePath());
+            modelAndView.addObject("errorList", errorList);
+            modelAndView.setViewName("csvRegister");
+            return modelAndView;
         }
-        csvReaderImpl.close();
-
-        modelAndView.addObject("csvReadList", csvReadList);
-        modelAndView.addObject("csvData", csvData);
-        modelAndView.addObject("rowCount", rowCount);
-        modelAndView.addObject("filePath", form.getFilePath());
-        modelAndView.setViewName("csvRegister");
-
-        return modelAndView;
-    }
-
-    /**
-     * CSVファイルのデータを登録する。
-     *
-     * @param form フォーム
-     * @param bindingResult バリデーション結果
-     * @return ModelAndView
-     */
-    @Transactional
-    @RequestMapping(value = "csvRegister/register", method = RequestMethod.POST)
-    public ModelAndView register(@Validated WeatherSearchForm form, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
-
-        // CSV一行ずつのListを作成
-        List<String> csvRowList = new ArrayList<String>();
-        StringBuilder row = new StringBuilder("");
-        int loopCount = 1;
-        for (String csvData : form.getCsvDataList()) {
-            if (loopCount == 5) {
-                loopCount = 0;
-                row.append("'").append(csvData).append("'");
-                csvRowList.add(row.toString());
-                row = new StringBuilder();
-            } else {
-                row.append("'").append(csvData).append("'").append(",");
-            }
-            loopCount++;
-        }
-
-        // 一行ずつDBに登録
-        for (String csvRow : csvRowList) {
-            StringBuilder insertSql = new StringBuilder();
-            insertSql.append("INSERT INTO WEATHER (WEATHER_DATE, PLACE, WEATHER, MAX_TEMPERATURE, MIN_TEMPERATURE) VALUES (");
-            insertSql.append(csvRow).append(")");
-            weatherDao.insert(insertSql.toString());
-        }
+        weatherLogic.insert(csvDataList);
 
         modelAndView.setViewName("complete");
         return modelAndView;
     }
+
 }
