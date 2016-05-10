@@ -83,8 +83,7 @@ public class WeatherController {
     @RequestMapping("/weatherList")
     public ModelAndView weatherList() {
         ModelAndView modelAndView = new ModelAndView();
-        String selectSql = "SELECT * FROM WEATHER";
-        List<Weather> weatherList = weatherDao.findBySql(selectSql);
+        List<Weather> weatherList = weatherSearchLogic.findBySqlWeatherList();
 
         modelAndView.addObject("weatherList", weatherList);
         modelAndView.setViewName("weatherList");
@@ -99,8 +98,7 @@ public class WeatherController {
     @RequestMapping("/weatherSimpleSearch/top")
     public ModelAndView weatherSimpleSearchTop() {
         ModelAndView modelAndView = new ModelAndView();
-        String selectSql = "SELECT * FROM WEATHER";
-        List<Weather> weatherList = weatherDao.findBySql(selectSql);
+        List<Weather> weatherList = weatherSearchLogic.findBySqlWeatherList();
 
         modelAndView.addObject("weatherList", weatherList);
         modelAndView.setViewName("weatherSimpleSearch");
@@ -168,9 +166,7 @@ public class WeatherController {
     @RequestMapping(value = "weatherSimpleSearch/search", method = RequestMethod.POST)
     public ModelAndView simpleSearch(WeatherSearchForm form) {
         ModelAndView modelAndView = new ModelAndView();
-        String selectSql = weatherLogic.createSqlForSimpleSeaech(form);
-        Map<String, String> condition = weatherLogic.createConditionForSimpleSearch(form);
-        List<Weather> weatherList = weatherDao.findBySql(selectSql, condition);
+        List<Weather> weatherList = weatherSearchLogic.findBySqlSimple(form);
 
         modelAndView.addObject("form", form);
         modelAndView.addObject("weatherList", weatherList);

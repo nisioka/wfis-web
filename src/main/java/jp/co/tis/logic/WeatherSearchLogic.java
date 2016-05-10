@@ -49,6 +49,16 @@ public class WeatherSearchLogic {
     }
 
     /**
+     * SQLから天気一覧を検索する。
+     *
+     * @return 検索結果
+     */
+    public List<Weather> findBySqlWeatherList() {
+        String selectSql = "SELECT * FROM WEATHER";
+        return weatherDao.findBySql(selectSql);
+    }
+
+    /**
      * 入力項目をバリデーションする。
      *
      * @param form フォーム
@@ -165,14 +175,14 @@ public class WeatherSearchLogic {
     }
 
     /**
-     * SQLと条件から天気情報を検索する。
+     * SQLと条件から天気情報を検索する（天気簡易検索)。
      *
      * @param form フォーム
-     * @return 検索条件
+     * @return 検索結果
      */
-    public List<Weather> findBySql(WeatherSearchForm form) {
-        String selectSql = createSql(form);
-        Map<String, String> condition = createCondition(form);
+    public List<Weather> findBySqlSimple(WeatherSearchForm form) {
+        String selectSql = createSqlSimple(form);
+        Map<String, String> condition = createConditionSimple(form);
         return weatherDao.findBySql(selectSql, condition);
     }
 
@@ -182,12 +192,37 @@ public class WeatherSearchLogic {
      * @param form フォーム
      * @return SQL
      */
-    public String createSqlForSimpleSeaech(WeatherSearchForm form) {
+    public String createSqlSimple(WeatherSearchForm form) {
         StringBuilder selectSql = new StringBuilder("SELECT * FROM WEATHER");
         if (!StringUtils.isEmpty(form.getPlace())) {
             selectSql.append(" WHERE PLACE = :place");
         }
         return selectSql.toString();
+    }
+
+    /**
+     * 検索に使用する条件を作成する(天気簡易検索)。
+     *
+     * @param form フォーム
+     * @return 検索条件
+     */
+    public Map<String, String> createConditionSimple(WeatherSearchForm form) {
+        Map<String, String> condition = new HashMap<String, String>();
+        condition.put("place", form.getPlace());
+
+        return condition;
+    }
+
+    /**
+     * SQLと条件から天気情報を検索する。
+     *
+     * @param form フォーム
+     * @return 検索結果
+     */
+    public List<Weather> findBySql(WeatherSearchForm form) {
+        String selectSql = createSql(form);
+        Map<String, String> condition = createCondition(form);
+        return weatherDao.findBySql(selectSql, condition);
     }
 
     /**
@@ -239,19 +274,6 @@ public class WeatherSearchLogic {
     }
 
     /**
-     * 検索に使用する条件を作成する(天気簡易検索)。
-     *
-     * @param form フォーム
-     * @return 検索条件
-     */
-    public Map<String, String> createConditionForSimpleSearch(WeatherSearchForm form) {
-        Map<String, String> condition = new HashMap<String, String>();
-        condition.put("place", form.getPlace());
-
-        return condition;
-    }
-
-    /**
      * 検索に使用する条件を作成する(天気検索)。
      *
      * @param form フォーム
@@ -272,7 +294,7 @@ public class WeatherSearchLogic {
      * SQLと条件から天気情報を検索する（天気検索発展）。
      *
      * @param form フォーム
-     * @return 検索条件
+     * @return 検索結果
      */
     public List<Weather> findBySqlHard(WeatherSearchForm form) {
         String selectSql = createSqlHard(form);
