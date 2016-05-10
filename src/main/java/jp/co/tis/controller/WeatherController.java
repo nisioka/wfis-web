@@ -4,21 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import jp.co.tis.form.WeatherSearchForm;
-import jp.co.tis.logic.WeatherLogic;
-import jp.co.tis.model.Weather;
-import jp.co.tis.model.WeatherDao;
-import jp.co.tis.model.WeatherDto;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import jp.co.tis.form.CsvRegisterForm;
+import jp.co.tis.form.WeatherSearchForm;
+import jp.co.tis.form.WeatherStatisticsForm;
+import jp.co.tis.logic.WeatherLogic;
+import jp.co.tis.model.Weather;
+import jp.co.tis.model.WeatherDao;
+import jp.co.tis.model.WeatherDto;
 
 /**
  * 天気予報のコントローラークラス。
@@ -36,16 +37,6 @@ public class WeatherController {
     /** 天気予報ロジッククラス */
     @Autowired
     private WeatherLogic weatherLogic;
-
-    /**
-     * Formのセットアップを行う。
-     *
-     * @return Form
-     */
-    @ModelAttribute
-    WeatherSearchForm setupForm() {
-        return new WeatherSearchForm();
-    }
 
     /**
      * TOP画面へ遷移する。
@@ -216,7 +207,7 @@ public class WeatherController {
      * @return ModelAndView
      */
     @RequestMapping(value = "weatherStatistics/analysis", method = RequestMethod.POST)
-    public ModelAndView statistics(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    public ModelAndView statistics(@Validated WeatherStatisticsForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
@@ -254,7 +245,7 @@ public class WeatherController {
      */
     @Transactional
     @RequestMapping(value = "csvRegister/insert", method = RequestMethod.POST)
-    public ModelAndView csvRegister(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    public ModelAndView csvRegister(@Validated CsvRegisterForm form, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査
@@ -289,5 +280,4 @@ public class WeatherController {
         modelAndView.setViewName("complete");
         return modelAndView;
     }
-
 }

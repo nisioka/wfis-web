@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import jp.co.tis.App;
 import jp.co.tis.form.WeatherSearchForm;
+import jp.co.tis.form.WeatherStatisticsForm;
 import jp.co.tis.model.Weather;
 
 /**
@@ -242,7 +243,7 @@ public class WeatherLogicTest {
      */
     @Test
     public void testSearch() {
-        WeatherSearchForm form = new WeatherSearchForm();
+        WeatherStatisticsForm form = new WeatherStatisticsForm();
         form.setWeatherDate("2015/01/01");
         form.setPlace("東京");
         List<Weather> resultWeatherList = target.createPastWeatherList(form);

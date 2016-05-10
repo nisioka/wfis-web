@@ -10,17 +10,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import jp.co.tis.exception.FileFormatException;
 import jp.co.tis.exception.SystemException;
+import jp.co.tis.form.CsvRegisterForm;
 import jp.co.tis.form.WeatherSearchForm;
+import jp.co.tis.form.WeatherStatisticsForm;
 import jp.co.tis.model.Weather;
 import jp.co.tis.model.WeatherDao;
 import jp.co.tis.model.WeatherDto;
 import jp.co.tis.util.CsvReaderImpl;
-
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * 天気予報Logicクラス。<br/> コントローラーに直接メソッド切り出しを行うと行数が膨れるため<br/>
@@ -158,7 +160,7 @@ public class WeatherLogic {
      * @param form フォーム
      * @return エラーリスト
      */
-    public List<String> validateFormForStatistics(WeatherSearchForm form) {
+    public List<String> validateFormForStatistics(WeatherStatisticsForm form) {
         List<String> errorList = new ArrayList<String>();
 
         if (StringUtils.isEmpty(form.getWeatherDate()) || StringUtils.isEmpty(form.getPlace())) {
@@ -185,7 +187,7 @@ public class WeatherLogic {
      * @param form フォーム
      * @return エラーリスト
      */
-    public List<String> validateFormForCsvRead(WeatherSearchForm form) {
+    public List<String> validateFormForCsvRead(CsvRegisterForm form) {
         List<String> errorList = new ArrayList<String>();
 
         String filePath = form.getFilePath();
@@ -387,7 +389,7 @@ public class WeatherLogic {
      * @param form フォーム
      * @return 過去5年分の天気のリスト
      */
-    public List<Weather> createPastWeatherList(WeatherSearchForm form) {
+    public List<Weather> createPastWeatherList(WeatherStatisticsForm form) {
         String selectSql = "SELECT * FROM WEATHER WHERE WEATHER_DATE LIKE :percentMonthAndDay AND PLACE = :place";
         Map<String, String> condition = new HashMap<String, String>();
         String percentMonthAndDay = "%" + form.getWeatherDate();
@@ -404,7 +406,7 @@ public class WeatherLogic {
      * @param pastWeatherList 過去の天気のリスト
      * @return 天気統計のDto
      */
-    public WeatherDto createWeatherDto(WeatherSearchForm form, List<Weather> pastWeatherList) {
+    public WeatherDto createWeatherDto(WeatherStatisticsForm form, List<Weather> pastWeatherList) {
         WeatherDto statisticsWeather = new WeatherDto();
         double sunnyCount = 0;
         double cloudyCount = 0;
@@ -456,7 +458,7 @@ public class WeatherLogic {
      * @throws Exception CSV読込中に何らかの例外が発生した場合にスローされる
      * @return 読み込んだCSVファイルのデータ部。
      */
-    public List<String> createCsvDataList(WeatherSearchForm form) throws Exception {
+    public List<String> createCsvDataList(CsvRegisterForm form) throws Exception {
         // CSVファイル読み込み処理
         CsvReaderImpl csvReaderImpl = new CsvReaderImpl(form.getFilePath());
         try {
