@@ -1,8 +1,5 @@
 package jp.co.tis.controller;
 
-import jp.co.tis.form.WeatherSearchForm;
-import jp.co.tis.model.WeatherDao;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -11,6 +8,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import jp.co.tis.form.WeatherSearchForm;
+import jp.co.tis.logic.WeatherSearchLogic;
+import jp.co.tis.model.WeatherDao;
 
 /**
  * 天気予報のコントローラークラス。
@@ -25,6 +26,9 @@ public class WeatherController {
     @Autowired
     private WeatherDao weatherDao;
 
+    /** 天気検索ロジッククラス */
+    @Autowired
+    private WeatherSearchLogic weatherSearchLogic;
 
     /**
      * Formのセットアップを行う。
@@ -70,7 +74,6 @@ public class WeatherController {
 
         return null;
     }
-
 
     /**
      * 天気の検索を行う。
