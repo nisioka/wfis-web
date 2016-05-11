@@ -6,10 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import jp.co.tis.form.CsvRegisterForm;
@@ -131,11 +128,10 @@ public class WeatherController {
      * 天気の検索を行う。
      *
      * @param form フォーム
-     * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherSearch/search", method = RequestMethod.POST)
-    public ModelAndView search(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    @RequestMapping("/weatherSearch/search")
+    public ModelAndView search(WeatherSearchForm form) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
@@ -165,11 +161,10 @@ public class WeatherController {
      * 天気の検索を行う（天気検索発展）。
      *
      * @param form フォーム
-     * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherSearchHard/search", method = RequestMethod.POST)
-    public ModelAndView searchHard(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    @RequestMapping("/weatherSearchHard/search")
+    public ModelAndView searchHard(WeatherSearchForm form) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
@@ -205,11 +200,10 @@ public class WeatherController {
      * 天気の統計処理を行う。
      *
      * @param form フォーム
-     * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherStatistics/analysis", method = RequestMethod.POST)
-    public ModelAndView statistics(@Validated WeatherStatisticsForm form, BindingResult bindingResult) {
+    @RequestMapping("/weatherStatistics/analysis")
+    public ModelAndView statistics(WeatherStatisticsForm form) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査を行う
@@ -242,12 +236,11 @@ public class WeatherController {
      * CSVファイルを読み込んでデータをテーブルに登録する。
      *
      * @param form フォーム
-     * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
     @Transactional
-    @RequestMapping(value = "csvRegister/insert", method = RequestMethod.POST)
-    public ModelAndView csvRegister(@Validated CsvRegisterForm form, BindingResult bindingResult) {
+    @RequestMapping("/csvRegister/insert")
+    public ModelAndView csvRegister(CsvRegisterForm form) {
         ModelAndView modelAndView = new ModelAndView();
 
         // 項目精査
