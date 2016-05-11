@@ -1,5 +1,7 @@
 package jp.co.tis.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,12 +18,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "Weather")
-public class Weather {
+public class Weather implements Serializable {
 
     @Id
     @Column
     private String weatherDate;
 
+    @Id
     @Column
     private String place;
 
