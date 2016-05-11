@@ -8,7 +8,7 @@ import javax.persistence.Table;
 /**
  * 天気エンティティクラス。<br/>
  * Weatherテーブルとのデータのやり取りに使用するクラス。<br/>
- * 検索結果やデータ登録の際に使用する。
+ * 検索した結果を保持したりデータ登録の際に使用する。
  *
  * @author Saito Takuma
  * @since 1.0
