@@ -8,20 +8,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.model.Person;
 import jp.co.tis.model.Weather;
 import jp.co.tis.model.WeatherDao;
 
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 /**
- * 天気検索Logicクラス。<br/>
- * コントローラーに直接メソッド切り出しを行うと行数が膨れるため、<br/>
- * 業務ロジック部分はロジッククラスに切り出す。<br/>
- * JUnitテストをしやすくするための目的もある。
+ * 天気検索Logicクラス。<br/> コントローラーに直接メソッド切り出しを行うと行数が膨れるため、<br/>
+ * 業務ロジック部分はロジッククラスに切り出す。<br/> JUnitテストをしやすくするための目的もある。
  *
  * @author Saito Takuma
  * @since 1.0
@@ -49,7 +47,7 @@ public class WeatherSearchLogic {
     }
 
     /**
-     * 入力項目をバリデーションする。
+     * 入力項目をバリデーションする（天気検索）
      *
      * @param form フォーム
      * @return エラーリスト
