@@ -24,17 +24,6 @@ public class WeatherStatisticsForm implements Serializable {
     }
 
     /**
-     * コンストラクタ。
-     *
-     * @param weatherDate 日付
-     * @param place 場所
-     */
-    public WeatherStatisticsForm(String weatherDate, String place) {
-        this.weatherDate = weatherDate;
-        this.place = place;
-    }
-
-    /**
      * 日付を取得する。
      *
      * @return 日付

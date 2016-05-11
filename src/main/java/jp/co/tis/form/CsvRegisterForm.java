@@ -21,15 +21,6 @@ public class CsvRegisterForm implements Serializable {
     }
 
     /**
-     * コンストラクタ。
-     *
-     * @param filePath ファイルパス
-     */
-    public CsvRegisterForm(String filePath) {
-        this.filePath = filePath;
-    }
-
-    /**
      * ファイルパスを取得する。
      *
      * @return ファイルパス
