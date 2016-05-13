@@ -1,21 +1,21 @@
 package jp.co.tis.logic;
 
-import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.Matchers.*;
 
 import java.util.List;
 import java.util.Map;
-
-import jp.co.tis.App;
-import jp.co.tis.form.WeatherSearchForm;
-import jp.co.tis.model.Person;
-import jp.co.tis.model.Weather;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import jp.co.tis.App;
+import jp.co.tis.form.WeatherSearchForm;
+import jp.co.tis.model.Person;
+import jp.co.tis.model.Weather;
 
 /**
  * 天気検索Logicのテスト。
@@ -25,7 +25,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
-public class WeatherLogicTest {
+public class WeatherSearchLogicTest {
 
     /** テスト対象クラス */
     @Autowired
@@ -265,9 +265,8 @@ public class WeatherLogicTest {
         String resultSql = target.createSql(form);
         Map<String, String> resultCondition = target.createCondition(form);
 
-        assertThat(
-                resultSql,
-                is("SELECT * FROM WEATHER WHERE WEATHER_DATE = :weatherDate and PLACE = :place and WEATHER = :weather and MAX_TEMPERATURE = :maxTemperature and MIN_TEMPERATURE = :minTemperature"));
+        assertThat(resultSql, is(
+                "SELECT * FROM WEATHER WHERE WEATHER_DATE = :weatherDate and PLACE = :place and WEATHER = :weather and MAX_TEMPERATURE = :maxTemperature and MIN_TEMPERATURE = :minTemperature"));
         assertThat(resultCondition.get("weatherDate"), is("2015/01/01"));
         assertThat(resultCondition.get("place"), is("東京"));
         assertThat(resultCondition.get("weather"), is("晴れ"));
@@ -715,9 +714,8 @@ public class WeatherLogicTest {
         String resultSql = target.createSqlHard(form);
         Map<String, String> resultCondition = target.createConditionHard(form);
 
-        assertThat(
-                resultSql,
-                is("SELECT * FROM WEATHER WHERE WEATHER_DATE >= :weatherDateFrom and WEATHER_DATE <= :weatherDateTo and PLACE = :place and (WEATHER = :weather) and MAX_TEMPERATURE >= :maxTemperatureFrom and MAX_TEMPERATURE <= :maxTemperatureTo and MIN_TEMPERATURE >= :minTemperatureFrom and MIN_TEMPERATURE <= :minTemperatureTo"));
+        assertThat(resultSql, is(
+                "SELECT * FROM WEATHER WHERE WEATHER_DATE >= :weatherDateFrom and WEATHER_DATE <= :weatherDateTo and PLACE = :place and (WEATHER = :weather) and MAX_TEMPERATURE >= :maxTemperatureFrom and MAX_TEMPERATURE <= :maxTemperatureTo and MIN_TEMPERATURE >= :minTemperatureFrom and MIN_TEMPERATURE <= :minTemperatureTo"));
         assertThat(resultCondition.get("weatherDateFrom"), is("2015/01/01"));
         assertThat(resultCondition.get("weatherDateTo"), is("2015/02/01"));
         assertThat(resultCondition.get("place"), is("東京"));
@@ -772,34 +770,4 @@ public class WeatherLogicTest {
         assertThat(resultWeatherList.get(0).getMaxTemperature(), is("7"));
         assertThat(resultWeatherList.get(0).getMinTemperature(), is("-3"));
     }
-
-    // /**
-    // * SQLテスト。(全ての項目が入力されていて、天気が4つ選択されている場合)
-    // */
-    // @Test
-    // public void testSqlAllHard() {
-    // WeatherSearchForm form = new WeatherSearchForm();
-    // form.setWeatherDateFrom("2015/01/01");
-    // form.setWeatherDateTo("2015/02/01");
-    // form.setPlace("東京");
-    // form.setWeather("晴れ,曇り,雨,雪");
-    // form.setMaxTemperatureFrom("20");
-    // form.setMaxTemperatureTo("30");
-    // form.setMinTemperatureFrom("0");
-    // form.setMinTemperatureTo("10");
-    // String resultSql = target.createSqlHard(form);
-    // Map<String, String> resultCondition = target.createConditionHard(form);
-    //
-    // assertThat(
-    // resultSql,
-    // is("SELECT * FROM WEATHER WHERE WEATHER_DATE >= :weatherDateFrom and WEATHER_DATE <= :weatherDateTo and PLACE = :place and MAX_TEMPERATURE >= :maxTemperatureFrom and MAX_TEMPERATURE <= :maxTemperatureTo and MIN_TEMPERATURE >= :minTemperatureFrom and MIN_TEMPERATURE <= :minTemperatureTo"));
-    // assertThat(resultCondition.get("weatherDateFrom"), is("2015/01/01"));
-    // assertThat(resultCondition.get("weatherDateTo"), is("2015/02/01"));
-    // assertThat(resultCondition.get("place"), is("東京"));
-    // assertThat(resultCondition.get("weather"), is(nullValue()));
-    // assertThat(resultCondition.get("maxTemperatureFrom"), is("20"));
-    // assertThat(resultCondition.get("maxTemperatureTo"), is("30"));
-    // assertThat(resultCondition.get("minTemperatureFrom"), is("0"));
-    // assertThat(resultCondition.get("minTemperatureTo"), is("10"));
-    // }
 }
