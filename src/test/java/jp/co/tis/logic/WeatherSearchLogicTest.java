@@ -1,21 +1,21 @@
 package jp.co.tis.logic;
 
-import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 import java.util.List;
 import java.util.Map;
+
+import jp.co.tis.App;
+import jp.co.tis.form.WeatherSearchForm;
+import jp.co.tis.model.Person;
+import jp.co.tis.model.Weather;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import jp.co.tis.App;
-import jp.co.tis.form.WeatherSearchForm;
-import jp.co.tis.model.Person;
-import jp.co.tis.model.Weather;
 
 /**
  * 天気検索Logicのテスト。
@@ -168,7 +168,7 @@ public class WeatherSearchLogicTest {
      * 天気検索SQLテスト。(全ての項目が入力されなかった場合)
      */
     @Test
-    public void testSqlAllEmpty() {
+    public void testWeatherSearchSqlAllEmpty() {
         WeatherSearchForm form = new WeatherSearchForm();
         String resultSql = target.createSql(form);
         Map<String, String> resultCondition = target.createCondition(form);
@@ -185,7 +185,7 @@ public class WeatherSearchLogicTest {
      * 天気検索SQLテスト。(日付だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyDate() {
+    public void testWeatherSearchSqlOnlyDate() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeatherDate("2015/01/01");
         String resultSql = target.createSql(form);
@@ -199,7 +199,7 @@ public class WeatherSearchLogicTest {
      * 天気検索SQLテスト。(場所だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyPlace() {
+    public void testWeatherSearchSqlOnlyPlace() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setPlace("東京");
         String resultSql = target.createSql(form);
@@ -213,7 +213,7 @@ public class WeatherSearchLogicTest {
      * 天気検索SQLテスト。(天気だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyWeather() {
+    public void testWeatherSearchSqlOnlyWeather() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeather("晴れ");
         String resultSql = target.createSql(form);
@@ -227,7 +227,7 @@ public class WeatherSearchLogicTest {
      * 天気検索SQLテスト。(最高気温だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyMaxTemperature() {
+    public void testWeatherSearchSqlOnlyMaxTemperature() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setMaxTemperature("30");
         String resultSql = target.createSql(form);
@@ -241,7 +241,7 @@ public class WeatherSearchLogicTest {
      * 天気検索SQLテスト。(最低気温だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyMinTemperature() {
+    public void testWeatherSearchSqlOnlyMinTemperature() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setMinTemperature("0");
         String resultSql = target.createSql(form);
@@ -255,7 +255,7 @@ public class WeatherSearchLogicTest {
      * 天気検索SQLテスト。(全ての項目が入力された場合)
      */
     @Test
-    public void testSqlAll() {
+    public void testWeatherSearchSqlAll() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeatherDate("2015/01/01");
         form.setPlace("東京");
@@ -265,8 +265,9 @@ public class WeatherSearchLogicTest {
         String resultSql = target.createSql(form);
         Map<String, String> resultCondition = target.createCondition(form);
 
-        assertThat(resultSql, is(
-                "SELECT * FROM WEATHER WHERE WEATHER_DATE = :weatherDate and PLACE = :place and WEATHER = :weather and MAX_TEMPERATURE = :maxTemperature and MIN_TEMPERATURE = :minTemperature"));
+        assertThat(
+                resultSql,
+                is("SELECT * FROM WEATHER WHERE WEATHER_DATE = :weatherDate and PLACE = :place and WEATHER = :weather and MAX_TEMPERATURE = :maxTemperature and MIN_TEMPERATURE = :minTemperature"));
         assertThat(resultCondition.get("weatherDate"), is("2015/01/01"));
         assertThat(resultCondition.get("place"), is("東京"));
         assertThat(resultCondition.get("weather"), is("晴れ"));
@@ -294,7 +295,7 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索発展異常系のバリデーションテスト。(日付開始が日付形式でない場合)
+     * 天気検索発展異常系のバリデーションテスト。(日付1つ目が日付形式でない場合)
      */
     @Test
     public void testWeatherSearchHardValidationAbnormalDateFrom() {
@@ -342,7 +343,7 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索異常系のバリデーションテスト。(最高気温開始に数値以外のものが入力された場合)
+     * 天気検索異常系のバリデーションテスト。(最高気温1つ目に数値以外のものが入力された場合)
      */
     @Test
     public void testWeatherSearchHardValidationAbnormalMaxTemperatureFrom() {
@@ -366,7 +367,7 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索異常系のバリデーションテスト。(最高気温開始に3桁を超える値が入力された場合)
+     * 天気検索異常系のバリデーションテスト。(最高気温1つ目に3桁を超える値が入力された場合)
      */
     @Test
     public void testWeatherSearchHardValidationOverflowMaxTemperatureFrom() {
@@ -390,7 +391,7 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索異常系のバリデーションテスト。(最低気温開始に数値以外のものが入力された場合)
+     * 天気検索異常系のバリデーションテスト。(最低気温1つ目に数値以外のものが入力された場合)
      */
     @Test
     public void testWeatherSearchHardValidationAbnormlMinTemperatureFrom() {
@@ -414,7 +415,7 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索異常系のバリデーションテスト。(最低気温開始に3桁を超える値が入力された場合)
+     * 天気検索異常系のバリデーションテスト。(最低気温1つ目に3桁を超える値が入力された場合)
      */
     @Test
     public void testWeatherSearchHardValidationOverflowMinTemperatureFrom() {
@@ -463,19 +464,45 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索発展正常系の入力項目間のバリデーションテスト。()
+     * 天気検索発展正常系の入力項目間のバリデーションテスト。(全ての項目に正常な値が入力された場合)。
      */
     @Test
     public void testWeatherSearchHardValidationNormalBetweenItem() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeatherDateFrom("2015/01/01");
         form.setWeatherDateTo("2015/02/01");
-        form.setPlace("東京");
-        form.setWeather("晴れ");
         form.setMaxTemperatureFrom("20");
         form.setMaxTemperatureTo("30");
         form.setMinTemperatureFrom("10");
         form.setMinTemperatureTo("20");
+        List<String> errorList = target.validateBetweenItem(form);
+
+        assertThat(errorList.size(), is(0));
+    }
+
+    /**
+     * 天気検索発展正常系の入力項目間のバリデーションテスト。(日付、最高気温、最低気温の1つ目の項目に値が入力された場合)。
+     */
+    @Test
+    public void testValidationNormalBetweenItemOnlyFirstItem() {
+        WeatherSearchForm form = new WeatherSearchForm();
+        form.setWeatherDateFrom("2015/01/01");
+        form.setMaxTemperatureFrom("20");
+        form.setMinTemperatureFrom("10");
+        List<String> errorList = target.validateBetweenItem(form);
+
+        assertThat(errorList.size(), is(0));
+    }
+
+    /**
+     * 天気検索発展正常系の入力項目間のバリデーションテスト。(日付、最高気温、最低気温の2つ目の項目に値が入力された場合)。
+     */
+    @Test
+    public void testValidationNormalBetweenItemOnlySecondItem() {
+        WeatherSearchForm form = new WeatherSearchForm();
+        form.setWeatherDateTo("2015/01/01");
+        form.setMaxTemperatureTo("20");
+        form.setMinTemperatureTo("10");
         List<String> errorList = target.validateBetweenItem(form);
 
         assertThat(errorList.size(), is(0));
@@ -524,7 +551,7 @@ public class WeatherSearchLogicTest {
      * 天気検索発展SQLテスト。(全ての項目が入力されなかった場合)
      */
     @Test
-    public void testSqlAllEmptyHard() {
+    public void testWeatherSearchHardSqlAllEmpty() {
         WeatherSearchForm form = new WeatherSearchForm();
         String resultSql = target.createSqlHard(form);
         Map<String, String> resultCondition = target.createConditionHard(form);
@@ -541,10 +568,10 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索発展SQLテスト。(日付開始だけ入力された場合)
+     * 天気検索発展SQLテスト。(日付1つ目だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyDateFromHard() {
+    public void testWeatherSearchHardSqlOnlyDateFrom() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeatherDateFrom("2015/01/01");
         String resultSql = target.createSqlHard(form);
@@ -555,10 +582,10 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索発展SQLテスト。(日付終了だけ入力された場合)
+     * 天気検索発展SQLテスト。(日付2つ目だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyDateToHard() {
+    public void testWeatherSearchHardSqlOnlyDateTo() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeatherDateTo("2015/01/01");
         String resultSql = target.createSqlHard(form);
@@ -572,7 +599,7 @@ public class WeatherSearchLogicTest {
      * 天気検索発展SQLテスト。(場所だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyPlaceHard() {
+    public void testWeatherSearchHardSqlOnlyPlace() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setPlace("東京");
         String resultSql = target.createSqlHard(form);
@@ -586,7 +613,7 @@ public class WeatherSearchLogicTest {
      * 天気検索発展SQLテスト。(天気が1つだけ入力された場合)
      */
     @Test
-    public void testSqlOnlyOneWeatherHard() {
+    public void testWeatherSearchHardSqlOnlyOneWeather() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeather("晴れ");
         String resultSql = target.createSqlHard(form);
@@ -600,7 +627,7 @@ public class WeatherSearchLogicTest {
      * 天気検索発展SQLテスト。(天気が2つ入力された場合)
      */
     @Test
-    public void testSqlOnlyTwoWeatherHard() {
+    public void testWeatherSearchHardSqlOnlyTwoWeather() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeather("晴れ,曇り");
         String resultSql = target.createSqlHard(form);
@@ -615,7 +642,7 @@ public class WeatherSearchLogicTest {
      * 天気検索発展SQLテスト。(天気が3つ入力された場合)
      */
     @Test
-    public void testSqlOnlyThreeWeatherHard() {
+    public void testWeatherSearchHardSqlOnlyThreeWeather() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeather("晴れ,曇り,雨");
         String resultSql = target.createSqlHard(form);
@@ -631,7 +658,7 @@ public class WeatherSearchLogicTest {
      * 天気検索発展SQLテスト。(天気が4つ入力された場合)
      */
     @Test
-    public void testSqlOnlyFourWeatherHard() {
+    public void testWeatherSearchHardSqlOnlyFourWeather() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeather("晴れ,曇り,雨,雪");
         String resultSql = target.createSqlHard(form);
@@ -642,10 +669,10 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索発展SQLテスト。(最高気温開始だけ入力された場合)
+     * 天気検索発展SQLテスト。(最高気温1つ目だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyMaxTemperatureFromHard() {
+    public void testWeatherSearchHardSqlOnlyMaxTemperatureFrom() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setMaxTemperatureFrom("20");
         String resultSql = target.createSqlHard(form);
@@ -656,10 +683,10 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索発展SQLテスト。(最高気温開始だけ入力された場合)
+     * 天気検索発展SQLテスト。(最高気温2つ目だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyMaxTemperatureToHard() {
+    public void testWeatherSearchHardSqlOnlyMaxTemperatureTo() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setMaxTemperatureTo("20");
         String resultSql = target.createSqlHard(form);
@@ -670,10 +697,10 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索発展SQLテスト。(最高気温開始だけ入力された場合)
+     * 天気検索発展SQLテスト。(最低気温1つ目だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyMinTemperatureFromHard() {
+    public void testWeatherSearchHardSqlOnlyMinTemperatureFrom() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setMinTemperatureFrom("20");
         String resultSql = target.createSqlHard(form);
@@ -684,10 +711,10 @@ public class WeatherSearchLogicTest {
     }
 
     /**
-     * 天気検索発展SQLテスト。(最高気温開始だけ入力された場合)
+     * 天気検索発展SQLテスト。(最低気温2つ目だけ入力された場合)
      */
     @Test
-    public void testSqlOnlyMinTemperatureToHard() {
+    public void testWeatherSearchHardSqlOnlyMinTemperatureTo() {
         WeatherSearchForm form = new WeatherSearchForm();
         form.setMinTemperatureTo("20");
         String resultSql = target.createSqlHard(form);
@@ -714,8 +741,9 @@ public class WeatherSearchLogicTest {
         String resultSql = target.createSqlHard(form);
         Map<String, String> resultCondition = target.createConditionHard(form);
 
-        assertThat(resultSql, is(
-                "SELECT * FROM WEATHER WHERE WEATHER_DATE >= :weatherDateFrom and WEATHER_DATE <= :weatherDateTo and PLACE = :place and (WEATHER = :weather) and MAX_TEMPERATURE >= :maxTemperatureFrom and MAX_TEMPERATURE <= :maxTemperatureTo and MIN_TEMPERATURE >= :minTemperatureFrom and MIN_TEMPERATURE <= :minTemperatureTo"));
+        assertThat(
+                resultSql,
+                is("SELECT * FROM WEATHER WHERE WEATHER_DATE >= :weatherDateFrom and WEATHER_DATE <= :weatherDateTo and PLACE = :place and (WEATHER = :weather) and MAX_TEMPERATURE >= :maxTemperatureFrom and MAX_TEMPERATURE <= :maxTemperatureTo and MIN_TEMPERATURE >= :minTemperatureFrom and MIN_TEMPERATURE <= :minTemperatureTo"));
         assertThat(resultCondition.get("weatherDateFrom"), is("2015/01/01"));
         assertThat(resultCondition.get("weatherDateTo"), is("2015/02/01"));
         assertThat(resultCondition.get("place"), is("東京"));
