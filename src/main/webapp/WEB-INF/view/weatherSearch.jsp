@@ -32,7 +32,7 @@
 
      <h3>
       天気検索
-      <img src="/img/weather2.jpg" class="width-7"">
+      <img src="/img/weather.jpg" class="width-7">
      </h3>
      <form action="/weatherSearch/search" method="POST">
        <table class="table table-striped table-bordered table-hover">
