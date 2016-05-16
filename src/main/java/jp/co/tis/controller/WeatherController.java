@@ -1,16 +1,12 @@
 package jp.co.tis.controller;
 
-import jp.co.tis.form.WeatherSearchForm;
-import jp.co.tis.model.WeatherDao;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import jp.co.tis.form.WeatherSearchForm;
+import jp.co.tis.logic.WeatherSearchLogic;
 
 /**
  * 天気予報のコントローラークラス。
@@ -21,19 +17,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class WeatherController {
 
-    /** DB操作を行うDAO */
+    /** 天気検索ロジッククラス */
     @Autowired
-    private WeatherDao weatherDao;
-
-    /**
-     * Formのセットアップを行う。
-     *
-     * @return Form
-     */
-    @ModelAttribute
-    WeatherSearchForm setupForm() {
-        return new WeatherSearchForm();
-    }
+    private WeatherSearchLogic weatherSearchLogic;
 
     /**
      * TOP画面へ遷移する。
@@ -98,7 +84,7 @@ public class WeatherController {
      * @param form フォーム
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherSimpleSearch/search", method = RequestMethod.POST)
+    @RequestMapping("/weatherSimpleSearch/search")
     public ModelAndView simpleSearch(WeatherSearchForm form) {
 
         return null;
@@ -108,13 +94,11 @@ public class WeatherController {
      * 天気の検索を行う（天気検索）。
      *
      * @param form フォーム
-     * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherSearch/search", method = RequestMethod.POST)
-    public ModelAndView search(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    @RequestMapping("/weatherSearch/search")
+    public ModelAndView search(WeatherSearchForm form) {
 
         return null;
     }
-
 }

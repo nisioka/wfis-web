@@ -3,7 +3,8 @@ package jp.co.tis.form;
 import java.io.Serializable;
 
 /**
- * 天気予報用Form。<br/> 画面の入力項目や画面から送られてくる項目をプロパティとして持つクラス。
+ * 天気検索用Form。<br/>
+ * 画面の入力項目や画面から送られてくる項目をプロパティとして持つクラス。
  *
  * @author Saito Takuma
  * @since 1.0
@@ -29,23 +30,6 @@ public class WeatherSearchForm implements Serializable {
      * デフォルトコンストラクタ。
      */
     public WeatherSearchForm() {
-    }
-
-    /**
-     * コンストラクタ。
-     *
-     * @param weatherDate 日付
-     * @param place 場所
-     * @param weather 天気
-     * @param maxTemperature 最高気温
-     * @param minTemperature 最低気温
-     */
-    public WeatherSearchForm(String weatherDate, String place, String weather, String maxTemperature, String minTemperature) {
-        this.weatherDate = weatherDate;
-        this.place = place;
-        this.weather = weather;
-        this.maxTemperature = maxTemperature;
-        this.minTemperature = minTemperature;
     }
 
     /**

@@ -11,7 +11,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 /**
- * データベースの検索結果をEntityなどのDTOにマッピングする。
+ * データベースの検索結果をEntityなどにマッピングする。<br/>
+ * WeatherテーブルにDB接続するためのクラス。<br/>
+ * 検索・登録・更新・削除ができる。
  *
  * @author Saito Takuma
  * @since 1.0
