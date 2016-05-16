@@ -48,10 +48,11 @@ public class WeatherStatisticsLogic {
         DateFormat format = new SimpleDateFormat("MM/dd");
         try {
             if (!StringUtils.isEmpty(form.getWeatherDate())) {
+                format.setLenient(false);
                 format.parse(form.getWeatherDate());
             }
         } catch (ParseException e) {
-            errorList.add("日付は日付形式で入力してください。");
+            errorList.add("日付はMM/dd形式で入力してください。");
         }
         if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > 10) {
             errorList.add("場所は10文字以内で入力してください。");

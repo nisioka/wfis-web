@@ -1,5 +1,7 @@
 package jp.co.tis.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,7 +10,7 @@ import javax.persistence.Table;
 /**
  * 天気エンティティクラス。<br/>
  * Weatherテーブルとのデータのやり取りに使用するクラス。<br/>
- * 検索結果やデータ登録の際に使用する。
+ * 検索した結果を保持したりデータ登録の際に使用する。
  *
  * @author Saito Takuma
  * @since 1.0
@@ -16,12 +18,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "Weather")
-public class Weather {
+public class Weather implements Serializable {
 
     @Id
     @Column
     private String weatherDate;
 
+    @Id
     @Column
     private String place;
 

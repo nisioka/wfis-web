@@ -55,16 +55,19 @@ public class CsvRegisterLogic {
      * CSVファイルの読み込み処理を行う。
      *
      * @param form フォーム
-     * @throws Exception CSV読込中に何らかの例外が発生した場合にスローされる
      * @return 読み込んだCSVファイルのデータ部。
+     * @throws FileNotFoundException 読み込みファイルがなかった場合にスローされる
+     * @throws FileFormatException 読み込みファイルの内容に問題がある場合にスローされる
      */
-    public List<String> createCsvDataList(CsvRegisterForm form) throws Exception {
+    public List<String> createCsvDataList(CsvRegisterForm form) throws FileNotFoundException, FileFormatException {
         // CSVファイル読み込み処理
         CsvReaderImpl csvReaderImpl = new CsvReaderImpl(form.getFilePath());
         try {
             csvReaderImpl.open();
-        } catch (FileNotFoundException | FileFormatException e) {
-            throw new Exception(e.getMessage());
+        } catch (FileNotFoundException e) {
+            throw new FileNotFoundException(e.getMessage());
+        } catch (FileFormatException e) {
+            throw new FileFormatException(e.getMessage());
         }
 
         int rowCount = 0;
@@ -77,7 +80,7 @@ public class CsvRegisterLogic {
                     break;
                 }
 
-                StringBuilder csvData = new StringBuilder("");
+                StringBuilder csvData = new StringBuilder();
                 for (String key : row.keySet()) {
                     csvData.append("'").append(row.get(key)).append("',");
                 }
@@ -91,7 +94,7 @@ public class CsvRegisterLogic {
             // ヘッダーの行数も考慮するため
             rowCount += 2;
             csvReaderImpl.close();
-            throw new Exception(rowCount + "行目 ：" + e.getMessage());
+            throw new FileFormatException(rowCount + "行目 ：" + e.getMessage());
         }
         csvReaderImpl.close();
         return csvDataList;
@@ -106,7 +109,7 @@ public class CsvRegisterLogic {
     public int insert(List<String> csvDataList) {
         // 一行ずつDBに登録
         for (String csvData : csvDataList) {
-            StringBuilder insertSql = new StringBuilder("");
+            StringBuilder insertSql = new StringBuilder();
             insertSql.append("INSERT INTO WEATHER (WEATHER_DATE, PLACE, WEATHER, MAX_TEMPERATURE, MIN_TEMPERATURE) VALUES (");
             insertSql.append(csvData).append(")");
             weatherDao.insert(insertSql.toString());

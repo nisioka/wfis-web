@@ -70,6 +70,7 @@ public class WeatherSearchLogic {
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         try {
             if (!StringUtils.isEmpty(form.getWeatherDate())) {
+                format.setLenient(false);
                 format.parse(form.getWeatherDate());
             }
         } catch (ParseException e) {
@@ -107,9 +108,11 @@ public class WeatherSearchLogic {
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         try {
             if (!StringUtils.isEmpty(form.getWeatherDateFrom())) {
+                format.setLenient(false);
                 format.parse(form.getWeatherDateFrom());
             }
             if (!StringUtils.isEmpty(form.getWeatherDateTo())) {
+                format.setLenient(false);
                 format.parse(form.getWeatherDateTo());
             }
         } catch (ParseException e) {
@@ -204,7 +207,7 @@ public class WeatherSearchLogic {
      * 検索に使用する条件を作成する(天気簡易検索)。
      *
      * @param form フォーム
-     * @return 検索条件
+     * @return 検索結果
      */
     public Map<String, String> createConditionSimple(WeatherSearchForm form) {
         Map<String, String> condition = new HashMap<String, String>();

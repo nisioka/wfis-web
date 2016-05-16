@@ -1,20 +1,18 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-    pageEncoding="utf-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-        "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>天気統計画面</title>
-<link href="../css/bootstrap.min.css" rel="stylesheet">
-<link href="../css/font-awesome.min.css" rel="stylesheet">
-<link href="../css/jquery-ui.min.css" rel="stylesheet">
-<link href="../css/weather.css" rel="stylesheet">
-<script src="../js/jquery-2.2.2.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/jquery-ui.min.js"></script>
-<script src="../js/datepicker-ja.js"></script>
+<link href="/css/bootstrap.min.css" rel="stylesheet">
+<link href="/css/font-awesome.min.css" rel="stylesheet">
+<link href="/css/jquery-ui.min.css" rel="stylesheet">
+<link href="/css/weather.css" rel="stylesheet">
+<script src="/js/jquery-2.2.2.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery-ui.min.js"></script>
+<script src="/js/datepicker-ja.js"></script>
 </head>
 
 <body>
@@ -34,7 +32,7 @@
 
      <h3>
       天気統計
-      <img src="../img/weather2.jpg" class="width-7">
+      <img src="/img/weather.jpg" class="width-7">
      </h3>
      <form action="/weatherStatistics/analysis" method="POST">
        <table class="table table-striped table-bordered table-hover">
@@ -94,16 +92,16 @@
               <td style="vertical-align: middle;"><c:out value="${weatherStatisticsDto.place}" /></td>
               <td style="vertical-align: middle;">
                 <c:if test="${weatherStatisticsDto.sunnyPercent ne 0}">
-                  <div><img src="../img/Sunny.png"  class="width-25"> (<c:out value="${weatherStatisticsDto.sunnyPercent}" /> %)</div>
+                  <div><img src="/img/Sunny.png"  class="width-25"> (<c:out value="${weatherStatisticsDto.sunnyPercent}" /> %)</div>
                 </c:if>
                 <c:if test="${weatherStatisticsDto.cloudyPercent ne 0}">
-                  <div><img src="../img/Cloudy.png"  class="width-25"> (<c:out value="${weatherStatisticsDto.cloudyPercent}" /> %)</div>
+                  <div><img src="/img/Cloudy.png"  class="width-25"> (<c:out value="${weatherStatisticsDto.cloudyPercent}" /> %)</div>
                 </c:if>
                 <c:if test="${weatherStatisticsDto.rainyPercent ne 0}">
-                  <div><img src="../img/Rainy.png"  class="width-25"> (<c:out value="${weatherStatisticsDto.rainyPercent}" /> %)</div>
+                  <div><img src="/img/Rainy.png"  class="width-25"> (<c:out value="${weatherStatisticsDto.rainyPercent}" /> %)</div>
                 </c:if>
                 <c:if test="${weatherStatisticsDto.snowPercent ne 0}">
-                  <div><img src="../img/Snow.png"  class="snow"> (<c:out value="${weatherStatisticsDto.snowPercent}" /> %)</div>
+                  <div><img src="/img/Snow.png"  class="snow"> (<c:out value="${weatherStatisticsDto.snowPercent}" /> %)</div>
                 </c:if>
               </td>
               <td style="vertical-align: middle;"><c:out value="${weatherStatisticsDto.maxTemperatureAve}" /> ℃</td>
