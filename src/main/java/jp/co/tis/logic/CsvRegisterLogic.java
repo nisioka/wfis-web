@@ -80,7 +80,7 @@ public class CsvRegisterLogic {
                     break;
                 }
 
-                StringBuilder csvData = new StringBuilder("");
+                StringBuilder csvData = new StringBuilder();
                 for (String key : row.keySet()) {
                     csvData.append("'").append(row.get(key)).append("',");
                 }
@@ -109,7 +109,7 @@ public class CsvRegisterLogic {
     public int insert(List<String> csvDataList) {
         // 一行ずつDBに登録
         for (String csvData : csvDataList) {
-            StringBuilder insertSql = new StringBuilder("");
+            StringBuilder insertSql = new StringBuilder();
             insertSql.append("INSERT INTO WEATHER (WEATHER_DATE, PLACE, WEATHER, MAX_TEMPERATURE, MIN_TEMPERATURE) VALUES (");
             insertSql.append(csvData).append(")");
             weatherDao.insert(insertSql.toString());

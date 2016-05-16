@@ -30,7 +30,7 @@ import jp.co.tis.model.WeatherStatisticsDto;
 @Controller
 public class WeatherController {
 
-    /** 天気予報ロジッククラス */
+    /** 天気検索ロジッククラス */
     @Autowired
     private WeatherSearchLogic weatherSearchLogic;
 
@@ -65,6 +65,7 @@ public class WeatherController {
         ModelAndView modelAndView = new ModelAndView();
         Person person = weatherSearchLogic.createPersonInfo();
 
+        // personごとJSPに渡して、JSP側でperson.myNameのように取り出してもよい
         modelAndView.addObject("myName", person.getMyName());
         modelAndView.addObject("age", person.getAge());
         modelAndView.addObject("hobby", person.getHobby());
@@ -254,6 +255,7 @@ public class WeatherController {
             return modelAndView;
         }
 
+        // CSV読み込み処理
         List<String> csvDataList = new ArrayList<String>();
         try {
             csvDataList = csvRegisterLogic.createCsvDataList(form);
@@ -271,6 +273,7 @@ public class WeatherController {
             modelAndView.setViewName("csvRegister");
             return modelAndView;
         }
+        // CSV登録処理
         csvRegisterLogic.insert(csvDataList);
 
         modelAndView.setViewName("complete");
