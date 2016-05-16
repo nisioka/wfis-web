@@ -26,7 +26,6 @@ public class Person {
      * デフォルトコンストラクタ。
      */
     public Person() {
-        super();
     }
 
     /**
@@ -38,7 +37,6 @@ public class Person {
      * @param skill 特技
      */
     public Person(String myName, String age, String hobby, String skill) {
-        super();
         this.myName = myName;
         this.age = age;
         this.hobby = hobby;

@@ -2,15 +2,10 @@ package jp.co.tis.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.logic.WeatherSearchLogic;
-import jp.co.tis.model.WeatherDao;
 
 /**
  * 天気予報のコントローラークラス。
@@ -20,10 +15,6 @@ import jp.co.tis.model.WeatherDao;
  */
 @Controller
 public class WeatherController {
-
-    /** DB操作を行うDAO */
-    @Autowired
-    private WeatherDao weatherDao;
 
     /** 天気検索ロジッククラス */
     @Autowired
@@ -49,30 +40,6 @@ public class WeatherController {
      */
     @RequestMapping("/warmUp")
     public ModelAndView warmUp() {
-
-        return null;
-    }
-
-    /**
-     * 天気検索TOP画面へ遷移する。
-     *
-     * @return ModelAndView
-     */
-    @RequestMapping("/weatherSearch/top")
-    public ModelAndView weatherSearchTop() {
-
-        return null;
-    }
-
-    /**
-     * 天気の検索を行う。
-     *
-     * @param form フォーム
-     * @param bindingResult バリデーション結果
-     * @return ModelAndView
-     */
-    @RequestMapping(value = "weatherSearch/search", method = RequestMethod.POST)
-    public ModelAndView search(@Validated WeatherSearchForm form, BindingResult bindingResult) {
 
         return null;
     }

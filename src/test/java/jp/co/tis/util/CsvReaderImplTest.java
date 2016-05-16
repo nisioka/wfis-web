@@ -1,9 +1,5 @@
 package jp.co.tis.util;
 
-import static org.junit.Assert.fail;
-
-import org.junit.Test;
-
 /**
  * CsvReaderImplをテストするクラス。
  *
@@ -12,11 +8,4 @@ import org.junit.Test;
  */
 public class CsvReaderImplTest {
 
-    /**
-     * テスト。
-     */
-    @Test
-    public void test() {
-        fail("まだ実装されていません。");
-    }
 }
