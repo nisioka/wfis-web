@@ -1,35 +1,61 @@
 package jp.co.tis.logic;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Map;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
 
 import jp.co.tis.App;
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.model.Person;
 import jp.co.tis.model.Weather;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import jp.co.tis.model.WeatherDao;
 
 /**
  * 天気検索Logicのテスト。
  *
- * @author Saito Takuma
+ * @author Yoshiwara Masashi
  * @since 1.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
-public class WeatherSearchLogicTest {
+@TransactionConfiguration
+@Transactional
+public class WeatherSearchLogicTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     /** テスト対象クラス */
     @Autowired
     private WeatherSearchLogic target;
+
+    /** DB操作DAO */
+    @Autowired
+    private WeatherDao weatherDao;
+
+    /** INSERT文の雛形 */
+    private String insertSql = "INSERT INTO WEATHER (WEATHER_DATE, PLACE, WEATHER, MAX_TEMPERATURE, MIN_TEMPERATURE) "
+            + "VALUES ('%s','%s','%s','%s','%s')";
+
+    /**
+     * 各テストメソッドの前に呼ばれるセットアップメソッド。<br/>
+     * WEATHERテーブルの中身を空にする。<br/>
+     * DB関連のテストを行う場合、各テストメソッドで事前データをDBに登録する必要がある。<br/>
+     * テスト終了後にはロールバックが行われるため、テスト実施前後でDBの中身は変わらない。
+     */
+    @Before
+    public void setUp() {
+        super.deleteFromTables("WEATHER");
+    }
 
     /**
      * ウォーミングアップのテスト。
@@ -265,9 +291,8 @@ public class WeatherSearchLogicTest {
         String resultSql = target.createSql(form);
         Map<String, String> resultCondition = target.createCondition(form);
 
-        assertThat(
-                resultSql,
-                is("SELECT * FROM WEATHER WHERE WEATHER_DATE = :weatherDate and PLACE = :place and WEATHER = :weather and MAX_TEMPERATURE = :maxTemperature and MIN_TEMPERATURE = :minTemperature"));
+        assertThat(resultSql, is(
+                "SELECT * FROM WEATHER WHERE WEATHER_DATE = :weatherDate and PLACE = :place and WEATHER = :weather and MAX_TEMPERATURE = :maxTemperature and MIN_TEMPERATURE = :minTemperature"));
         assertThat(resultCondition.get("weatherDate"), is("2015/01/01"));
         assertThat(resultCondition.get("place"), is("東京"));
         assertThat(resultCondition.get("weather"), is("晴れ"));
@@ -741,9 +766,8 @@ public class WeatherSearchLogicTest {
         String resultSql = target.createSqlHard(form);
         Map<String, String> resultCondition = target.createConditionHard(form);
 
-        assertThat(
-                resultSql,
-                is("SELECT * FROM WEATHER WHERE WEATHER_DATE >= :weatherDateFrom and WEATHER_DATE <= :weatherDateTo and PLACE = :place and (WEATHER = :weather) and MAX_TEMPERATURE >= :maxTemperatureFrom and MAX_TEMPERATURE <= :maxTemperatureTo and MIN_TEMPERATURE >= :minTemperatureFrom and MIN_TEMPERATURE <= :minTemperatureTo"));
+        assertThat(resultSql, is(
+                "SELECT * FROM WEATHER WHERE WEATHER_DATE >= :weatherDateFrom and WEATHER_DATE <= :weatherDateTo and PLACE = :place and (WEATHER = :weather) and MAX_TEMPERATURE >= :maxTemperatureFrom and MAX_TEMPERATURE <= :maxTemperatureTo and MIN_TEMPERATURE >= :minTemperatureFrom and MIN_TEMPERATURE <= :minTemperatureTo"));
         assertThat(resultCondition.get("weatherDateFrom"), is("2015/01/01"));
         assertThat(resultCondition.get("weatherDateTo"), is("2015/02/01"));
         assertThat(resultCondition.get("place"), is("東京"));
@@ -759,16 +783,20 @@ public class WeatherSearchLogicTest {
      */
     @Test
     public void testSearchWeather() {
+        // 事前データ準備
+        weatherDao.insert(String.format(insertSql, "2015/01/01", "群馬", "晴れ", "7", "-3"));
+        weatherDao.insert(String.format(insertSql, "2015/01/02", "群馬", "曇り", "11", "6"));
+
         WeatherSearchForm form = new WeatherSearchForm();
-        form.setWeatherDate("2010/01/01");
+        form.setWeatherDate("2015/01/01");
         form.setPlace("群馬");
         form.setWeather("晴れ");
         form.setMaxTemperature("7");
         form.setMinTemperature("-3");
-        // 特定のデータを登録する処理を書く
 
         List<Weather> resultWeatherList = target.findBySql(form);
-        assertThat(resultWeatherList.get(0).getWeatherDate(), is("2010/01/01"));
+        assertThat(resultWeatherList.size(), is(1));
+        assertThat(resultWeatherList.get(0).getWeatherDate(), is("2015/01/01"));
         assertThat(resultWeatherList.get(0).getPlace(), is("群馬"));
         assertThat(resultWeatherList.get(0).getWeather(), is("晴れ"));
         assertThat(resultWeatherList.get(0).getMaxTemperature(), is("7"));
@@ -780,22 +808,26 @@ public class WeatherSearchLogicTest {
      */
     @Test
     public void testSearchWeatherHard() {
+        // 事前データ準備
+        weatherDao.insert(String.format(insertSql, "2015/01/01", "東京", "晴れ", "10", "5"));
+        weatherDao.insert(String.format(insertSql, "2015/01/02", "東京", "曇り", "11", "6"));
+
         WeatherSearchForm form = new WeatherSearchForm();
         form.setWeatherDateFrom("2010/01/01");
-        form.setWeatherDateTo("2010/01/01");
-        form.setPlace("群馬");
+        form.setWeatherDateTo("2016/01/01");
+        form.setPlace("東京");
         form.setWeather("晴れ");
         form.setMaxTemperatureFrom("7");
-        form.setMaxTemperatureTo("7");
+        form.setMaxTemperatureTo("10");
         form.setMinTemperatureFrom("-3");
-        form.setMinTemperatureTo("-3");
-        // 特定のデータを登録する処理を書く
+        form.setMinTemperatureTo("5");
 
         List<Weather> resultWeatherList = target.findBySqlHard(form);
-        assertThat(resultWeatherList.get(0).getWeatherDate(), is("2010/01/01"));
-        assertThat(resultWeatherList.get(0).getPlace(), is("群馬"));
+        assertThat(resultWeatherList.size(), is(1));
+        assertThat(resultWeatherList.get(0).getWeatherDate(), is("2015/01/01"));
+        assertThat(resultWeatherList.get(0).getPlace(), is("東京"));
         assertThat(resultWeatherList.get(0).getWeather(), is("晴れ"));
-        assertThat(resultWeatherList.get(0).getMaxTemperature(), is("7"));
-        assertThat(resultWeatherList.get(0).getMinTemperature(), is("-3"));
+        assertThat(resultWeatherList.get(0).getMaxTemperature(), is("10"));
+        assertThat(resultWeatherList.get(0).getMinTemperature(), is("5"));
     }
 }

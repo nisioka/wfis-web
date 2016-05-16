@@ -1,32 +1,59 @@
 package jp.co.tis.logic;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.Assert.*;
 
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
-import jp.co.tis.App;
-import jp.co.tis.form.CsvRegisterForm;
-
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
+import org.springframework.transaction.annotation.Transactional;
+
+import jp.co.tis.App;
+import jp.co.tis.exception.FileFormatException;
+import jp.co.tis.form.CsvRegisterForm;
+import jp.co.tis.model.Weather;
+import jp.co.tis.model.WeatherDao;
 
 /**
  * CSV登録Logicのテスト。
  *
- * @author Saito Takuma
+ * @author Yoshiwara Masashi
  * @since 1.0
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
-public class CsvRegisterLogicTest {
+@TransactionConfiguration
+@Transactional
+public class CsvRegisterLogicTest extends AbstractTransactionalJUnit4SpringContextTests {
 
     /** テスト対象クラス */
     @Autowired
     private CsvRegisterLogic target;
+
+    /** DB操作DAO */
+    @Autowired
+    private WeatherDao weatherDao;
+
+    /**
+     * 各テストメソッドの前に呼ばれるセットアップメソッド。<br/>
+     * WEATHERテーブルの中身を空にする。<br/>
+     * DB関連のテストを行う場合、各テストメソッドで事前データをDBに登録する必要がある。<br/>
+     * テスト終了後にはロールバックが行われるため、テスト実施前後でDBの中身は変わらない。
+     */
+    @Before
+    public void setUp() {
+        super.deleteFromTables("WEATHER");
+    }
 
     /**
      * 正常系のバリデーションテスト。
@@ -79,8 +106,8 @@ public class CsvRegisterLogicTest {
             assertThat(csvDataList.get(0), is("'1','ikeda','25'"));
             assertThat(csvDataList.get(1), is("'2','noda','22'"));
             assertThat(csvDataList.get(2), is("'3','nagamine','24'"));
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (FileNotFoundException | FileFormatException e) {
+            fail();
         }
     }
 
@@ -94,7 +121,8 @@ public class CsvRegisterLogicTest {
 
         try {
             target.createCsvDataList(form);
-        } catch (Exception e) {
+            fail();
+        } catch (FileNotFoundException | FileFormatException e) {
             assertThat(e.getMessage(), is("noFile.csv (指定されたファイルが見つかりません。)"));
         }
     }
@@ -109,38 +137,9 @@ public class CsvRegisterLogicTest {
 
         try {
             target.createCsvDataList(form);
-        } catch (Exception e) {
+            fail();
+        } catch (FileNotFoundException | FileFormatException e) {
             assertThat(e.getMessage(), is("ヘッダー部が存在しません。"));
-        }
-    }
-
-    /**
-     * 読み込み処理（ヘッダー部の項目名の重複があるCSVファイルに読み込み処理を実行した場合）。
-     */
-    @Test
-    public void testCsvReadDuplicateHeader() {
-        CsvRegisterForm form = new CsvRegisterForm();
-        form.setFilePath("src/test/java/jp/co/tis/util/testData/testOpenInCaseOfFileFormatException2.csv");
-
-        try {
-            target.createCsvDataList(form);
-        } catch (Exception e) {
-            assertThat(e.getMessage(), is("ヘッダー部の項目が重複しています。"));
-        }
-    }
-
-    /**
-     * 読み込み処理（ヘッダー部に空項目があるCSVファイルに読み込み処理を実行した場合）。
-     */
-    @Test
-    public void testCsvReadHeaderHasEmpty() {
-        CsvRegisterForm form = new CsvRegisterForm();
-        form.setFilePath("src/test/java/jp/co/tis/util/testData/testOpenInCaseOfFileFormatException3.csv");
-
-        try {
-            target.createCsvDataList(form);
-        } catch (Exception e) {
-            assertThat(e.getMessage(), is("ヘッダー部に空項目が含まれています。"));
         }
     }
 
@@ -154,9 +153,28 @@ public class CsvRegisterLogicTest {
 
         try {
             target.createCsvDataList(form);
-        } catch (Exception e) {
+            fail();
+        } catch (FileNotFoundException | FileFormatException e) {
             assertThat(e.getMessage(), is("2行目 ：ヘッダー部と項目数が異なっています。"));
         }
+    }
+
+    /**
+     * 登録処理。
+     */
+    @Test
+    public void testInsertNormal() {
+        List<String> csvDataList = new ArrayList<String>();
+        csvDataList.add("'2016/01/01','東京','晴れ','10','5'");
+        target.insert(csvDataList);
+
+        List<Weather> result = weatherDao.findBySql("SELECT * FROM WEATHER");
+        assertThat(result.size(), is(1));
+        assertThat(result.get(0).getWeatherDate(), is("2016/01/01"));
+        assertThat(result.get(0).getPlace(), is("東京"));
+        assertThat(result.get(0).getWeather(), is("晴れ"));
+        assertThat(result.get(0).getMaxTemperature(), is("10"));
+        assertThat(result.get(0).getMinTemperature(), is("5"));
     }
 
 }
