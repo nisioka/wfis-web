@@ -1,5 +1,6 @@
 package jp.co.tis.controller;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import jp.co.tis.exception.FileFormatException;
 import jp.co.tis.form.CsvRegisterForm;
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.form.WeatherStatisticsForm;
@@ -262,7 +264,7 @@ public class WeatherController {
                 modelAndView.setViewName("csvRegister");
                 return modelAndView;
             }
-        } catch (Exception e) {
+        } catch (FileNotFoundException | FileFormatException e) {
             errorList.add(e.getMessage());
             modelAndView.addObject("filePath", form.getFilePath());
             modelAndView.addObject("errorList", errorList);
