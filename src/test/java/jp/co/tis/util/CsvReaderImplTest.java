@@ -7,11 +7,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
+import jp.co.tis.exception.FileFormatException;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import jp.co.tis.exception.FileFormatException;
 
 /**
  * CsvReaderImplをテストするクラス。
@@ -60,7 +60,7 @@ public class CsvReaderImplTest {
     public void testOpenInCaseOfFileFormatException() throws Exception {
         CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/testOpenInCaseOfFileFormatException1.csv");
         exception.expect(FileFormatException.class);
-        exception.expectMessage("ヘッダー行が存在しません。");
+        exception.expectMessage("ヘッダー部が存在しません。");
         csvReader.open();
     }
 
@@ -73,7 +73,7 @@ public class CsvReaderImplTest {
     public void testOpenInCaseOfFileFormatException2() throws Exception {
         CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/testOpenInCaseOfFileFormatException2.csv");
         exception.expect(FileFormatException.class);
-        exception.expectMessage("ヘッダー行の項目が重複しています。");
+        exception.expectMessage("ヘッダー部の項目が重複しています。");
         csvReader.open();
     }
 
@@ -86,7 +86,7 @@ public class CsvReaderImplTest {
     public void testOpenInCaseOfFileFormatException3() throws Exception {
         CsvReader csvReader = new CsvReaderImpl("src/test/java/jp/co/tis/util/testData/testOpenInCaseOfFileFormatException3.csv");
         exception.expect(FileFormatException.class);
-        exception.expectMessage("ヘッダー行に空項目が含まれています。");
+        exception.expectMessage("ヘッダー部に空項目が含まれています。");
         csvReader.open();
     }
 

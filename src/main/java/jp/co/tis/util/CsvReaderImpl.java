@@ -57,20 +57,20 @@ public class CsvReaderImpl implements CsvReader {
             throw new SystemException("システム例外が発生しました。", e);
         }
         if (headerSection == null || headerSection.isEmpty()) {
-            throw new FileFormatException("ヘッダー行が存在しません。");
+            throw new FileFormatException("ヘッダー部が存在しません。");
         }
         itemArray = headerSection.split(",", -1);
         // 重複チェック開始
         Set<String> checkRepetition = new HashSet<String>();
         for (String item : itemArray) {
             if (!checkRepetition.add(item)) {
-                throw new FileFormatException("ヘッダー行の項目が重複しています。");
+                throw new FileFormatException("ヘッダー部の項目が重複しています。");
             }
         }
         // 空項目チェック開始
         for (String item : itemArray) {
             if ("".equals(item)) {
-                throw new FileFormatException("ヘッダー行に空項目が含まれています。");
+                throw new FileFormatException("ヘッダー部に空項目が含まれています。");
             }
         }
 
