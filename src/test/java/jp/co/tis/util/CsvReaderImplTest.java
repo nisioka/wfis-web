@@ -1,6 +1,6 @@
 package jp.co.tis.util;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 

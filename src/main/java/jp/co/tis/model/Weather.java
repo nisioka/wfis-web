@@ -1,13 +1,16 @@
 package jp.co.tis.model;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
- * 天気エンティティクラス。
- * 
+ * 天気エンティティクラス。<br/>
+ * Weatherテーブルとのデータのやり取りに使用するクラス。<br/>
+ * 検索した結果を保持したりデータ登録の際に使用する。
  *
  * @author Saito Takuma
  * @since 1.0
@@ -15,12 +18,13 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "Weather")
-public class Weather {
+public class Weather implements Serializable {
 
     @Id
     @Column
     private String weatherDate;
 
+    @Id
     @Column
     private String place;
 
@@ -34,7 +38,7 @@ public class Weather {
     private String minTemperature;
 
     /**
-     * コンストラクタ。
+     * デフォルトコンストラクタ。
      */
     public Weather() {
         super();
@@ -59,70 +63,90 @@ public class Weather {
     }
 
     /**
-     * @return weatherDate
+     * 日付を取得する。
+     *
+     * @return 日付
      */
     public String getWeatherDate() {
         return weatherDate;
     }
 
     /**
-     * @param weatherDate セットする weatherDate
+     * 日付を設定する。
+     *
+     * @param weatherDate 日付
      */
     public void setWeatherDate(String weatherDate) {
         this.weatherDate = weatherDate;
     }
 
     /**
-     * @return place
+     * 場所を取得する。
+     *
+     * @return 場所
      */
     public String getPlace() {
         return place;
     }
 
     /**
-     * @param place セットする place
+     * 場所を設定する。
+     *
+     * @param place 場所
      */
     public void setPlace(String place) {
         this.place = place;
     }
 
     /**
-     * @return weather
+     * 天気を取得する。
+     *
+     * @return 天気
      */
     public String getWeather() {
         return weather;
     }
 
     /**
-     * @param weather セットする weather
+     * 天気を設定する。
+     *
+     * @param weather 天気
      */
     public void setWeather(String weather) {
         this.weather = weather;
     }
 
     /**
-     * @return maxTemperature
+     * 最高気温を取得する。
+     *
+     * @return 最高気温
      */
     public String getMaxTemperature() {
         return maxTemperature;
     }
 
     /**
-     * @param maxTemperature セットする maxTemperature
+     * 最高気温を設定する。
+     *
+     * @param maxTemperature 最高気温
      */
     public void setMaxTemperature(String maxTemperature) {
         this.maxTemperature = maxTemperature;
     }
 
     /**
-     * @return minTemperature
+     * 最低気温を取得する。
+     *
+     * @return 最低気温
      */
     public String getMinTemperature() {
         return minTemperature;
     }
 
     /**
-     * @param minTemperature セットする minTemperature
+     * 最低気温を設定する。
+     *
+     * @param minTemperature 最低気温
      */
     public void setMinTemperature(String minTemperature) {
         this.minTemperature = minTemperature;

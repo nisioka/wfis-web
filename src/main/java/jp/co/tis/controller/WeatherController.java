@@ -1,17 +1,17 @@
 package jp.co.tis.controller;
 
-import jp.co.tis.form.WeatherSearchForm;
-import jp.co.tis.model.WeatherDao;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
+import jp.co.tis.form.CsvRegisterForm;
+import jp.co.tis.form.WeatherSearchForm;
+import jp.co.tis.form.WeatherStatisticsForm;
+import jp.co.tis.logic.CsvRegisterLogic;
+import jp.co.tis.logic.WeatherSearchLogic;
+import jp.co.tis.logic.WeatherStatisticsLogic;
 
 /**
  * 天気予報のコントローラークラス。
@@ -22,20 +22,17 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class WeatherController {
 
-    /** DB操作を行うDAO */
+    /** 天気検索ロジッククラス */
     @Autowired
-    private WeatherDao weatherDao;
+    private WeatherSearchLogic weatherSearchLogic;
 
+    /** 天気統計ロジッククラス */
+    @Autowired
+    private WeatherStatisticsLogic weatherStatisticsLogic;
 
-    /**
-     * Formのセットアップを行う。
-     *
-     * @return Form
-     */
-    @ModelAttribute
-    WeatherSearchForm setupForm() {
-        return new WeatherSearchForm();
-    }
+    /** CSV登録ロジッククラス */
+    @Autowired
+    private CsvRegisterLogic csvRegisterLogic;
 
     /**
      * TOP画面へ遷移する。
@@ -109,24 +106,10 @@ public class WeatherController {
      * 天気の検索を行う。
      *
      * @param form フォーム
-     * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherSearch/search", method = RequestMethod.POST)
-    public ModelAndView search(@Validated WeatherSearchForm form, BindingResult bindingResult) {
-
-        return null;
-    }
-
-    /**
-     * 天気の検索を行う（天気検索発展）。
-     *
-     * @param form フォーム
-     * @param bindingResult バリデーション結果
-     * @return ModelAndView
-     */
-    @RequestMapping(value = "weatherSearchHard/search", method = RequestMethod.POST)
-    public ModelAndView searchHard(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    @RequestMapping("/weatherSearch/search")
+    public ModelAndView search(WeatherSearchForm form) {
 
         return null;
     }
@@ -135,38 +118,23 @@ public class WeatherController {
      * 天気の統計処理を行う。
      *
      * @param form フォーム
-     * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
-    @RequestMapping(value = "weatherStatistics/analysis", method = RequestMethod.POST)
-    public ModelAndView statistics(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    @RequestMapping("/weatherStatistics/analysis")
+    public ModelAndView statistics(WeatherStatisticsForm form) {
 
         return null;
     }
 
     /**
-     * CSVファイルを読み込んで表示する。
+     * CSVファイルを読み込んでデータをテーブルに登録する。
      *
      * @param form フォーム
-     * @param bindingResult バリデーション結果
-     * @return ModelAndView
-     */
-    @RequestMapping(value = "csvRegister/csvRead", method = RequestMethod.POST)
-    public ModelAndView csvRead(@Validated WeatherSearchForm form, BindingResult bindingResult) {
-
-        return null;
-    }
-
-    /**
-     * CSVファイルのデータを登録する。
-     *
-     * @param form フォーム
-     * @param bindingResult バリデーション結果
      * @return ModelAndView
      */
     @Transactional
-    @RequestMapping(value = "csvRegister/register", method = RequestMethod.POST)
-    public ModelAndView register(@Validated WeatherSearchForm form, BindingResult bindingResult) {
+    @RequestMapping("/csvRegister/insert")
+    public ModelAndView csvRegister(CsvRegisterForm form) {
 
         return null;
     }
