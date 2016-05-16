@@ -30,19 +30,19 @@
         <tbody>
           <tr>
             <td>名前</td>
-            <td><c:out value="${myName}" /></td>
+            <td></td>
           </tr>
           <tr>
             <td>年齢</td>
-            <td><c:out value="${age}" /></td>
+            <td></td>
           </tr>
           <tr>
             <td>趣味</td>
-            <td><c:out value="${hobby}" /></td>
+            <td></td>
           </tr>
           <tr>
             <td>特技</td>
-            <td><c:out value="${skill}" /></td>
+            <td></td>
           </tr>
         </tbody>
        </table>
