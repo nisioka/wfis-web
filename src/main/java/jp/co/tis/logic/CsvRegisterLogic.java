@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import jp.co.tis.exception.FileFormatException;
+import jp.co.tis.exception.NoDataResultsException;
 import jp.co.tis.exception.SystemException;
 import jp.co.tis.form.CsvRegisterForm;
 import jp.co.tis.model.WeatherDao;
@@ -97,6 +98,9 @@ public class CsvRegisterLogic {
             throw new FileFormatException(rowCount + "行目 ：" + e.getMessage());
         }
         csvReaderImpl.close();
+        if(csvDataList.isEmpty()){
+            throw new NoDataResultsException("登録するデータが存在しません。");
+        }
         return csvDataList;
     }
 

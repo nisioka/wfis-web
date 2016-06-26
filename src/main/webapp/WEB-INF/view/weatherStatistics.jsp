@@ -52,15 +52,15 @@
             <tr>
               <td style="vertical-align: middle;">場所</td>
               <td>
-                <select id="selectPlace" name="place" class="form-control" data-place="${form.place}">
+                <select id="selectPlace" name="place" class="form-control">
                   <option value=""></option>
-                  <option value="東京">東京</option>
-                  <option value="群馬">群馬</option>
-                  <option value="栃木">栃木</option>
-                  <option value="茨城">茨城</option>
-                  <option value="埼玉">埼玉</option>
-                  <option value="千葉">千葉</option>
-                  <option value="神奈川">神奈川</option>
+                  <option value="東京" <c:out value="${form.place=='東京' ? 'selected' : ''}"/>>東京</option>
+                  <option value="群馬" <c:out value="${form.place=='群馬' ? 'selected' : ''}"/>>群馬</option>
+                  <option value="栃木" <c:out value="${form.place=='栃木' ? 'selected' : ''}"/>>栃木</option>
+                  <option value="茨城" <c:out value="${form.place=='茨城' ? 'selected' : ''}"/>>茨城</option>
+                  <option value="埼玉" <c:out value="${form.place=='埼玉' ? 'selected' : ''}"/>>埼玉</option>
+                  <option value="千葉" <c:out value="${form.place=='千葉' ? 'selected' : ''}"/>>千葉</option>
+                  <option value="神奈川" <c:out value="${form.place=='神奈川' ? 'selected' : ''}"/>>神奈川</option>
                 </select>
               </td>
             </tr>
@@ -133,9 +133,6 @@ $(function() {
     $('.ui-corner-all').on('click', function(){
       $('.ui-datepicker-year').text('');
     })
-	// プルダウンの選択肢を保持しておく
-    var place = $('#selectPlace').data('place');
-    $('#selectPlace').val(place);
 });
 </script>
 </html>

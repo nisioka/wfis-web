@@ -33,7 +33,7 @@
       <h3>CSVデータ登録</h3>
       <form action="/csvRegister/insert" method="POST">
         <div class="input-group">
-          <input type="text" name="filePath" class="form-control" value="${filePath}" placeholder="ファイルパスを入力してください">
+          <input type="text" name="filePath" class="form-control" value="${form.filePath}" placeholder="ファイルパスを入力してください">
           <span class="input-group-btn"><button type="submit" class="btn btn-info" >登録</button></span>
         </div>
       </form>

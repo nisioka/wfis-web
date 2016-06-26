@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -54,25 +55,25 @@
             <tr>
               <td style="vertical-align: middle;">場所</td>
               <td>
-                <select id="selectPlace" name="place" class="form-control" data-place="${form.place}">
+                <select id="selectPlace" name="place" class="form-control" >
                   <option value=""></option>
-                  <option value="東京">東京</option>
-                  <option value="群馬">群馬</option>
-                  <option value="栃木">栃木</option>
-                  <option value="茨城">茨城</option>
-                  <option value="埼玉">埼玉</option>
-                  <option value="千葉">千葉</option>
-                  <option value="神奈川">神奈川</option>
+                  <option value="東京" <c:if test="${form.place=='東京'}">selected="selected"</c:if>>東京</option>
+                  <option value="群馬" <c:if test="${form.place=='群馬'}">selected="selected"</c:if>>群馬</option>
+                  <option value="栃木" <c:if test="${form.place=='栃木'}">selected="selected"</c:if>>栃木</option>
+                  <option value="茨城" <c:if test="${form.place=='茨城'}">selected="selected"</c:if>>茨城</option>
+                  <option value="埼玉" <c:if test="${form.place=='埼玉'}">selected="selected"</c:if>>埼玉</option>
+                  <option value="千葉" <c:if test="${form.place=='千葉'}">selected="selected"</c:if>>千葉</option>
+                  <option value="神奈川" <c:if test="${form.place=='神奈川'}">selected="selected"</c:if>>神奈川</option>
                 </select>
               </td>
             </tr>
             <tr>
               <td style="vertical-align: middle;">天気</td>
-              <td id="checkboxes" data-weather="${form.weather}">
-                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="晴れ" >晴れ</label>
-                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="曇り" >曇り</label>
-                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="雨" >雨</label>
-                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="雪" >雪</label>
+              <td id="checkboxes">
+                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="晴れ" <c:if test="${fn:contains(form.weather,'晴れ')}">checked="checked"</c:if>>晴れ</label>
+                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="曇り" <c:if test="${fn:contains(form.weather,'曇り')}">checked="checked"</c:if>>曇り</label>
+                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="雨" <c:if test="${fn:contains(form.weather,'雨')}">checked="checked"</c:if>>雨</label>
+                <label class="checkbox-inline"><input class="checkboxWeather" type="checkbox" name="weather" value="雪" <c:if test="${fn:contains(form.weather,'雪')}">checked="checked"</c:if>>雪</label>
               </td>
             </tr>
             <tr>
@@ -102,7 +103,7 @@
        <c:when test="${!empty weatherList}">
          <h3>
           検索結果：
-          <span class="dark-blue"><c:out value="${searchCount}" /></span>件
+          <span class="dark-blue"><c:out value="${fn:length(weatherList)}" /></span>件
          </h3>
          <table class="table table-striped table-bordered table-hover">
           <thead>
@@ -167,11 +168,11 @@
           </tbody>
          </table>
        </c:when>
-       <c:when test="${noResult}">
+       <c:when test="${!empty noResultMessage}">
        <div class="no-result">
          <i class="fa fa-search fa-5x"></i>
          <div class="margin-top-20">
-           検索結果がありません。
+           <c:out value="${noResultMessage}"/>
          </div>
        </div>
        </c:when>
@@ -185,16 +186,6 @@
 <script>
 $(function() {
     $('.calendar').datepicker();
-
-    // 場所のプルダウンの値を記憶しておく
-    var place = $('#selectPlace').data('place');
-    $('#selectPlace').val(place);
-
-    // 天気のチェックボックスの値を記憶しておく
-    var weatherArray = $('#checkboxes').data('weather').split(',');
-    if(weatherArray){
-      $('.checkboxWeather').val(weatherArray);
-    }
 });
 </script>
 </html>

@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import jp.co.tis.exception.NoDataResultsException;
 import jp.co.tis.form.WeatherStatisticsForm;
 import jp.co.tis.model.Weather;
 import jp.co.tis.model.WeatherDao;
@@ -73,8 +74,11 @@ public class WeatherStatisticsLogic {
         String percentMonthAndDay = "%" + form.getWeatherDate();
         condition.put("percentMonthAndDay", percentMonthAndDay);
         condition.put("place", form.getPlace());
-
-        return weatherDao.findBySql(selectSql, condition);
+        List<Weather> results = weatherDao.findBySql(selectSql, condition);
+        if(results.isEmpty()){
+            throw new NoDataResultsException("データが存在しませんでした。");
+        }
+        return results;
     }
 
     /**

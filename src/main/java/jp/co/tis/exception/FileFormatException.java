@@ -12,14 +12,14 @@ public class FileFormatException extends Exception {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 引数なしコンストラクタ
+     * 引数なしコンストラクタ。
      */
     public FileFormatException() {
         super();
     }
 
     /**
-     * メッセージとネスト例外設定用コンストラクタ
+     * メッセージとネスト例外設定用コンストラクタ。
      *
      * @param message 例外メッセージ
      * @param cause 原因となる例外またはエラー
@@ -29,7 +29,7 @@ public class FileFormatException extends Exception {
     }
 
     /**
-     * メッセージ設定用コンストラクタ
+     * メッセージ設定用コンストラクタ。
      *
      * @param message 例外メッセージ
      */
@@ -38,7 +38,7 @@ public class FileFormatException extends Exception {
     }
 
     /**
-     * ネスト例外設定用コンストラクタ
+     * ネスト例外設定用コンストラクタ。
      *
      * @param cause 原因となる例外またはエラー
      */

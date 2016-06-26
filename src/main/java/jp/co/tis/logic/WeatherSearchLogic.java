@@ -12,6 +12,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import jp.co.tis.exception.NoDataResultsException;
 import jp.co.tis.form.WeatherSearchForm;
 import jp.co.tis.model.Person;
 import jp.co.tis.model.Weather;
@@ -95,6 +96,23 @@ public class WeatherSearchLogic {
     public List<String> validateFormHard(WeatherSearchForm form) {
         List<String> errorList = new ArrayList<String>();
 
+        validateSingleItem(form, errorList);
+
+        // 単項目精査エラーがない場合のみ、項目間精査を行う。
+        if(errorList.isEmpty()){
+            validateBetweenItem(form, errorList);
+        }
+
+        return errorList;
+    }
+
+    /**
+     * 入力項目のバリデーションする（天気検索発展）。
+     *
+     * @param form フォーム
+     * @param errorList エラーリスト
+     */
+    private void validateSingleItem(WeatherSearchForm form, List<String> errorList) {
         DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
         try {
             if (!StringUtils.isEmpty(form.getWeatherDateFrom())) {
@@ -135,19 +153,15 @@ public class WeatherSearchLogic {
         } else if (!StringUtils.isEmpty(form.getMinTemperatureTo()) && form.getMinTemperatureTo().length() > 3) {
             errorList.add("最低気温は3桁以内で入力してください。");
         }
-
-        return errorList;
     }
 
     /**
      * 入力項目間のバリデーションする（天気検索発展）。
      *
      * @param form フォーム
-     * @return エラーリスト
+     * @param errorList エラーリスト
      */
-    public List<String> validateBetweenItem(WeatherSearchForm form) {
-        List<String> errorList = new ArrayList<String>();
-
+    private void validateBetweenItem(WeatherSearchForm form, List<String> errorList) {
         if (!StringUtils.isEmpty(form.getWeatherDateFrom()) && !StringUtils.isEmpty(form.getWeatherDateTo())) {
             if (form.getWeatherDateFrom().compareTo(form.getWeatherDateTo()) > 0) {
                 errorList.add("日付の範囲指定が不正です。");
@@ -163,8 +177,6 @@ public class WeatherSearchLogic {
                 errorList.add("最低気温の範囲指定が不正です。");
             }
         }
-
-        return errorList;
     }
 
     /**
@@ -176,7 +188,11 @@ public class WeatherSearchLogic {
     public List<Weather> findBySql(WeatherSearchForm form) {
         String selectSql = createSql(form);
         Map<String, String> condition = createCondition(form);
-        return weatherDao.findBySql(selectSql, condition);
+        List<Weather> results = weatherDao.findBySql(selectSql, condition);
+        if(results.isEmpty()){
+            throw new NoDataResultsException("検索結果がありません。");
+        }
+        return results;
     }
 
     /**
@@ -253,7 +269,11 @@ public class WeatherSearchLogic {
     public List<Weather> findBySqlHard(WeatherSearchForm form) {
         String selectSql = createSqlHard(form);
         Map<String, String> condition = createConditionHard(form);
-        return weatherDao.findBySql(selectSql, condition);
+        List<Weather> results = weatherDao.findBySql(selectSql, condition);
+        if(results.isEmpty()){
+            throw new NoDataResultsException("検索結果がありません。");
+        }
+        return results;
     }
 
     /**
