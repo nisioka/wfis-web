@@ -11,37 +11,49 @@ import java.io.Serializable;
  */
 public class WeatherSearchForm implements Serializable {
 
-    /** 日付 */
+    /** 場所の最大文字数. */
+    public static final int PLACE_MAX_LENGTH = 10;
+
+    /** 天気の最大文字数. */
+    public static final int WEATHER_MAX_LENGTH = 10;
+
+    /** 最高気温の最大桁数. */
+    public static final int MAX_TEMPERATURE_MAX_LENGTH = 3;
+
+    /** 最低気温の最大桁数. */
+    public static final int MIN_TEMPERATURE_MAX_LENGTH = 3;
+
+    /** 日付. */
     private String weatherDate;
 
-    /** 日付From */
+    /** 日付From. */
     private String weatherDateFrom;
 
-    /** 日付To */
+    /** 日付To. */
     private String weatherDateTo;
 
-    /** 場所 */
+    /** 場所. */
     private String place;
 
-    /** 天気 */
+    /** 天気. */
     private String weather;
 
-    /** 最高気温 */
+    /** 最高気温. */
     private String maxTemperature;
 
-    /** 最高気温From */
+    /** 最高気温From. */
     private String maxTemperatureFrom;
 
-    /** 最高気温To */
+    /** 最高気温To. */
     private String maxTemperatureTo;
 
-    /** 最低気温 */
+    /** 最低気温. */
     private String minTemperature;
 
-    /** 最低気温From */
+    /** 最低気温From. */
     private String minTemperatureFrom;
 
-    /** 最低気温To */
+    /** 最低気温To. */
     private String minTemperatureTo;
 
     /**

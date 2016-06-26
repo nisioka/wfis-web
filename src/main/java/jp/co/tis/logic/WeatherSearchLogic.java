@@ -4,11 +4,14 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,7 +33,7 @@ import jp.co.tis.model.WeatherDao;
 @Component
 public class WeatherSearchLogic {
 
-    /** DB操作DAO */
+    /** DB操作DAO. */
     @Autowired
     private WeatherDao weatherDao;
 
@@ -50,7 +53,7 @@ public class WeatherSearchLogic {
     }
 
     /**
-     * 入力項目をバリデーションする（天気検索）
+     * 入力項目をバリデーションする（天気検索）。
      *
      * @param form フォーム
      * @return エラーリスト
@@ -58,29 +61,23 @@ public class WeatherSearchLogic {
     public List<String> validateForm(WeatherSearchForm form) {
         List<String> errorList = new ArrayList<String>();
 
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        try {
-            if (!StringUtils.isEmpty(form.getWeatherDate())) {
-                format.setLenient(false);
-                format.parse(form.getWeatherDate());
-            }
-        } catch (ParseException e) {
+        if (!StringUtils.isEmpty(form.getWeatherDate()) && !dateValidation(form.getWeatherDate(), "yyyy/MM/dd")) {
             errorList.add("日付は日付形式で入力してください。");
         }
-        if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > 10) {
+        if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > WeatherSearchForm.PLACE_MAX_LENGTH) {
             errorList.add("場所は10文字以内で入力してください。");
         }
-        if (!StringUtils.isEmpty(form.getWeather()) && form.getWeather().length() > 10) {
+        if (!StringUtils.isEmpty(form.getWeather()) && form.getWeather().length() > WeatherSearchForm.WEATHER_MAX_LENGTH) {
             errorList.add("天気は10文字以内で入力してください。");
         }
-        if (!StringUtils.isEmpty(form.getMaxTemperature()) && !StringUtils.isNumeric(form.getMaxTemperature())) {
+        if (!StringUtils.isEmpty(form.getMaxTemperature()) && !NumberUtils.isNumber(form.getMaxTemperature())) {
             errorList.add("最高気温は数値で入力してください。");
-        } else if (!StringUtils.isEmpty(form.getMaxTemperature()) && form.getMaxTemperature().length() > 3) {
+        } else if (!StringUtils.isEmpty(form.getMaxTemperature()) && numberLenghtValidate(form.getMaxTemperature())) {
             errorList.add("最高気温は3桁以内で入力してください。");
         }
-        if (!StringUtils.isEmpty(form.getMinTemperature()) && !StringUtils.isNumeric(form.getMinTemperature())) {
+        if (!StringUtils.isEmpty(form.getMinTemperature()) && !NumberUtils.isNumber(form.getMinTemperature())) {
             errorList.add("最低気温は数値で入力してください。");
-        } else if (!StringUtils.isEmpty(form.getMinTemperature()) && form.getMinTemperature().length() > 3) {
+        } else if (!StringUtils.isEmpty(form.getMinTemperature()) && numberLenghtValidate(form.getMinTemperature())) {
             errorList.add("最低気温は3桁以内で入力してください。");
         }
 
@@ -104,79 +101,6 @@ public class WeatherSearchLogic {
         }
 
         return errorList;
-    }
-
-    /**
-     * 入力項目のバリデーションする（天気検索発展）。
-     *
-     * @param form フォーム
-     * @param errorList エラーリスト
-     */
-    private void validateSingleItem(WeatherSearchForm form, List<String> errorList) {
-        DateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        try {
-            if (!StringUtils.isEmpty(form.getWeatherDateFrom())) {
-                format.setLenient(false);
-                format.parse(form.getWeatherDateFrom());
-            }
-            if (!StringUtils.isEmpty(form.getWeatherDateTo())) {
-                format.setLenient(false);
-                format.parse(form.getWeatherDateTo());
-            }
-        } catch (ParseException e) {
-            errorList.add("日付は日付形式で入力してください。");
-        }
-
-        if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > 10) {
-            errorList.add("場所は10文字以内で入力してください。");
-        }
-        if (!StringUtils.isEmpty(form.getWeather()) && form.getWeather().length() > 10) {
-            errorList.add("天気は10文字以内で入力してください。");
-        }
-        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom()) && !StringUtils.isNumeric(form.getMaxTemperatureFrom())) {
-            errorList.add("最高気温は数値で入力してください。");
-        } else if (!StringUtils.isEmpty(form.getMaxTemperatureTo()) && !StringUtils.isNumeric(form.getMaxTemperatureTo())) {
-            errorList.add("最高気温は数値で入力してください。");
-        }
-        if (!StringUtils.isEmpty(form.getMinTemperatureFrom()) && !StringUtils.isNumeric(form.getMinTemperatureFrom())) {
-            errorList.add("最低気温は数値で入力してください。");
-        } else if (!StringUtils.isEmpty(form.getMinTemperatureTo()) && !StringUtils.isNumeric(form.getMinTemperatureTo())) {
-            errorList.add("最低気温は数値で入力してください。");
-        }
-        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom()) && form.getMaxTemperatureFrom().length() > 3) {
-            errorList.add("最高気温は3桁以内で入力してください。");
-        } else if (!StringUtils.isEmpty(form.getMaxTemperatureTo()) && form.getMaxTemperatureTo().length() > 3) {
-            errorList.add("最高気温は3桁以内で入力してください。");
-        }
-        if (!StringUtils.isEmpty(form.getMinTemperatureFrom()) && form.getMinTemperatureFrom().length() > 3) {
-            errorList.add("最低気温は3桁以内で入力してください。");
-        } else if (!StringUtils.isEmpty(form.getMinTemperatureTo()) && form.getMinTemperatureTo().length() > 3) {
-            errorList.add("最低気温は3桁以内で入力してください。");
-        }
-    }
-
-    /**
-     * 入力項目間のバリデーションする（天気検索発展）。
-     *
-     * @param form フォーム
-     * @param errorList エラーリスト
-     */
-    private void validateBetweenItem(WeatherSearchForm form, List<String> errorList) {
-        if (!StringUtils.isEmpty(form.getWeatherDateFrom()) && !StringUtils.isEmpty(form.getWeatherDateTo())) {
-            if (form.getWeatherDateFrom().compareTo(form.getWeatherDateTo()) > 0) {
-                errorList.add("日付の範囲指定が不正です。");
-            }
-        }
-        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom()) && !StringUtils.isEmpty(form.getMaxTemperatureTo())) {
-            if (form.getMaxTemperatureFrom().compareTo(form.getMaxTemperatureTo()) > 0) {
-                errorList.add("最高気温の範囲指定が不正です。");
-            }
-        }
-        if (!StringUtils.isEmpty(form.getMinTemperatureFrom()) && !StringUtils.isEmpty(form.getMinTemperatureTo())) {
-            if (form.getMinTemperatureFrom().compareTo(form.getMinTemperatureTo()) > 0) {
-                errorList.add("最低気温の範囲指定が不正です。");
-            }
-        }
     }
 
     /**
@@ -392,5 +316,102 @@ public class WeatherSearchLogic {
         }
 
         return condition;
+    }
+
+    /**
+     * 日付形式のバリデーションを行う。
+     *
+     * @param date 日付文字列
+     * @param dateFormat 日付フォーマット形式
+     * @return 精査結果
+     */
+    private boolean dateValidation(String date, String dateFormat) {
+        DateFormat format = new SimpleDateFormat(dateFormat);
+        format.setLenient(false);
+        try {
+            Date formatedDate = format.parse(date);
+            if (!date.equals(formatedDate.toString())) {
+                // パースした結果と元の文字列が異なる場合は精査エラー
+                return false;
+            }
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * 数値の桁数精査を行う。<br/>
+     * マイナスの有無に関わらず、数値のみの桁数が3文字以内であることを精査。
+     * @param number 数値文字列
+     * @return 精査結果
+     */
+    private boolean numberLenghtValidate(String number) {
+        Pattern patern = Pattern.compile("^-?\\d{1,3}$");
+        return patern.matcher(number).matches();
+    }
+
+    /**
+     * 入力項目のバリデーションする（天気検索発展）。
+     *
+     * @param form フォーム
+     * @param errorList エラーリスト
+     */
+    private void validateSingleItem(WeatherSearchForm form, List<String> errorList) {
+        // 開始日付もしくは終了日付が精査エラーの場合
+        if ((!StringUtils.isEmpty(form.getWeatherDateFrom()) && !dateValidation(form.getWeatherDateFrom(), "yyyy/MM/dd"))
+                || (!StringUtils.isEmpty(form.getWeatherDateTo()) && !dateValidation(form.getWeatherDateTo(), "yyyy/MM/dd"))) {
+            errorList.add("日付は日付形式で入力してください。");
+        }
+        if (!StringUtils.isEmpty(form.getPlace()) && form.getPlace().length() > 10) {
+            errorList.add("場所は10文字以内で入力してください。");
+        }
+        if (!StringUtils.isEmpty(form.getWeather()) && form.getWeather().length() > 10) {
+            errorList.add("天気は10文字以内で入力してください。");
+        }
+        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom()) && !StringUtils.isNumeric(form.getMaxTemperatureFrom())) {
+            errorList.add("最高気温は数値で入力してください。");
+        } else if (!StringUtils.isEmpty(form.getMaxTemperatureTo()) && !StringUtils.isNumeric(form.getMaxTemperatureTo())) {
+            errorList.add("最高気温は数値で入力してください。");
+        }
+        if (!StringUtils.isEmpty(form.getMinTemperatureFrom()) && !StringUtils.isNumeric(form.getMinTemperatureFrom())) {
+            errorList.add("最低気温は数値で入力してください。");
+        } else if (!StringUtils.isEmpty(form.getMinTemperatureTo()) && !StringUtils.isNumeric(form.getMinTemperatureTo())) {
+            errorList.add("最低気温は数値で入力してください。");
+        }
+        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom()) && form.getMaxTemperatureFrom().length() > 3) {
+            errorList.add("最高気温は3桁以内で入力してください。");
+        } else if (!StringUtils.isEmpty(form.getMaxTemperatureTo()) && form.getMaxTemperatureTo().length() > 3) {
+            errorList.add("最高気温は3桁以内で入力してください。");
+        }
+        if (!StringUtils.isEmpty(form.getMinTemperatureFrom()) && form.getMinTemperatureFrom().length() > 3) {
+            errorList.add("最低気温は3桁以内で入力してください。");
+        } else if (!StringUtils.isEmpty(form.getMinTemperatureTo()) && form.getMinTemperatureTo().length() > 3) {
+            errorList.add("最低気温は3桁以内で入力してください。");
+        }
+    }
+
+    /**
+     * 入力項目間のバリデーションする（天気検索発展）。
+     *
+     * @param form フォーム
+     * @param errorList エラーリスト
+     */
+    private void validateBetweenItem(WeatherSearchForm form, List<String> errorList) {
+        if (!StringUtils.isEmpty(form.getWeatherDateFrom()) && !StringUtils.isEmpty(form.getWeatherDateTo())) {
+            if (form.getWeatherDateFrom().compareTo(form.getWeatherDateTo()) > 0) {
+                errorList.add("日付の範囲指定が不正です。");
+            }
+        }
+        if (!StringUtils.isEmpty(form.getMaxTemperatureFrom()) && !StringUtils.isEmpty(form.getMaxTemperatureTo())) {
+            if (form.getMaxTemperatureFrom().compareTo(form.getMaxTemperatureTo()) > 0) {
+                errorList.add("最高気温の範囲指定が不正です。");
+            }
+        }
+        if (!StringUtils.isEmpty(form.getMinTemperatureFrom()) && !StringUtils.isEmpty(form.getMinTemperatureTo())) {
+            if (form.getMinTemperatureFrom().compareTo(form.getMinTemperatureTo()) > 0) {
+                errorList.add("最低気温の範囲指定が不正です。");
+            }
+        }
     }
 }

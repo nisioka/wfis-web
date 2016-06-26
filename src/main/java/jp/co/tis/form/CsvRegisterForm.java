@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 public class CsvRegisterForm implements Serializable {
 
-    /** ファイルパス */
+    /** ファイルパス. */
     private String filePath;
 
     /**

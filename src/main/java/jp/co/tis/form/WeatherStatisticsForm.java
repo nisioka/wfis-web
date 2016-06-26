@@ -11,10 +11,10 @@ import java.io.Serializable;
  */
 public class WeatherStatisticsForm implements Serializable {
 
-    /** 日付 */
+    /** 日付. */
     private String weatherDate;
 
-    /** 場所 */
+    /** 場所. */
     private String place;
 
     /**
